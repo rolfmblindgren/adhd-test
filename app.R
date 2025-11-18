@@ -1,28 +1,21 @@
-# app.R
 library(shiny)
+library(tibble)
 
-items <- tibble::tibble(
+# Spørsmål
+items <- tibble(
   id = paste0("item", 1:10),
   tekst = c(
-    "Jeg klarer som regel å starte på kjedelige oppgaver uten at det blir et stort nummer ut av det.",
-    "Jeg mister sjelden viktige ting (nøkler, mobil, lommebok), og når jeg gjør det, finner jeg dem som regel raskt.",
-    "Folk rundt meg beskriver meg ofte som til å stole på når det gjelder avtaler og frister.",
-    "Jeg klarer vanligvis å holde oppmerksomheten på én oppgave til jeg er ferdig.",
+    "Jeg klarer vanligvis å starte på kjedelige oppgaver uten særlig friksjon.",
+    "Jeg mister sjelden viktige ting, og finner dem raskt hvis det skjer.",
+    "Jeg blir stort sett oppfattet som pålitelig når det gjelder avtaler og frister.",
+    "Jeg klarer som regel å holde fokus på én oppgave til den er fullført.",
     "Jeg er ikke avhengig av kaos eller siste liten for å komme i gang.",
-    "Jeg blir sjelden så rastløs at jeg må bevege meg eller avbryte andre midt i noe.",
-    "Jeg glemmer ikke avtaler eller beskjeder i en grad som skaper problemer for meg.",
-    "Når noe er viktig for meg, klarer jeg stort sett å organisere hverdagen så det får plass.",
-    "Jeg opplever ikke at tankene «løper løpsk» så ofte at det hindrer meg i dagliglivet.",
-    "Jeg trenger ikke uvanlig mye ekstern struktur (påminnelser, andre mennesker) for å fungere greit."
+    "Jeg blir ikke så rastløs at jeg må bevege meg eller avbryte andre.",
+    "Jeg glemmer ikke avtaler eller beskjeder i en grad som skaper problemer.",
+    "Når noe er viktig, klarer jeg å organisere tiden så det får plass.",
+    "Tankene løper ikke så ofte løpsk at det hindrer meg i hverdagen.",
+    "Jeg trenger ikke uvanlig mye ytre struktur for å fungere greit."
   )
-)
-
-likert_vals <- c(
-  "Stemmer ikke" = 1,
-  "Stemmer litt" = 2,
-  "Stemmer delvis" = 3,
-  "Stemmer ganske godt" = 4,
-  "Stemmer helt" = 5
 )
 
 ui <- fluidPage(
@@ -30,10 +23,10 @@ ui <- fluidPage(
 
   sidebarLayout(
     sidebarPanel(
-      h4("Hva er dette?"),
-      p("Denne lille testen er ment som en illustrasjon på hvordan fravær av typiske ADHD-vansker kan se ut i hverdagen."),
-      p("Den kan ikke brukes til å stille diagnose, og et høyt eller lavt resultat sier ingenting sikkert om deg."),
-      p("Tenk på den som en faglig kommentert nett-lekeplass."),
+      h4("Kort om testen"),
+      p("Denne testen viser hvordan fravær av oppmerksomhets- og reguleringsvansker kan se ut."),
+      p("Den er ikke diagnostisk. Den kan verken bekrefte eller avkrefte ADHD."),
+      br(),
       actionButton("beregn", "Beregn resultat")
     ),
 
@@ -42,18 +35,43 @@ ui <- fluidPage(
         tabPanel(
           "Spørsmål",
           br(),
-          p("Les hvert utsagn og velg hvor godt det stemmer for deg de siste årene, ikke bare de siste ukene."),
+          p("Dra i hver slider for å velge hvor godt utsagnet har stemt for deg over tid."),
           hr(),
-          # Dynamisk generering av items
-          lapply(seq_len(nrow(items)), function(i) {
-            item <- items[i, ]
-            radioButtons(
+
+lapply(seq_len(nrow(items)), function(i) {
+  item <- items[i, ]
+
+  div(style = "width: 100%; max-width: 600px;",   # slider + labels får felles ramme
+      tagList(
+        strong(item$tekst),
+
+        div(style = "margin-bottom: 4px; font-size: 0.9em; color: #666; width: 100%;",
+            HTML("
+              <span style='display:inline-block; width:20%; text-align:left;'>Stemmer ikke</span>
+              <span style='display:inline-block; width:19%; text-align:center;'>Litt</span>
+              <span style='display:inline-block; width:19%; text-align:center;'>Delvis</span>
+              <span style='display:inline-block; width:19%; text-align:center;'>Ganske</span>
+              <span style='display:inline-block; width:20%; text-align:right;'>Stemmer helt</span>
+            ")
+        ),
+
+        div(style = "width: 100%;",
+            sliderInput(
               inputId = item$id,
-              label = item$tekst,
-              choices = likert_vals,
-              selected = character(0)
+              label = NULL,
+              min = 1,
+              max = 5,
+              value = 3,
+              step = 1,
+              ticks = FALSE,
+              width = "100%"
             )
-          })
+        ),
+
+        br()
+      )
+  )
+})
         ),
         tabPanel(
           "Resultat",
@@ -61,12 +79,12 @@ ui <- fluidPage(
           h3("Tolkning"),
           textOutput("resultat_tekst"),
           br(),
-          h4("Skår (jo høyere, jo mer taler mot ADHD)"),
+          h4("Gjennomsnittsskår"),
           textOutput("score_tekst"),
           br(),
-          h4("Viktig forbehold"),
-          p("ADHD stilles på bakgrunn av en grundig utredning, utviklingshistorikk og klinisk skjønn. "),
-          p("Mange mennesker har enkeltsymptomer uten at det betyr at de har en diagnose, og noen med ADHD har lært seg gode strategier som gjør at de skårer «pent» på denne typen skjema.")
+          h4("Forbehold"),
+          p("En klinisk vurdering innebærer utviklingshistorie, funksjon og faglig skjønn."),
+          p("Mennesker kan ha lav struktur eller høy fart uten at det handler om ADHD.")
         )
       )
     )
@@ -76,19 +94,23 @@ ui <- fluidPage(
 server <- function(input, output, session) {
 
   score_reaktiv <- eventReactive(input$beregn, {
-    # Hent svar
-    svar <- sapply(items$id, function(id) input[[id]])
 
-    # Sjekk om noen er ubesvart
-    if (any(is.null(svar) | svar == "")) {
+    # hent alle svar som liste
+    svar <- lapply(items$id, function(id) input[[id]])
+
+    # sjekk ubesvarte
+    mangler <- vapply(svar, function(x) is.null(x) || is.na(x), logical(1))
+
+    if (any(mangler)) {
       return(list(
         gyldig = FALSE,
-        beskjed = "Du må svare på alle utsagn før du får et resultat.",
+        beskjed = "Du må svare på alle utsagn før resultatet kan beregnes.",
         score = NA
       ))
     }
 
-    svar_num <- as.numeric(svar)
+    # flate ut og beregne
+    svar_num <- as.numeric(unlist(svar))
     mean_score <- mean(svar_num)
 
     list(
@@ -100,36 +122,24 @@ server <- function(input, output, session) {
 
   output$score_tekst <- renderText({
     res <- score_reaktiv()
-    if (isFALSE(res$gyldig)) return(res$beskjed)
-    paste0("Gjennomsnittsskår: ", round(res$score, 2), " (av 5)")
+    if (!res$gyldig) return(res$beskjed)
+    paste0(round(res$score, 2), " av 5")
   })
 
   output$resultat_tekst <- renderText({
     res <- score_reaktiv()
-    if (isFALSE(res$gyldig)) return("")
+    if (!res$gyldig) return("")
 
     s <- res$score
 
-    if (s >= 4.2) {
-      paste(
-        "Svarene dine tyder på at du har lite av de oppmerksomhets- og reguleringsvanskene",
-        "man typisk ser ved ADHD. Det betyr ikke at livet er friksjonsfritt, men mye taler mot",
-        "at ADHD er en hovedforklaring på eventuelle utfordringer."
-      )
+    if (s >= 4.0) {
+      "Svarene dine viser få trekk som ligner de reguleringsvanskene man ser ved ADHD. Hverdagen virker stabil og forutsigbar."
     } else if (s >= 3.2) {
-      paste(
-        "Bildet er ganske nøytralt. Du beskriver noen styrker og noen områder med friksjon.",
-        "Dette er et vanlig mønster, også hos personer uten ADHD. En nett-test kan uansett",
-        "ikke si noe sikkert – det krever en ordentlig klinisk vurdering."
-      )
+      "Mønsteret ditt ligger godt innenfor normal variasjon: noen styrker, litt friksjon, men ingenting som peker klart i én retning."
+    } else if (s >= 2.5) {
+      "Du rapporterer en del trekk som kan minne om ADHD, men dette kan like gjerne handle om personlighet, vaner eller livssituasjon."
     } else {
-      paste(
-        "Du rapporterer flere vansker som kan ligne på det man ser ved ADHD, særlig når det",
-        "gjelder oppmerksomhet, organisering og utholdenhet. Denne testen kan likevel ikke",
-        "avgjøre om du har ADHD eller ikke. Dersom dette skaper betydelige problemer i hverdagen,",
-        "er det mer meningsfullt å snakke med noen som faktisk kan utrede deg enn å ta flere",
-        "nett-tester – også denne."
-      )
+      "Du beskriver flere områder som ofte skaper vansker i ADHD. Dette er fortsatt ikke diagnostikk, men det kan være verdt en mer formell vurdering dersom dette skaper problemer i hverdagen."
     }
   })
 }
