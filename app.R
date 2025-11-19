@@ -50,48 +50,48 @@ ui <- fluidPage(
                               strong(item$tekst),
 
                               div(class = "scale-labels",
-    HTML("
+                                  HTML("
         <span>Stemmer ikke</span>
         <span>Litt</span>
         <span>Delvis</span>
         <span>Ganske</span>
         <span>Stemmer helt</span>
     ")
-),
+    ),
 
-            div(style = "width: 100%;",
-                sliderInput(
-                    inputId = item$id,
-                    label = NULL,
-                    min = 1,
-                    max = 5,
-                    value = 3,
-                    step = 1,
-                    ticks = FALSE,
-                    width = "100%"
-                )
-                ),
-
-            br()
-            )
-            )
-                    })
-            ),
-            tabPanel(
-                "Resultat",
-                br(),
-                h3("Tolkning"),
-                textOutput("resultat_tekst"),
-                br(),
-                h4("Gjennomsnittsskår"),
-                textOutput("score_tekst"),
-                br(),
-                h4("Forbehold"),
-                p("En klinisk vurdering innebærer utviklingshistorie, funksjon og faglig skjønn."),
-                p("Mennesker kan ha lav struktur eller høy fart uten at det handler om ADHD.")
-            )
-            )
+    div(style = "width: 100%;",
+        sliderInput(
+            inputId = item$id,
+            label = NULL,
+            min = 1,
+            max = 5,
+            value = 3,
+            step = 1,
+            ticks = FALSE,
+            width = "100%"
         )
+        ),
+
+    br()
+    )
+    )
+                    })
+    ),
+    tabPanel(
+        "Resultat",
+        br(),
+        h3("Tolkning"),
+        textOutput("resultat_tekst"),
+        br(),
+        h4("Gjennomsnittsskår"),
+        textOutput("score_tekst"),
+        br(),
+        h4("Forbehold"),
+        p("En klinisk vurdering innebærer utviklingshistorie, funksjon og faglig skjønn."),
+        p("Mennesker kan ha lav struktur eller høy fart uten at det handler om ADHD.")
+    )
+    )
+    )
     )
 )
 
