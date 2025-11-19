@@ -1,30 +1,30 @@
 name: deploy-shiny
 
 on:
-  push:
-    branches: ["main"]
+    push:
+        branches: ["main"]
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+    deploy:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Sjekk ut kode
-        uses: actions/checkout@v4
+        steps:
+            - name: Sjekk ut kode
+              uses: actions/checkout@v4
 
-      - name: Sett opp SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SHINY_DEPLOY_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H mysql.grendel.no >> ~/.ssh/known_hosts
+            - name: Sett opp SSH
+              run: |
+                  mkdir -p ~/.ssh
+                  echo "${{ secrets.SHINY_DEPLOY_KEY }}" > ~/.ssh/id_rsa
+                  chmod 600 ~/.ssh/id_rsa
+                  ssh-keyscan -H mysql.grendel.no >> ~/.ssh/known_hosts
 
-      - name: Synkroniser filer til server
-        run: |
-          rsync -avz --delete \
-            ./ \
-            deployshiny@mysql.grendel.no:/srv/shiny-server/adhd-test/
+            - name: Synkroniser filer til server
+              run: |
+                  rsync -avz --delete \
+                    ./ \
+                    deployshiny@mysql.grendel.no:/srv/shiny-server/adhd-test/
 
-      - name: Restart Shiny Server
-        run: |
-          ssh deployshiny@mysql.grendel.no "sudo systemctl restart shiny-server"
+            - name: Restart Shiny Server
+              run: |
+                  ssh deployshiny@mysql.grendel.no "sudo systemctl restart shiny-server"
