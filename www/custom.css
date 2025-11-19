@@ -1,0 +1,53 @@
+/* Dette er egentlig det eneste som skal til */
+
+/* Tving hele Ion.RangeSlider til å følge containerens bredde */
+.irs, .irs-line, .irs-bar, .irs-slider, .irs-grid {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Mobil-spesifikk fiks */
+@media (max-width: 600px) {
+
+  /* Skaler ned etikettene under slideren */
+  .irs-grid-text {
+    font-size: 0.75rem !important;
+    white-space: normal !important;   /* gjør at de kan bryte linje */
+    line-height: 1.1;
+  }
+
+  /* Hindrer at grid-linjene utvider hele komponenten */
+  .irs-grid-pol {
+    max-width: 100% !important;
+  }
+
+  /* Sørger for at selve slider-boksen ikke trekker seg større enn skjermen */
+  .irs-with-grid {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+}
+
+/* Rad med labels over slider */
+.adhd-label-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.adhd-label-row span {
+    flex: 1 1 auto;
+    text-align: center;
+}
+
+.adhd-label-row span:first-child {
+    text-align: left;
+}
+
+.adhd-label-row span:last-child {
+    text-align: right;
+}
