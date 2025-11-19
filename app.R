@@ -49,7 +49,7 @@ ui <- fluidPage(
                           tagList(
                               strong(item$tekst),
 
-                              div(class = "adhd-label-row",
+                              div(class = "scale-labels",
     HTML("
         <span>Stemmer ikke</span>
         <span>Litt</span>
