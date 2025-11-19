@@ -23,8 +23,8 @@ jobs:
               run: |
                   rsync -avz --delete \
                     ./ \
-                    deployshiny@mysql.grendel.no:/srv/shiny-server/adhd-test/
+                    www-data@mysql.grendel.no:/srv/shiny-server/adhd-test/
 
             - name: Restart Shiny Server
               run: |
-                  ssh deployshiny@mysql.grendel.no "sudo systemctl restart shiny-server"
+                  ssh www-data@mysql.grendel.no "sudo systemctl restart shiny-server"
