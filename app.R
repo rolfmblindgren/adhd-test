@@ -99,10 +99,9 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
 
-observeEvent(input$beregn, {
+  observeEvent(input$beregn, {
 
-  print("Tjohei")
-  db_path <- Sys.getenv("ADHD_DB_PATH")
+    db_path <- Sys.getenv("ADHD_DB_PATH")
 
 
     con <- dbConnect(SQLite(), db_path)
@@ -121,15 +120,11 @@ observeEvent(input$beregn, {
 
     dbWriteTable(con, "responses", df, append = TRUE)
 
-    print (df)
-
-    print (db_path)
 
     dbDisconnect(con)
-})
+  })
 
 
-  db_path <- Sys.getenv("SHINY_SQLITE_PATH", unset = "adhd.sqlite")
   con <- DBI::dbConnect(RSQLite::SQLite(), db_path)
 
   score_reaktiv <- eventReactive(input$beregn, {
