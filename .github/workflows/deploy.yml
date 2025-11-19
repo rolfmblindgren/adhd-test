@@ -15,16 +15,16 @@ jobs:
       - name: Sett opp SSH
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.SHINY_DEPLOY_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H shiny.grendel.no >> ~/.ssh/known_hosts
+          ssh-keyscan -H mysql.grendel.no >> ~/.ssh/known_hosts
 
       - name: Synkroniser filer til server
         run: |
           rsync -avz --delete \
             ./ \
-            www-data@shiny.grendel.no:/srv/shiny-server/adhd-test/
+            www-data@mysql.grendel.no:/srv/shiny-server/adhd-test/
 
       - name: Restart Shiny Server
         run: |
-          ssh www-data@shiny.grendel.no "sudo systemctl restart shiny-server"
+          ssh www-data@mysql.grendel.no "sudo systemctl restart shiny-server"
