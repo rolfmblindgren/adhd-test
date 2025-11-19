@@ -1,5 +1,7 @@
 library(shiny)
 library(tibble)
+library(DBI)
+library(RSQLite)
 
                                         # Spørsmål
 items <- tibble(
@@ -96,6 +98,39 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
+
+observeEvent(input$beregn, {
+
+  print("Tjohei")
+  db_path <- Sys.getenv("ADHD_DB_PATH")
+
+
+    con <- dbConnect(SQLite(), db_path)
+
+    timestamp <- format(Sys.time(), "%Y-%m-%d %H:%M:%S")
+
+    item_ids <- items$id   # ta ID-er fra tibblen, ikke fra input
+
+    scores <- vapply(item_ids, function(id) input[[id]], numeric(1))
+
+    df <- data.frame(
+        timestamp = rep(timestamp, length(item_ids)),
+        item_id = item_ids,
+        score = scores
+    )
+
+    dbWriteTable(con, "responses", df, append = TRUE)
+
+    print (df)
+
+    print (db_path)
+
+    dbDisconnect(con)
+})
+
+
+  db_path <- Sys.getenv("SHINY_SQLITE_PATH", unset = "adhd.sqlite")
+  con <- DBI::dbConnect(RSQLite::SQLite(), db_path)
 
   score_reaktiv <- eventReactive(input$beregn, {
 
