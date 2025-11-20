@@ -103,7 +103,6 @@ server <- function(input, output, session) {
 
   db_path <- Sys.getenv("ADHD_DB_PATH")
 
-  options(shiny.cache = file.path(data_dir, "app_cache"))
 
   observeEvent(input$beregn, {
 
