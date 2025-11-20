@@ -99,9 +99,13 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
 
+  db_path <- Sys.getenv("ADHD_DB_PATH")
+  data_dir <- Sys.getenv("R_SHINY_DATA_DIR")
+
+  options(shiny.cache = file.path(data_dir, "app_cache"))
+
   observeEvent(input$beregn, {
 
-    db_path <- Sys.getenv("ADHD_DB_PATH")
 
 
     con <- dbConnect(SQLite(), db_path)
