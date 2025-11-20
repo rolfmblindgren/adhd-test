@@ -3,56 +3,58 @@ library(tibble)
 library(DBI)
 library(RSQLite)
 
-                                        # Spørsmål
+## Spørsmål
 items <- tibble(
-    id = paste0("item", 1:10),
-    tekst = c(
-        "Jeg klarer vanligvis å starte på kjedelige oppgaver uten særlig friksjon.",
-        "Jeg mister sjelden viktige ting, og finner dem raskt hvis det skjer.",
-        "Jeg blir stort sett oppfattet som pålitelig når det gjelder avtaler og frister.",
-        "Jeg klarer som regel å holde fokus på én oppgave til den er fullført.",
-        "Jeg er ikke avhengig av kaos eller siste liten for å komme i gang.",
-        "Jeg blir ikke så rastløs at jeg må bevege meg eller avbryte andre.",
-        "Jeg glemmer ikke avtaler eller beskjeder i en grad som skaper problemer.",
-        "Når noe er viktig, klarer jeg å organisere tiden så det får plass.",
-        "Tankene løper ikke så ofte løpsk at det hindrer meg i hverdagen.",
-        "Jeg trenger ikke uvanlig mye ytre struktur for å fungere greit."
-    )
+  id = paste0("item", 1:10),
+  tekst = c(
+    "Jeg klarer vanligvis å starte på kjedelige oppgaver uten særlig friksjon.",
+    "Jeg mister sjelden viktige ting, og finner dem raskt hvis det skjer.",
+    "Jeg blir stort sett oppfattet som pålitelig når det gjelder avtaler og frister.",
+    "Jeg klarer som regel å holde fokus på én oppgave til den er fullført.",
+    "Jeg er ikke avhengig av kaos eller siste liten for å komme i gang.",
+    "Jeg blir ikke så rastløs at jeg må bevege meg eller avbryte andre.",
+    "Jeg glemmer ikke avtaler eller beskjeder i en grad som skaper problemer.",
+    "Når noe er viktig, klarer jeg å organisere tiden så det får plass.",
+    "Tankene løper ikke så ofte løpsk at det hindrer meg i hverdagen.",
+    "Jeg trenger ikke uvanlig mye ytre struktur for å fungere greit."
+  )
 )
 
 ui <- fluidPage(
-    tags$head(
-             tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
-         ),
-    theme = bslib::bs_theme(version = 5, bootswatch = "flatly"),
-    titlePanel("Dette er ikke en ADHD-test"),
+  tags$head(
+         tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
+       ),
+  theme = bslib::bs_theme(version = 5, bootswatch = "flatly"),
+  titlePanel("Dette er ikke en ADHD-test"),
 
-    sidebarLayout(
-        sidebarPanel(
-            h4("Kort om testen"),
-            p("Denne testen viser hvordan fravær av oppmerksomhets- og reguleringsvansker kan se ut."),
-            p("Den er ikke diagnostisk. Den kan verken bekrefte eller avkrefte ADHD."),
-            br(),
-            actionButton("beregn", "Beregn resultat")
-        ),
+  sidebarLayout(
+    sidebarPanel(
+      h4("Kort om testen"),
+      p("Denne testen viser hvordan fravær av oppmerksomhets- og reguleringsvansker kan se ut."),
+      p("Den er ikke diagnostisk. Den kan verken bekrefte eller avkrefte ADHD."),
+      br(),
+      actionButton("beregn", "Beregn resultat")
+    ),
 
-        mainPanel(
-            tabsetPanel(
-                tabPanel(
-                    "Spørsmål",
-                    br(),
-                    p("Dra i hver slider for å velge hvor godt utsagnet har stemt for deg over tid."),
-                    hr(),
+    mainPanel(
+      tabsetPanel(
+        tabPanel(
+          "Spørsmål",
+          br(),
+          p("Dra i hver slider for å velge hvor godt utsagnet har stemt for deg over tid."),
+          hr(),
 
-                    lapply(seq_len(nrow(items)), function(i) {
-                      item <- items[i, ]
+          lapply(seq_len(nrow(items)), function(i) {
+            item <- items[i, ]
 
-                      div(style = "width: 100%; max-width: 600px;",   # slider + labels får felles ramme
-                          tagList(
-                              strong(item$tekst),
+            ## slider + labels får felles ramme
+            div(style = "width: 100%; max-width: 600px;",
 
-                              div(class = "scale-labels",
-                                  HTML("
+                tagList(
+                  strong(item$tekst),
+
+                  div(class = "scale-labels",
+                      HTML("
         <span>Stemmer ikke</span>
         <span>Litt</span>
         <span>Delvis</span>
@@ -63,44 +65,43 @@ ui <- fluidPage(
 
     div(style = "width: 100%;",
         sliderInput(
-            inputId = item$id,
-            label = NULL,
-            min = 1,
-            max = 5,
-            value = 3,
-            step = 1,
-            ticks = FALSE,
-            width = "100%"
+          inputId = item$id,
+          label = NULL,
+          min = 1,
+          max = 5,
+          value = 3,
+          step = 1,
+          ticks = FALSE,
+          width = "100%"
         )
         ),
 
     br()
     )
     )
-                    })
+          })
     ),
     tabPanel(
-        "Resultat",
-        br(),
-        h3("Tolkning"),
-        textOutput("resultat_tekst"),
-        br(),
-        h4("Gjennomsnittsskår"),
-        textOutput("score_tekst"),
-        br(),
-        h4("Forbehold"),
-        p("En klinisk vurdering innebærer utviklingshistorie, funksjon og faglig skjønn."),
-        p("Mennesker kan ha lav struktur eller høy fart uten at det handler om ADHD.")
+      "Resultat",
+      br(),
+      h3("Tolkning"),
+      textOutput("resultat_tekst"),
+      br(),
+      h4("Gjennomsnittsskår"),
+      textOutput("score_tekst"),
+      br(),
+      h4("Forbehold"),
+      p("En klinisk vurdering innebærer utviklingshistorie, funksjon og faglig skjønn."),
+      p("Mennesker kan ha lav struktur eller høy fart uten at det handler om ADHD.")
     )
     )
     )
-    )
+  )
 )
 
 server <- function(input, output, session) {
 
   db_path <- Sys.getenv("ADHD_DB_PATH")
-  data_dir <- Sys.getenv("R_SHINY_DATA_DIR")
 
   options(shiny.cache = file.path(data_dir, "app_cache"))
 
@@ -117,9 +118,9 @@ server <- function(input, output, session) {
     scores <- vapply(item_ids, function(id) input[[id]], numeric(1))
 
     df <- data.frame(
-        timestamp = rep(timestamp, length(item_ids)),
-        item_id = item_ids,
-        score = scores
+      timestamp = rep(timestamp, length(item_ids)),
+      item_id = item_ids,
+      score = scores
     )
 
     dbWriteTable(con, "responses", df, append = TRUE)
@@ -141,9 +142,9 @@ server <- function(input, output, session) {
 
     if (any(mangler)) {
       return(list(
-          gyldig = FALSE,
-          beskjed = "Du må svare på alle utsagn før resultatet kan beregnes.",
-          score = NA
+        gyldig = FALSE,
+        beskjed = "Du må svare på alle utsagn før resultatet kan beregnes.",
+        score = NA
       ))
     }
 
@@ -152,9 +153,9 @@ server <- function(input, output, session) {
     mean_score <- mean(svar_num)
 
     list(
-        gyldig = TRUE,
-        beskjed = NULL,
-        score = mean_score
+      gyldig = TRUE,
+      beskjed = NULL,
+      score = mean_score
     )
   })
 
