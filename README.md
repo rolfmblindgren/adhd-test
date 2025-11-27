@@ -2,7 +2,7 @@
 # (Dette er ikke en ADHD-test)
 
 
-[![build-and-deploy](https://github.com/rolfmblindgren/personlighetstest/actions/workflows/build-and-deploy.yml/badge.svg)](https://github.com/rolfmblindgren/personlighetstest/actions/workflows/build-and-deploy.yml/badge.svg)
+[![deploy](https://github.com/rolfmblindgren/adhd-test/actions/workflows/deploy.yml/badge.svg)](https://github.com/rolfmblindgren/adhd-test/actions/workflows/deploy.yml)
 
 
 Dette er en liten Shiny-applikasjon som viser hvordan fravær av oppmerksomhets- og reguleringsvansker kan se ut. Testen er ikke diagnostisk, men gir et bilde av hvilke hverdagslige ferdigheter som vanligvis fungerer greit hos personer uten ADHD-relaterte vansker.
