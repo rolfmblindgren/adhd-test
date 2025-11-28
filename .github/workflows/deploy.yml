@@ -28,7 +28,7 @@ jobs:
           sudo find /srv/shiny-server/adhd-test -type f -exec chmod 664 {} \; \
           "
 
-      xf- name: Synkroniser filer til server
+      - name: Synkroniser filer til server
         run: |
           rsync -avz --delete \
             ./ \
