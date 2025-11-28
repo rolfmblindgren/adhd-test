@@ -3,6 +3,7 @@ library(tibble)
 library(DBI)
 library(RSQLite)
 
+options(bslib.cache = FALSE)
 
 ## Spørsmål
 items <- tibble(
