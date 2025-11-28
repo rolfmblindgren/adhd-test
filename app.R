@@ -31,7 +31,7 @@ ui <- fluidPage(
   tags$head(
          tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
        ),
-#  theme = bslib::bs_theme(version = 5, bootswatch = "flatly"),
+  theme = bslib::bs_theme(version = 5, bootswatch = "flatly"),
   titlePanel("Dette er ikke en ADHD-test"),
 
   sidebarLayout(
