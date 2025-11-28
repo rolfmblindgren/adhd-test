@@ -3,6 +3,13 @@ library(tibble)
 library(DBI)
 library(RSQLite)
 
+data_dir <- Sys.getenv("SHINY_DATA_DIR", unset = tempdir())
+
+cache_dir <- file.path(data_dir, "app_cache")
+if (!dir.exists(cache_dir)) dir.create(cache_dir, recursive = TRUE)
+
+options(shiny.cache = cache_dir)
+
 ## Spørsmål
 items <- tibble(
   id = paste0("item", 1:10),
