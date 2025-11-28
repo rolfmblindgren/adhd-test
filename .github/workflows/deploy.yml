@@ -19,14 +19,6 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H mysql.grendel.no >> ~/.ssh/known_hosts
 
-      - name: Synkroniser filer til server
-        run: |
-          rsync -avz --delete \
-            ./ \
-            --exclude 'app_cache' \
-            --exclude '.git' \
-            deployshiny@mysql.grendel.no:/srv/shiny-server/adhd-test/
-
       - name: Sett korrekt eierskap og tilgang (gruppe shinyapps)
         run: |
           ssh deployshiny@mysql.grendel.no "\
@@ -34,6 +26,14 @@ jobs:
           sudo find /srv/shiny-server/adhd-test -type d -exec chmod 775 {} \; && \
           sudo find /srv/shiny-server/adhd-test -type f -exec chmod 664 {} \; \
           "
+
+      - name: Synkroniser filer til server
+        run: |
+          rsync -avz --delete \
+            ./ \
+            --exclude 'app_cache' \
+            --exclude '.git' \
+            deployshiny@mysql.grendel.no:/srv/shiny-server/adhd-test/
 
       - name: Restart Shiny Server
         run: |
