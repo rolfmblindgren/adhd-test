@@ -52,9 +52,19 @@ jobs:
                     ./ \
                     deployshiny@mysql.grendel.no:/srv/shiny-server/adhd-test/
 
+            - name: Sett korrekt eierskap og tilgang (gruppe shinyapps)
+              run: |
+                  ssh deployshiny@mysql.grendel.no "\
+                  sudo chown -R deployshiny:shinyapps /srv/shiny-server/adhd-test && \
+                  sudo find /srv/shiny-server/adhd-test -type d -exec chmod 775 {} \; && \
+                  sudo find /srv/shiny-server/adhd-test -type f -exec chmod 664 {} \; \
+                  "
+
+
             - name: Restart Shiny Server
               run: |
                   ssh deployshiny@mysql.grendel.no "sudo systemctl restart shiny-server"
+
 
             - name: Restart Shiny Server
               run: |
