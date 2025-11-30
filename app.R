@@ -125,6 +125,7 @@ server <- function(input, output, session) {
   observeEvent(input$beregn, {
 
     shinyjs::disable("beregn")
+    shinyjs::html("beregn", "Sendt ✔")
 
     ## (valgfritt) re-enable etter 5 sekunder
     shinyjs::delay(5000, shinyjs::enable("beregn"))
