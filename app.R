@@ -108,16 +108,6 @@ server <- function(input, output, session) {
   db_path <- Sys.getenv("ADHD_DB_PATH")
 
 
-  observe({
-    ## sjekk om NOEN slider er flyttet fra default
-    svar <- vapply(items$id, function(id) input[[id]], numeric(1))
-    if (any(svar != 3)) {
-      shinyjs::enable("beregn")
-    } else {
-      shinyjs::disable("beregn")
-    }
-  })
-
   observeEvent(input$beregn, {
 
     shinyjs::disable("beregn")
