@@ -1,42 +1,48 @@
 name: deploy-shiny
 
 on:
-  push:
-    branches: ["main"]
+    push:
+        branches: ["main"]
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+    deploy:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Sjekk ut kode
-        uses: actions/checkout@v4
+        steps:
+            - name: Sjekk ut kode
+              uses: actions/checkout@v4
 
-      - name: Sett opp SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SHINY_DEPLOY_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H mysql.grendel.no >> ~/.ssh/known_hosts
+            - name: Sett opp SSH
+              run: |
+                  mkdir -p ~/.ssh
+                  echo "${{ secrets.SHINY_DEPLOY_KEY }}" > ~/.ssh/id_rsa
+                  chmod 600 ~/.ssh/id_rsa
+                  ssh-keyscan -H mysql.grendel.no >> ~/.ssh/known_hosts
 
-      - name: Sett korrekt eierskap og tilgang (gruppe shinyapps)
-        run: |
-          ssh deployshiny@mysql.grendel.no "\
-          sudo chown -R deployshiny:shinyapps /srv/shiny-server/adhd-test && \
-          sudo chown -R shiny:shiny /srv/shiny-server/adhd-test/app_cache && \
-          sudo chown -R shiny:shiny /srv/shiny-server/data && \
-          sudo find /srv/shiny-server/adhd-test -type d -exec chmod 775 {} \; && \
-          sudo find /srv/shiny-server/adhd-test -type f -exec chmod 664 {} \; \
-          "
+            - name: Sett korrekt eierskap og tilgang (gruppe shinyapps)
+              run: |
+                  ssh deployshiny@mysql.grendel.no "\
+                  sudo chown -R deployshiny:shinyapps /srv/shiny-server/adhd-test && \
+                  sudo chown -R shiny:shiny /srv/shiny-server/adhd-test/app_cache && \
+                  sudo chown -R shiny:shiny /srv/shiny-server/data && \
+                  sudo find /srv/shiny-server/adhd-test -type d -exec chmod 775 {} \; && \
+                  sudo find /srv/shiny-server/adhd-test -type f -exec chmod 664 {} \; \
+                  "
 
-      - name: Synkroniser filer til server
-        run: |
-          rsync -avz --delete \
-            ./ \
-            --exclude 'app_cache' \
-            --exclude '.git' \
-            deployshiny@mysql.grendel.no:/srv/shiny-server/adhd-test/
+            - name: Synkroniser filer til server
+              run: |
+                  rsync -avz --delete \
+                    ./ \
+                    --exclude 'app_cache' \
+                    --exclude '.git' \
+                    deployshiny@mysql.grendel.no:/srv/shiny-server/adhd-test/
 
-      - name: Restart Shiny Server
-        run: |
-          ssh deployshiny@mysql.grendel.no "sudo systemctl restart shiny-server"
+            - name: Synkroniser oversettelsesfiler (translation_*.csv)
+              run: |
+                  rsync -avz \
+                    translation_*.csv \
+                    deployshiny@mysql.grendel.no:/srv/shiny-server/data/
+
+            - name: Restart Shiny Server
+              run: |
+                  ssh deployshiny@mysql.grendel.no "sudo systemctl restart shiny-server"
