@@ -108,7 +108,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
 
-  db_path <- Sys.getenv(paste0("ADHD_DB_PATH","ADHD_DB_NAME"))
+  db_path <- Sys.getenv("ADHD_DB_PATH"))
 
 
 
