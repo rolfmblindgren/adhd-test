@@ -3,8 +3,11 @@ library(shinyjs)
 library(tibble)
 library(DBI)
 library(RSQLite)
+library(shiny.i18n)
 
 options(bslib.cache = FALSE)
+
+i18n <- Translator$new(translation_csvs_path = "../data")
 
 ## Spørsmål
 items <- tibble(
@@ -105,7 +108,8 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
 
-  db_path <- Sys.getenv("ADHD_DB_PATH")
+  db_path <- Sys.getenv(paste0("ADHD_DB_PATH","ADHD_DB_NAME"))
+
 
 
   observeEvent(input$beregn, {
