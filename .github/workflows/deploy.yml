@@ -25,7 +25,7 @@ jobs:
           sudo chown -R deployshiny:shinyapps /srv/shiny-server/adhd-test && \
           sudo chown -R shiny:shiny /srv/shiny-server/adhd-test/app_cache && \
           sudo chown -R shiny:shiny /srv/shiny-server/data && \
-          sudo chown -R shiny:shiny /srv/shiny-shiny-server/adhd-test/www && \
+          sudo chown -R shiny:shiny /srv/shiny-server/adhd-test/www && \
           sudo find /srv/shiny-server/adhd-test -type d -exec chmod 775 {} \; && \
           sudo find /srv/shiny-server/adhd-test -type f -exec chmod 664 {} \; \
           "
