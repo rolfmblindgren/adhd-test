@@ -13,62 +13,81 @@ i18n <- Translator$new(translation_csvs_path =
                          paste0(Sys.getenv("ADHD_DB_PATH"),"config.yml"))
 
 i18n$set_translation_language("nb")
+print (i18n$get_languages())
 
 ui <- fluidPage(
   
   usei18n(i18n),
   useShinyjs(),
   tags$head(
+         tags$script(src = "custom.js"),
          tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
        ),
   theme = bslib::bs_theme(version = 5, bootswatch = "flatly"),
   titlePanel(i18n$t("Dette er ikke en ADHD-test")),
-
   sidebarLayout(
     sidebarPanel(
-      selectInput(
-        inputId = "selected_language",
-        label = i18n$t(i18n$t("Skift språk")),
-        choices = setNames(
-          i18n$get_languages(),
-          i18n$get_languages()
 
-        ),
-        selected = i18n$get_key_translation()
-      ),
 
-      h4(i18n$t("Kort om testen")),
-      p(i18n$t("Denne testen viser hvordan fravær av oppmerksomhets- og reguleringsvansker kan se ut.")),
-      p(i18n$t("Den er ikke diagnostisk. Den kan verken bekrefte eller avkrefte ADHD.")),
-      br(),
-      actionButton("beregn", i18n$t("Beregn resultat"))
-    ),
 
-    mainPanel(
-      tabsetPanel(id="tabs",
-                  tabPanel(
-                    i18n$t("Spørsmål"),
-                    br(),
-                    p(i18n$t("Dra i hver slider for å velge hvor godt utsagnet har stemt for deg over tid.")),
-                    hr(),
-                    uiOutput("sporsmals_ui")
+  selectizeInput(
+  inputId = "selected_language",
+  label = i18n$t("Skift språk"),
+  choices = c("nb", "nn", "se", "fkv", "fr", "de", "en"),
+  selected = "nb",   # <- viktig
+  options = list(
+    render = I("
+      {
+        option: function(item, escape) {
+          return Shiny.renderFlagOption(item);
+        },
+        item: function(item, escape) {
+          return Shiny.renderFlagOption(item);
+        }
+      }
+    ")
+  )
+)
 
-                  ),
-                  tabPanel(
-                    i18n$t("Resultat"),
-                    br(),
-                    h3(i18n$t("Tolkning")),
-                    textOutput("resultat_tekst"),
-                    br(),
-                    h4(i18n$t("Gjennomsnittsskår")),
-                    textOutput("score_tekst"),
-                    br(),
-                    h4(i18n$t("Forbehold")),
-                    p(i18n$t("En klinisk vurdering innebærer utviklingshistorie, funksjon og faglig skjønn.")),
-                    p(i18n$t("Mennesker kan ha lav struktur eller høy fart uten at det handler om ADHD."))
-                  )
-                  )
-    )
+
+ ,
+
+
+
+  h4(i18n$t("Kort om testen")),
+  p(i18n$t("Denne testen viser hvordan fravær av oppmerksomhets- og reguleringsvansker kan se ut.")),
+  p(i18n$t("Den er ikke diagnostisk. Den kan verken bekrefte eller avkrefte ADHD.")),
+  br(),
+  actionButton("beregn", i18n$t("Beregn resultat"))
+  ),
+
+  mainPanel(
+    tabsetPanel(id="tabs",
+                tabPanel(
+                  value = "spm",
+                  i18n$t("Spørsmål"),
+                  br(),
+                  p(i18n$t("Dra i hver slider for å velge hvor godt utsagnet har stemt for deg over tid.")),
+                  hr(),
+                  uiOutput("sporsmals_ui")
+
+                ),
+                tabPanel(
+                  value = "res",
+                  i18n$t("Resultat"),
+                  br(),
+                  h3(i18n$t("Tolkning")),
+                  textOutput("resultat_tekst"),
+                  br(),
+                  h4(i18n$t("Gjennomsnittsskår")),
+                  textOutput("score_tekst"),
+                  br(),
+                  h4(i18n$t("Forbehold")),
+                  p(i18n$t("En klinisk vurdering innebærer utviklingshistorie, funksjon og faglig skjønn.")),
+                  p(i18n$t("Mennesker kan ha lav struktur eller høy fart uten at det handler om ADHD."))
+                )
+                )
+  )
   )
 )
 
@@ -134,12 +153,13 @@ server <- function(input, output, session) {
   })
 
 
-  db_path <- Sys.getenv(paste0("ADHD_DB_PATH","ADHD_DB_NAME"))
+  db_path <- paste0(Sys.getenv("ADHD_DB_PATH"),Sys.getenv("ADHD_DB_NAME"))
 
   observeEvent(input$selected_language, {
     i18n$set_translation_language(input$selected_language)
     update_lang(language=input$selected_language,session=session)
-    print(input$selected_language)
+    shinyjs::html("beregn", i18n$t("Beregn resultat"))
+
   })
 
   observeEvent(input$beregn, {
@@ -160,14 +180,16 @@ server <- function(input, output, session) {
     df <- data.frame(
       timestamp = rep(timestamp, length(item_ids)),
       item_id = item_ids,
-      score = scores
+      score = scores,
+      language = rep(input$selected_language, length(item_ids))
+
     )
 
     dbWriteTable(con, "responses", df, append = TRUE)
 
     dbDisconnect(con)
 
-    updateTabsetPanel(session, "tabs", selected = i18n$t("Resultat"))
+    updateTabsetPanel(session, "tabs", selected = "res")
 
   })
 
