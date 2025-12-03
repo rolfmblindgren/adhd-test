@@ -21,22 +21,28 @@ ui <- fluidPage(
   useShinyjs(),
   tags$head(
          tags$script(src = "custom.js"),
-         tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
+         tags$script(HTML("
+  Shiny.addCustomMessageHandler('update-title', function(msg) {
+    document.title = msg;
+  });
+")),
+tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
        ),
   theme = bslib::bs_theme(version = 5, bootswatch = "flatly"),
-  titlePanel(i18n$t("Dette er ikke en ADHD-test")),
+  titlePanel(title=i18n$t("Dette er ikke en ADHD-test"),
+             windowTitle="ADHD"),
   sidebarLayout(
     sidebarPanel(
 
 
 
-  selectizeInput(
-  inputId = "selected_language",
-  label = i18n$t("Skift språk"),
-  choices = c("nb", "nn", "se", "fkv", "fr", "de", "en"),
-  selected = "nb",   # <- viktig
-  options = list(
-    render = I("
+      selectizeInput(
+        inputId = "selected_language",
+        label = i18n$t("Skift språk"),
+        choices = c("nb", "nn", "se", "fkv", "fr", "de", "en"),
+        selected = "nb",   # <- viktig
+        options = list(
+          render = I("
       {
         option: function(item, escape) {
           return Shiny.renderFlagOption(item);
@@ -46,52 +52,53 @@ ui <- fluidPage(
         }
       }
     ")
-  )
-)
+    )
+    )
 
 
- ,
+   ,
 
 
 
-  h4(i18n$t("Kort om testen")),
-  p(i18n$t("Denne testen viser hvordan fravær av oppmerksomhets- og reguleringsvansker kan se ut.")),
-  p(i18n$t("Den er ikke diagnostisk. Den kan verken bekrefte eller avkrefte ADHD.")),
-  br(),
-  actionButton("beregn", i18n$t("Beregn resultat"))
-  ),
+    h4(i18n$t("Kort om testen")),
+    p(i18n$t("Denne testen viser hvordan fravær av oppmerksomhets- og reguleringsvansker kan se ut.")),
+    p(i18n$t("Den er ikke diagnostisk. Den kan verken bekrefte eller avkrefte ADHD.")),
+    br(),
+    actionButton("beregn", i18n$t("Beregn resultat"))
+    ),
 
-  mainPanel(
-    tabsetPanel(id="tabs",
-                tabPanel(
-                  value = "spm",
-                  i18n$t("Spørsmål"),
-                  br(),
-                  p(i18n$t("Dra i hver slider for å velge hvor godt utsagnet har stemt for deg over tid.")),
-                  hr(),
-                  uiOutput("sporsmals_ui")
+    mainPanel(
+      tabsetPanel(id="tabs",
+                  tabPanel(
+                    value = "spm",
+                    i18n$t("Spørsmål"),
+                    br(),
+                    p(i18n$t("Dra i hver slider for å velge hvor godt utsagnet har stemt for deg over tid.")),
+                    hr(),
+                    uiOutput("sporsmals_ui")
 
-                ),
-                tabPanel(
-                  value = "res",
-                  i18n$t("Resultat"),
-                  br(),
-                  h3(i18n$t("Tolkning")),
-                  textOutput("resultat_tekst"),
-                  br(),
-                  h4(i18n$t("Gjennomsnittsskår")),
-                  textOutput("score_tekst"),
-                  br(),
-                  h4(i18n$t("Forbehold")),
-                  p(i18n$t("En klinisk vurdering innebærer utviklingshistorie, funksjon og faglig skjønn.")),
-                  p(i18n$t("Mennesker kan ha lav struktur eller høy fart uten at det handler om ADHD."))
-                )
-                )
-  )
+                  ),
+                  tabPanel(
+                    value = "res",
+                    i18n$t("Resultat"),
+                    br(),
+                    h3(i18n$t("Tolkning")),
+                    textOutput("resultat_tekst"),
+                    br(),
+                    h4(i18n$t("Gjennomsnittsskår")),
+                    textOutput("score_tekst"),
+                    br(),
+                    h4(i18n$t("Forbehold")),
+                    p(i18n$t("En klinisk vurdering innebærer utviklingshistorie, funksjon og faglig skjønn.")),
+                    p(i18n$t("Mennesker kan ha lav struktur eller høy fart uten at det handler om ADHD."))
+                  )
+                  )
+    )
   )
 )
 
 server <- function(input, output, session) {
+
 
   items_r <- reactive({
 
@@ -224,8 +231,22 @@ server <- function(input, output, session) {
     )
   })
 
+  observeEvent(input$selected_language, {
+    i18n$set_translation_language(input$selected_language)
+    update_lang(language = input$selected_language, session = session)
+
+    shinyjs::html("beregn", i18n$t("Beregn resultat"))
+
+
+    session$sendCustomMessage(
+              "update-title",
+              i18n$t("Dette er ikke en ADHD-test")
+            )
+
+  })
+
   output$score_tekst <- renderText({
-    res <- score_reaktiv()
+    qres <- score_reaktiv()
     if (!res$gyldig) return(res$beskjed)
     paste0(round(res$score, 2), i18n$t(" av 5"))
   })
