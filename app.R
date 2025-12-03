@@ -246,7 +246,7 @@ server <- function(input, output, session) {
   })
 
   output$score_tekst <- renderText({
-    qres <- score_reaktiv()
+    res <- score_reaktiv()
     if (!res$gyldig) return(res$beskjed)
     paste0(round(res$score, 2), i18n$t(" av 5"))
   })
