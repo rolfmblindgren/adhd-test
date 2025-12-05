@@ -4,8 +4,20 @@ library(tibble)
 library(DBI)
 library(RSQLite)
 library(shiny.i18n)
-
+library(bslib)
 options(bslib.cache = FALSE)
+
+custom_theme <- bs_theme(
+  version = 5,
+  bootswatch = "flatly",
+  bg = "#FFFFFF",
+  fg = "#000000",
+  primary = "#0199F8",
+  secondary = "#FF374B",
+  base_font = "Verdana",
+  heading_font = "Verdana"
+)
+
 
 i18n <- Translator$new(translation_csvs_path =
                          Sys.getenv("ADHD_DB_PATH"),
@@ -16,7 +28,7 @@ i18n$set_translation_language("nb")
 print (i18n$get_languages())
 
 ui <- fluidPage(
-  
+  theme = custom_theme,
   usei18n(i18n),
   useShinyjs(),
   tags$head(
@@ -28,7 +40,6 @@ ui <- fluidPage(
 ")),
 tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
        ),
-  theme = bslib::bs_theme(version = 5, bootswatch = "flatly"),
   titlePanel(title=i18n$t("Dette er ikke en ADHD-test"),
              windowTitle="ADHD"),
   sidebarLayout(
@@ -270,4 +281,4 @@ server <- function(input, output, session) {
   })
 }
 
-shinyApp(ui, server)
+shinyApp(ui=ui, server=server)

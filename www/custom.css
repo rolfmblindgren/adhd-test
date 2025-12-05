@@ -1,5 +1,6 @@
 /* Dette er egentlig det eneste som skal til */
 
+
 /* Tving hele Ion.RangeSlider til å følge containerens bredde */
 .irs, .irs-line, .irs-bar, .irs-slider, .irs-grid {
     width: 100% !important;
