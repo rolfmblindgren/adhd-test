@@ -100,6 +100,12 @@ tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
                     h4(i18n$t("Forbehold")),
                     p(i18n$t("En klinisk vurdering innebærer utviklingshistorie, funksjon og faglig skjønn.")),
                     p(i18n$t("Mennesker kan ha lav struktur eller høy fart uten at det handler om ADHD."))
+                  ),
+                  tabPanel(
+                    value = "om",
+                    i18n$t("Om testen"),
+                    br(),
+                    htmlOutput("om_testen")
                   )
                   )
     )
@@ -261,7 +267,31 @@ server <- function(input, output, session) {
   })
 
 
+  observeEvent(input$selected_language, {
+
+    output$om_testen <- renderText({
+
+      lg <- i18n$get_translation_language()
+      res <- switch (lg,
+                     nb = "Testen testet ut på ca hundre brukere, og viser gode psykometriske egenskaper. Det betyr ikke at den kan fortelle deg at du helt sikkert ikke har ADHD, men den kan fortelle deg at det er gode grunner til at det er overveiende sannsynlig at eventuelle problemer du har, skyldes noe annet.</p></p>Oversettelsene er gjort maskinmessig og kontrollert der det er mulig. Finner du feil, ikke nøl med å si fra.",
+                     en = "The test has been tried out on about one hundred users and shows good psychometric properties. This does not mean it can tell you with certainty that you do not have ADHD, but it *can* indicate that there are good reasons to believe that any difficulties you experience are likely due to something else.</p></p>Translations are machine-generated and checked when possible. If you find errors, please let me know.",
+                     se = "Táhppa lea geavahuvvon máŋga olbmo mielde ja čájeha buori psykomehtera iešvuođaid. Dat ii mearkkaša ahte sáhttá čilgejuhttit du addiktii ahte dus ii leat ADHD, muhto sáhttá addit buori vuođđosaččaid árvvoštallamat ahte juoga eará sáhttá leat váikkuhan du birgejumi.</p></p>Jorgalusat leat mearriduvvon mearrihkka ja ovdáneaddji geavaheami bokte. Jus gávnnat meattáhusaid, de leat buorre jus dieđát.",
+                     fkv = "Testi on kokkeiltu satalta käyttäjältä ja se näyttää hyvät psykometriset ominaisuudet. Se ei tarkoita ette testi vois varmisttaa siele ette siele ei ole ADHD:ta, mutta se voi antaat hyvät syyt ussoa ette jos sulla oon ongelmia, niissä oon todenmukhaisemmin jotaki muuta taustala.</p></p>Käännökset oon tehty koneellisesti ja tarkistettu missä mahdollista. Jos löyät virheitä, ota ihmeessä yhteyttä.",
+
+                     de = "Der Test wurde mit etwa hundert Nutzerinnen und Nutzern erprobt und zeigt gute psychometrische Eigenschaften. Das bedeutet nicht, dass er Ihnen mit Sicherheit sagen kann, dass Sie kein ADHS haben, aber er kann gute Gründe dafür liefern, dass eventuelle Schwierigkeiten, die Sie erleben, wahrscheinlich auf etwas anderes zurückzuführen sind.</p></p>Die Übersetzungen wurden maschinell erstellt und dort überprüft, wo es möglich war. Wenn Sie Fehler finden, zögern Sie bitte nicht, mich darauf hinzuweisen.",
+
+                     fr = "Le test a été essayé auprès d’environ une centaine d’utilisateurs et présente de bonnes propriétés psychométriques. Cela ne signifie pas qu’il puisse affirmer avec certitude que vous n’avez pas de TDAH, mais il peut indiquer qu’il existe de bonnes raisons de penser que les difficultés que vous rencontrez sont probablement dues à autre chose.</p><p>Les traductions ont été générées automatiquement et vérifiées lorsque cela était possible. Si vous repérez des erreurs, n’hésitez pas à me le signaler.",
+
+                                        # fallback hvis språk mangler
+                     "Mensura fallax est, sed mensurare oportet."
+                     )
+
+      paste0("<p>",res,"<p><p><a href='mailto:rolf@grendel.no?subject=ADHD-testen'>© 2025 Grendel AS</a></p>")
+    })
+  })
+
   output$resultat_tekst <- renderText({
+
     res <- score_reaktiv()
     if (!res$gyldig) return("")
 
