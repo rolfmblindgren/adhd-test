@@ -20,9 +20,7 @@ custom_theme <- bs_theme(
 
 
 i18n <- Translator$new(translation_csvs_path =
-                         Sys.getenv("ADHD_DB_PATH"),
-                       translation_csv_config=
-                         paste0(Sys.getenv("ADHD_DB_PATH"),"config.yml"))
+                         Sys.getenv("ADHD_DB_PATH"))
 
 i18n$set_translation_language("nb")
 print (i18n$get_languages())
