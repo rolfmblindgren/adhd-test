@@ -2,6 +2,6 @@
 adhd.sqlite
 app_cache/
 *.png
-*.numbers
+translation.numbers
 scripts/
 make_translations.R
