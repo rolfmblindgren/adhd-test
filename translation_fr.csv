@@ -11,30 +11,31 @@ Jeg glemmer ikke avtaler eller beskjeder i en grad som skaper problemer,J’oubl
 Tankene løper ikke så ofte løpsk at det hindrer meg i hverdagen,Mes pensées ne s’emballent pas si souvent que cela gêne mon quotidien.
 Jeg trenger ikke uvanlig mye ytre struktur for å fungere greit,Je n’ai pas besoin d’une structure externe inhabituelle pour fonctionner correctement.
 Kort om testen,Bref au sujet du test
-Denne testen viser hvordan fravær av oppmerksomhets- og reguleringsvansker kan se ut.,Ce test illustre à quoi peut ressembler l’absence de difficultés d’attention et d’autorégulation.
-Den er ikke diagnostisk. Den kan verken bekrefte eller avkrefte ADHD.,Il n’est pas diagnostique. Il ne peut ni confirmer ni infirmer un TDAH.
+Denne testen viser hvordan fravær av oppmerksomhets- og reguleringsvansker kan se ut,Ce test illustre à quoi peut ressembler l’absence de difficultés d’attention et d’autorégulation.
+Den er ikke diagnostisk. Den kan verken bekrefte eller avkrefte ADHD,Il n’est pas diagnostique. Il ne peut ni confirmer ni infirmer un TDAH.
 Beregn resultat,Calculer le résultat
 Spørsmål,Questions
-Dra i hver slider for å velge hvor godt utsagnet har stemt for deg over tid.,Faites glisser chaque curseur pour indiquer à quel point l’énoncé vous correspond au fil du temps.
+Dra i hver slider for å velge hvor godt utsagnet har stemt for deg over tid,Faites glisser chaque curseur pour indiquer à quel point l’énoncé vous correspond au fil du temps.
 Resultat,Résultat
 Tolkning,Interprétation
 Gjennomsnittsskår,Score moyen
 Forbehold,Réserves
-"En klinisk vurdering innebærer utviklingshistorie, funksjon og faglig skjønn.","Une évaluation clinique implique l’histoire du développement, le fonctionnement et le jugement professionnel."
-Mennesker kan ha lav struktur eller høy fart uten at det handler om ADHD.,On peut avoir peu de structure ou un rythme élevé sans que cela relève du TDAH.
+"En klinisk vurdering innebærer utviklingshistorie, funksjon og faglig skjønn","Une évaluation clinique implique l’histoire du développement, le fonctionnement et le jugement professionnel."
+Mennesker kan ha lav struktur eller høy fart uten at det handler om ADHD,On peut avoir peu de structure ou un rythme élevé sans que cela relève du TDAH.
 Stemmer ikke,Ne correspond pas du tout
 Litt,Un peu
 Delvis,Partiellement
 Ganske,Assez
 Stemmer helt,Correspond tout à fait
 Skift språk,Changer de langue
-Du må svare på alle utsagn før resultatet kan beregnes.,Vous devez répondre à toutes les affirmations avant que le résultat puisse être calculé.
-Svarene dine viser få trekk som ligner de reguleringsvanskene man ser ved ADHD. Hverdagen virker stabil og forutsigbar.,Vos réponses montrent peu de caractéristiques ressemblant aux difficultés de régulation que l’on observe dans le TDAH. Le quotidien semble stable et prévisible.
-"Mønsteret ditt ligger godt innenfor normal variasjon: noen styrker, litt friksjon, men ingenting som peker klart i én retning.","Votre profil se situe bien dans la variation normale : quelques forces, un peu de friction, mais rien qui pointe nettement dans une direction."
-"Du rapporterer en del trekk som kan minne om ADHD, men dette kan like gjerne handle om personlighet, vaner eller livssituasjon.","Vous rapportez plusieurs traits pouvant rappeler le TDAH, mais cela peut tout aussi bien relever de la personnalité, des habitudes ou de votre situation de vie."
-"Du beskriver flere områder som ofte skaper vansker i ADHD. Dette er fortsatt ikke diagnostikk, men det kan være verdt en mer formell vurdering dersom dette skaper problemer i hverdagen.","Vous décrivez plusieurs domaines qui, souvent, posent des difficultés chez les personnes avec TDAH. Ce n’est toujours pas un diagnostic, mais il peut valoir la peine de demander une évaluation plus formelle si cela crée des problemer dans le quotidien."
-av 5,sur 5
-Sendt,Envoyé
-T-skår,T-score
-Hva betyr T-skår?,Que signifie le score T ?
-nb.tskår.md,fr.tskår.md
+Du må svare på alle utsagn før resultatet kan beregnes,Vous devez répondre à toutes les affirmations avant que le résultat puisse être calculé.
+Svarene dine viser få trekk som ligner de reguleringsvanskene man ser ved ADHD,Vos réponses montrent peu de caractéristiques ressemblant aux difficultés de régulation que l’on observe dans le TDAH. Le quotidien semble stable et prévisible.
+Hverdagen virker stabil og forutsigbar,"Votre profil se situe bien dans la variation normale : quelques forces, un peu de friction, mais rien qui pointe nettement dans une direction."
+"Mønsteret ditt ligger godt innenfor normal variasjon: noen styrker, litt friksjon, men ingenting som peker klart i én retning","Vous rapportez plusieurs traits pouvant rappeler le TDAH, mais cela peut tout aussi bien relever de la personnalité, des habitudes ou de votre situation de vie."
+"Du rapporterer en del trekk som kan minne om ADHD, men dette kan like gjerne handle om personlighet, vaner eller livssituasjon","Vous décrivez plusieurs domaines qui, souvent, posent des difficultés chez les personnes avec TDAH. Ce n’est toujours pas un diagnostic, mais il peut valoir la peine de demander une évaluation plus formelle si cela crée des problemer dans le quotidien."
+"Du beskriver flere områder som ofte skaper vansker i ADHD. Dette er fortsatt ikke diagnostikk, men det kan være verdt en mer formell vurdering dersom dette skaper problemer i hverdagen",sur 5
+av 5,Envoyé
+Sendt,T-score
+T-skår,Que signifie le score T ?
+Hva betyr T-skår?,fr.tskår.md
+nb.tskår.md,

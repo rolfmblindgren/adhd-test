@@ -11,30 +11,31 @@ Jeg glemmer ikke avtaler eller beskjeder i en grad som skaper problemer,"Ich ver
 Tankene løper ikke så ofte løpsk at det hindrer meg i hverdagen,"Meine Gedanken laufen nicht so oft aus dem Ruder, dass es mich im Alltag behindert."
 Jeg trenger ikke uvanlig mye ytre struktur for å fungere greit,"Ich brauche keine ungewöhnlich starke äußere Struktur, um gut zu funktionieren."
 Kort om testen,Kurzinformation zum Test
-Denne testen viser hvordan fravær av oppmerksomhets- og reguleringsvansker kan se ut.,"Dieser Test zeigt, wie das Fehlen von Aufmerksamkeits- und Regulationsschwierigkeiten aussehen kann."
-Den er ikke diagnostisk. Den kan verken bekrefte eller avkrefte ADHD.,Er ist nicht diagnostisch. Er kann weder ADHS bestätigen noch ausschließen.
+Denne testen viser hvordan fravær av oppmerksomhets- og reguleringsvansker kan se ut,"Dieser Test zeigt, wie das Fehlen von Aufmerksamkeits- und Regulationsschwierigkeiten aussehen kann."
+Den er ikke diagnostisk. Den kan verken bekrefte eller avkrefte ADHD,Er ist nicht diagnostisch. Er kann weder ADHS bestätigen noch ausschließen.
 Beregn resultat,Ergebnis berechnen
 Spørsmål,Fragen
-Dra i hver slider for å velge hvor godt utsagnet har stemt for deg over tid.,"Bewege jeden Schieberegler, um auszuwählen, wie gut die Aussage über längere Zeit auf dich zutrifft."
+Dra i hver slider for å velge hvor godt utsagnet har stemt for deg over tid,"Bewege jeden Schieberegler, um auszuwählen, wie gut die Aussage über längere Zeit auf dich zutrifft."
 Resultat,Ergebnis
 Tolkning,Interpretation
 Gjennomsnittsskår,Durchschnittswert
 Forbehold,Vorbehalte
-"En klinisk vurdering innebærer utviklingshistorie, funksjon og faglig skjønn.","Eine klinische Beurteilung umfasst Entwicklungsgeschichte, Funktion und fachliche Einschätzung."
-Mennesker kan ha lav struktur eller høy fart uten at det handler om ADHD.,"Menschen können wenig Struktur oder hohes Tempo haben, ohne dass es um ADHS geht."
+"En klinisk vurdering innebærer utviklingshistorie, funksjon og faglig skjønn","Eine klinische Beurteilung umfasst Entwicklungsgeschichte, Funktion und fachliche Einschätzung."
+Mennesker kan ha lav struktur eller høy fart uten at det handler om ADHD,"Menschen können wenig Struktur oder hohes Tempo haben, ohne dass es um ADHS geht."
 Stemmer ikke,Trifft nicht zu
 Litt,Wenig
 Delvis,Teilweise
 Ganske,Ziemlich
 Stemmer helt,Trifft völlig zu
 Skift språk,Sprache wechseln
-Du må svare på alle utsagn før resultatet kan beregnes.,"Du musst alle Aussagen beantworten, bevor das Ergebnis berechnet werden kann."
-Svarene dine viser få trekk som ligner de reguleringsvanskene man ser ved ADHD. Hverdagen virker stabil og forutsigbar.,"Deine Antworten zeigen nur wenige Merkmale, die den Regulationsschwierigkeiten bei ADHS ähneln. Dein Alltag wirkt stabil und vorhersehbar."
-"Mønsteret ditt ligger godt innenfor normal variasjon: noen styrker, litt friksjon, men ingenting som peker klart i én retning.","Dein Muster liegt klar innerhalb der normalen Variation: einige Stärken, etwas Reibung, aber nichts som weist deutlich in eine Richtung."
-"Du rapporterer en del trekk som kan minne om ADHD, men dette kan like gjerne handle om personlighet, vaner eller livssituasjon.","Du berichtest einige Merkmale, die an ADHS erinnern können, aber das kann ebenso gut mit Persönlichkeit, Gewohnheiten oder Lebenssituation zu tun haben."
-"Du beskriver flere områder som ofte skaper vansker i ADHD. Dette er fortsatt ikke diagnostikk, men det kan være verdt en mer formell vurdering dersom dette skaper problemer i hverdagen.","Du beschreibst mehrere Bereiche, die bei ADHS oft zu Schwierigkeiten führen. Das ist dennoch keine Diagnostik, aber eine formellere Abklärung kann sinnvoll sein, falls es den Alltag belastet."
-av 5,von 5
-Sendt,Gesendet
-T-skår,T-Wert
-Hva betyr T-skår?,Was bedeutet der T-Wert?
-nb.tskår.md,de.tskår.md
+Du må svare på alle utsagn før resultatet kan beregnes,"Du musst alle Aussagen beantworten, bevor das Ergebnis berechnet werden kann."
+Svarene dine viser få trekk som ligner de reguleringsvanskene man ser ved ADHD,"Deine Antworten zeigen nur wenige Merkmale, die den Regulationsschwierigkeiten bei ADHS ähneln. Dein Alltag wirkt stabil und vorhersehbar."
+Hverdagen virker stabil og forutsigbar,"Dein Muster liegt klar innerhalb der normalen Variation: einige Stärken, etwas Reibung, aber nichts som weist deutlich in eine Richtung."
+"Mønsteret ditt ligger godt innenfor normal variasjon: noen styrker, litt friksjon, men ingenting som peker klart i én retning","Du berichtest einige Merkmale, die an ADHS erinnern können, aber das kann ebenso gut mit Persönlichkeit, Gewohnheiten oder Lebenssituation zu tun haben."
+"Du rapporterer en del trekk som kan minne om ADHD, men dette kan like gjerne handle om personlighet, vaner eller livssituasjon","Du beschreibst mehrere Bereiche, die bei ADHS oft zu Schwierigkeiten führen. Das ist dennoch keine Diagnostik, aber eine formellere Abklärung kann sinnvoll sein, falls es den Alltag belastet."
+"Du beskriver flere områder som ofte skaper vansker i ADHD. Dette er fortsatt ikke diagnostikk, men det kan være verdt en mer formell vurdering dersom dette skaper problemer i hverdagen",von 5
+av 5,Gesendet
+Sendt,T-Wert
+T-skår,Was bedeutet der T-Wert?
+Hva betyr T-skår?,de.tskår.md
+nb.tskår.md,
