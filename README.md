@@ -111,3 +111,5 @@ eller alternativt settes opp med felles gruppe.
 
 Testen sier ingenting om diagnose. En klinisk vurdering krever utviklingshistorie, funksjon, observasjon og faglig skjønn. Skåren må tolkes som et grovt mønster, ikke som en medisinsk konklusjon.
 
+Repository structure is intentionally flat in v1.0. A later refactor will group content and translation resources into dedicated directories.
+
