@@ -71,7 +71,7 @@ sidebarLayout(
     selectizeInput(
       inputId = "selected_language",
       label = i18n$t("Skift språk"),
-      choices = c("nb", "nn", "se", "fkv", "fr", "de", "en"),
+      choices = c("nb", "nn", "sv", "da", "se", "fkv", "fr", "de", "en"),
       selected = "nb",   # <- viktig
       options = list(
         render = I("
