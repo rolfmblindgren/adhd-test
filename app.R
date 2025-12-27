@@ -6,7 +6,9 @@ library(RSQLite)
 library(shiny.i18n)
 library(bslib)
 library(mirt)
+library(grendelMeta)
 options(bslib.cache = FALSE)
+
 
 
 custom_theme <- bs_theme(
@@ -49,6 +51,7 @@ i18n$set_translation_language("nb")
 ## print(i18n$get_languages())
 
 ui <- fluidPage(
+  social_meta("meta.yaml"),
   theme = custom_theme,
   usei18n(i18n),
   useShinyjs(),
