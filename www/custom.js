@@ -4,8 +4,10 @@ Shiny.renderFlagOption = function(item) {
   const flags = {
     nb:  "norway.svg",
     nn:  "norway.svg",
+    sv: "sv.svg",
+    da: "da.svg",
     se:  "sami.svg",
-    //    smh: "smh.svg",
+    // smh: "smh.svg",
     fkv: "kven.svg",
     fr:  "france.svg",
     de:  "germany.svg",
@@ -15,8 +17,10 @@ Shiny.renderFlagOption = function(item) {
   const names = {
     nb:  "Bokmål",
     nn:  "Nynorsk",
+    sv: "Svenska",
+    da: "Dansk",
     se:  "Davvisámegiella",
-    //    smh: "Julevsámegiella",
+//    smh: "Julevsámegiella",
     fkv: "Kainuun kieli",
     fr:  "Français",
     de:  "Deutsch",
