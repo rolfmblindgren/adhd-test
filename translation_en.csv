@@ -29,13 +29,14 @@ Ganske,Quite a bit
 Stemmer helt,Fully applies
 Skift språk,Change language
 Du må svare på alle utsagn før resultatet kan beregnes,You must answer all statements before the result can be calculated.
-Svarene dine viser få trekk som ligner de reguleringsvanskene man ser ved ADHD,Your answers show few traits resembling the regulation difficulties seen in ADHD. Everyday life appears stable and predictable.
-Hverdagen virker stabil og forutsigbar,"Your pattern falls well within normal variation: some strengths, some friction, but nothing pointing clearly in one direction."
-"Mønsteret ditt ligger godt innenfor normal variasjon: noen styrker, litt friksjon, men ingenting som peker klart i én retning","You report several traits that can resemble ADHD, but these may just as well reflect personality, habits, or life circumstances."
-"Du rapporterer en del trekk som kan minne om ADHD, men dette kan like gjerne handle om personlighet, vaner eller livssituasjon","You describe several areas that often create difficulties in ADHD. This is still not a diagnosis, but if these issues affect your daily life, a more formal assessment might be worthwhile."
-"Du beskriver flere områder som ofte skaper vansker i ADHD. Dette er fortsatt ikke diagnostikk, men det kan være verdt en mer formell vurdering dersom dette skaper problemer i hverdagen",of 5
-av 5,Sent
-Sendt,T-score
-T-skår,What does the T-score mean?
-Hva betyr T-skår?,en.tskår.md
-nb.tskår.md,
+Svarene dine viser få trekk som ligner de reguleringsvanskene man ser ved ADHD,Your answers show few traits resembling the regulation difficulties seen in ADHD.
+Hverdagen virker stabil og forutsigbar,Everyday life appears stable and predictable.
+"Mønsteret ditt ligger godt innenfor normal variasjon: noen styrker, litt friksjon, men ingenting som peker klart i én retning","Your pattern falls well within normal variation: some strengths, some friction, but nothing pointing clearly in one direction."
+"Du rapporterer en del trekk som kan minne om ADHD, men dette kan like gjerne handle om personlighet, vaner eller livssituasjon","You report several traits that can resemble ADHD, but these may just as well reflect personality, habits, or life circumstances."
+"Du beskriver flere områder som ofte skaper vansker i ADHD. Dette er fortsatt ikke diagnostikk, men det kan være verdt en mer formell vurdering dersom dette skaper problemer i hverdagen","You describe several areas that often create difficulties in ADHD. This is still not a diagnosis, but if these issues affect your daily life, a more formal assessment might be worthwhile."
+av 5,of 5
+Sendt,Sent
+T-skår,T-score
+Hva betyr T-skår?,What does the T-score mean?
+nb.tskår.md,en.tskår.md
+Om testen,About the test
