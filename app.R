@@ -5,7 +5,9 @@ library(DBI)
 library(RSQLite)
 library(shiny.i18n)
 library(bslib)
+library(mirt)
 options(bslib.cache = FALSE)
+
 
 custom_theme <- bs_theme(
   version = 5,
@@ -18,12 +20,33 @@ custom_theme <- bs_theme(
   heading_font = "Verdana"
 )
 
+mod1 <- readRDS("mod1_grendel_1f_graded.rds")
 
-i18n <- Translator$new(translation_csvs_path =
-                         Sys.getenv("ADHD_DB_PATH"))
+scaled_score <- function(items, mod = mod1) {
+  stopifnot(length(items) == 10)
+
+  newdata <- as.data.frame(as.list(as.integer(items)))
+  names(newdata) <- paste0("i", 1:10)
+
+  theta <- fscores(
+    mod,
+    method = "EAP",
+    response.pattern = newdata
+  )[, 1]
+
+  T_score <- 50 + 10 * theta
+
+  c(
+    theta = as.numeric(theta),
+    T = as.numeric(T_score)
+  )
+}
+
+i18n <- Translator$new(translation_csvs_path = Sys.getenv("ADHD_DB_PATH"),
+                       translation_csv_config=paste0(Sys.getenv("ADHD_DB_PATH"),"/config.yml"))
 
 i18n$set_translation_language("nb")
-print (i18n$get_languages())
+## print(i18n$get_languages())
 
 ui <- fluidPage(
   theme = custom_theme,
@@ -37,21 +60,21 @@ ui <- fluidPage(
   });
 ")),
 tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
-       ),
-  titlePanel(title=i18n$t("Dette er ikke en ADHD-test"),
-             windowTitle="ADHD"),
-  sidebarLayout(
-    sidebarPanel(
+),
+titlePanel(title=i18n$t("Dette er ikke en ADHD-test"),
+           windowTitle="ADHD"),
+sidebarLayout(
+  sidebarPanel(
 
 
 
-      selectizeInput(
-        inputId = "selected_language",
-        label = i18n$t("Skift språk"),
-        choices = c("nb", "nn", "se", "fkv", "fr", "de", "en"),
-        selected = "nb",   # <- viktig
-        options = list(
-          render = I("
+    selectizeInput(
+      inputId = "selected_language",
+      label = i18n$t("Skift språk"),
+      choices = c("nb", "nn", "se", "fkv", "fr", "de", "en"),
+      selected = "nb",   # <- viktig
+      options = list(
+        render = I("
       {
         option: function(item, escape) {
           return Shiny.renderFlagOption(item);
@@ -74,45 +97,108 @@ tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
     p(i18n$t("Den er ikke diagnostisk. Den kan verken bekrefte eller avkrefte ADHD.")),
     br(),
     actionButton("beregn", i18n$t("Beregn resultat"))
-    ),
+  ),
 
-    mainPanel(
-      tabsetPanel(id="tabs",
-                  tabPanel(
-                    value = "spm",
-                    i18n$t("Spørsmål"),
-                    br(),
-                    p(i18n$t("Dra i hver slider for å velge hvor godt utsagnet har stemt for deg over tid.")),
-                    hr(),
-                    uiOutput("sporsmals_ui")
+  mainPanel(
+    tabsetPanel(id="tabs",
+                tabPanel(
+                  value = "spm",
+                  i18n$t("Spørsmål"),
+                  br(),
+                  p(i18n$t("Dra i hver slider for å velge hvor godt utsagnet har stemt for deg over tid.")),
+                  hr(),
+                  uiOutput("sporsmals_ui")
 
-                  ),
-                  tabPanel(
-                    value = "res",
-                    i18n$t("Resultat"),
-                    br(),
-                    h3(i18n$t("Tolkning")),
-                    textOutput("resultat_tekst"),
-                    br(),
-                    h4(i18n$t("Gjennomsnittsskår")),
-                    textOutput("score_tekst"),
-                    br(),
-                    h4(i18n$t("Forbehold")),
-                    p(i18n$t("En klinisk vurdering innebærer utviklingshistorie, funksjon og faglig skjønn.")),
-                    p(i18n$t("Mennesker kan ha lav struktur eller høy fart uten at det handler om ADHD."))
-                  ),
-                  tabPanel(
-                    value = "om",
-                    i18n$t("Om testen"),
-                    br(),
-                    htmlOutput("om_testen")
-                  )
-                  )
-    )
+                ),
+                tabPanel(
+                  value = "res",
+                  i18n$t("Resultat"),
+                  br(),
+                  h3(i18n$t("Tolkning")),
+                  textOutput("resultat_tekst"),
+                  br(),
+                  h4(i18n$t("T-skår")),
+                  uiOutput("t_meter"),
+                  br(),
+                  h4(i18n$t("Hva betyr T-skår?")),
+                  uiOutput("tsk_md"),
+                  h4(i18n$t("Forbehold")),
+                  p(i18n$t("En klinisk vurdering innebærer utviklingshistorie, funksjon og faglig skjønn.")),
+                  p(i18n$t("Mennesker kan ha lav struktur eller høy fart uten at det handler om ADHD."))
+                ),
+                tabPanel(
+                  value = "om",
+                  i18n$t("Om testen"),
+                  br(),
+                  htmlOutput("om_testen")
+                )
+                )
   )
+)
 )
 
 server <- function(input, output, session) {
+
+  t_score <- reactive({
+    req(input$submit)   # evt. hva som helst som trigger beregning
+
+    items <- c(
+      input$i1, input$i2, input$i3, input$i4, input$i5,
+      input$i6, input$i7, input$i8, input$i9, input$i10
+    )
+
+    res <- scaled_score(items)   # funksjonen du allerede har
+    as.numeric(res["T_score"])
+  })
+
+
+output$t_meter <- renderUI({
+  sc <- score_reaktiv()
+  T  <- as.numeric(sc[["score"]])
+
+  lo <- 20; hi <- 80
+  pct <- max(0, min(100, (T - lo) / (hi - lo) * 100))
+
+  ## velg farge basert på T
+  bar_col <- if (T <= 30) {
+    "#d9534f"   # rød
+  } else if (T <= 40) {
+    "#f0ad4e"   # gul
+  } else {
+    "#5cb85c"   # grønn
+  }
+
+  tagList(
+    div(style="font-size: 32px; font-weight: 700; margin: 6px 0;",
+        paste0("T = ", round(T))),
+
+    div(style="height:14px; background:#eee; border-radius:999px; overflow:hidden;",
+        div(style=paste0(
+          "height:100%; width:", pct, "%; background:", bar_col, ";"
+        ))
+    ),
+
+div(style="position:relative; height:16px; margin-top:6px; font-size:12px; color:#444;",
+    span("20", style="position:absolute; left:0%; transform:translateX(-50%);"),
+    span("30", style="position:absolute; left:16.7%; transform:translateX(-50%);"),
+    span("40", style="position:absolute; left:33.3%; transform:translateX(-50%);"),
+    span("50", style="position:absolute; left:50%; transform:translateX(-50%);"),
+    span("60", style="position:absolute; left:66.7%; transform:translateX(-50%);"),
+    span("70", style="position:absolute; left:83.3%; transform:translateX(-50%);"),
+    span("80", style="position:absolute; left:100%; transform:translateX(-50%);")
+)
+  )
+})
+
+  output$tsk_md <- renderUI({
+    lang <- input$selected_language ## evt. i18n$get_lang() avhengig
+    ## av din versjon
+    file <- sprintf("%s.tskår.md", lang)
+
+    if (!file.exists(file)) file <- "nb.tskår.md"  # fallback
+
+    includeMarkdown(file)
+  })
 
 
   items_r <- reactive({
@@ -223,7 +309,6 @@ server <- function(input, output, session) {
 
     ## hent alle svar som liste
     svar <- lapply(items_r()$id, function(id) input[[id]])
-
     ## sjekk ubesvarte
     mangler <- vapply(svar, function(x) is.null(x) || is.na(x), logical(1))
 
@@ -237,12 +322,13 @@ server <- function(input, output, session) {
 
     ## flate ut og beregne
     svar_num <- as.numeric(unlist(svar))
+    scaled_score <- round(scaled_score(svar_num),0)
     mean_score <- mean(svar_num)
 
     list(
       gyldig = TRUE,
       beskjed = NULL,
-      score = mean_score
+      score = scaled_score["T"]
     )
   })
 
@@ -263,7 +349,7 @@ server <- function(input, output, session) {
   output$score_tekst <- renderText({
     res <- score_reaktiv()
     if (!res$gyldig) return(res$beskjed)
-    paste0(round(res$score, 2), i18n$t(" av 5"))
+    paste0(round(res$score, 2))
   })
 
 
