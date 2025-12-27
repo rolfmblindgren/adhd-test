@@ -17,11 +17,22 @@ Data lagres i en SQLite-database for enkel logging av besvarelser.
 
 ```
 adhd-test/
-├── app.R                 # Shiny-appen
-├── custom.css            # Tilpasninger i layout
-└── data/                 # Skrivebart område
-    ├── adhd_test.sqlite  # Database (opprettes automatisk)
-    └── app_cache         # Shiny cache
+├── app.R                     # Shiny-applikasjon
+├── README.md                 # Kort dokumentasjon
+├── meta.yaml                 # Metadata (tittel, beskrivelse, URL, OG-bilde osv.)
+├── mod1_grendel_1f_graded.rds# Modell / skåringsgrunnlag (RDS)
+├── *.tskår.md                # Skåringstekster per språk (nb, nn, en, da, de, fr, se, smh, fkv, sv …)
+├── translation*.csv          # Oversettelser (CSV per språk + master)
+├── translation.numbers       # Redigeringskilde (Numbers)
+├── og.png                    # Open Graph-bilde
+├── og.graffle                # Kilde for OG-grafikk (OmniGraffle)
+├── app_cache/                # Cache generert ved kjøring (gitignored i praksis)
+│   └── sass/                 # Sass/bs-theme cache fra Shiny
+└── www/                      # Statiske filer
+    ├── custom.css            # CSS-overstyringer
+    ├── custom.js             # JS (små UI-triks / tracking e.l.)
+    ├── og.png                # (ev. kopi for serving)
+    └── *.svg                 # Flagg/ikoner per språk
 ```
 
 ## Krav
