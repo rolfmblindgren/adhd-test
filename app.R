@@ -9,7 +9,7 @@ library(mirt)
 library(grendelMeta)
 options(bslib.cache = FALSE)
 
-
+md_files <- "./content/"
 
 custom_theme <- bs_theme(
   version = 5,
@@ -22,7 +22,7 @@ custom_theme <- bs_theme(
   heading_font = "Verdana"
 )
 
-mod1 <- readRDS("mod1_grendel_1f_graded.rds")
+mod1 <- readRDS("./models/mod1_grendel_1f_graded.rds")
 
 scaled_score <- function(items, mod = mod1) {
   stopifnot(length(items) == 10)
@@ -146,7 +146,7 @@ sidebarLayout(
 server <- function(input, output, session) {
 
   t_score <- reactive({
-    req(input$submit)   # evt. hva som helst som trigger beregning
+    req(input$beregn)   # evt. hva som helst som trigger beregning
 
     items <- c(
       input$i1, input$i2, input$i3, input$i4, input$i5,
@@ -154,58 +154,18 @@ server <- function(input, output, session) {
     )
 
     res <- scaled_score(items)   # funksjonen du allerede har
-    as.numeric(res["T_score"])
+    as.numeric(res["T"])
   })
-
-
-output$t_meter <- renderUI({
-  sc <- score_reaktiv()
-  T  <- as.numeric(sc[["score"]])
-
-  lo <- 20; hi <- 80
-  pct <- max(0, min(100, (T - lo) / (hi - lo) * 100))
-
-  ## velg farge basert på T
-  bar_col <- if (T <= 30) {
-    "#d9534f"   # rød
-  } else if (T <= 40) {
-    "#f0ad4e"   # gul
-  } else {
-    "#5cb85c"   # grønn
-  }
-
-  tagList(
-    div(style="font-size: 32px; font-weight: 700; margin: 6px 0;",
-        paste0("T = ", round(T))),
-
-    div(style="height:14px; background:#eee; border-radius:999px; overflow:hidden;",
-        div(style=paste0(
-          "height:100%; width:", pct, "%; background:", bar_col, ";"
-        ))
-    ),
-
-div(style="position:relative; height:16px; margin-top:6px; font-size:12px; color:#444;",
-    span("20", style="position:absolute; left:0%; transform:translateX(-50%);"),
-    span("30", style="position:absolute; left:16.7%; transform:translateX(-50%);"),
-    span("40", style="position:absolute; left:33.3%; transform:translateX(-50%);"),
-    span("50", style="position:absolute; left:50%; transform:translateX(-50%);"),
-    span("60", style="position:absolute; left:66.7%; transform:translateX(-50%);"),
-    span("70", style="position:absolute; left:83.3%; transform:translateX(-50%);"),
-    span("80", style="position:absolute; left:100%; transform:translateX(-50%);")
-)
-  )
-})
 
   output$tsk_md <- renderUI({
     lang <- input$selected_language ## evt. i18n$get_lang() avhengig
     ## av din versjon
-    file <- sprintf("%s.tskår.md", lang)
+    file <- sprintf("%s%s.tskår.md", md_files,lang)
 
     if (!file.exists(file)) file <- "nb.tskår.md"  # fallback
 
     includeMarkdown(file)
   })
-
 
   items_r <- reactive({
 
@@ -267,14 +227,19 @@ div(style="position:relative; height:16px; margin-top:6px; font-size:12px; color
   })
 
 
-  db_path <- paste0(Sys.getenv("ADHD_DB_PATH"),Sys.getenv("ADHD_DB_NAME"))
+  db_path <- paste0(Sys.getenv("ADHD_DB_PATH"),"/",Sys.getenv("ADHD_DB_NAME"))
 
-  observeEvent(input$selected_language, {
-    i18n$set_translation_language(input$selected_language)
-    update_lang(language=input$selected_language,session=session)
-    shinyjs::html("beregn", i18n$t("Beregn resultat"))
-
+  lang <- reactive({
+    req(input$selected_language)
+    input$selected_language
   })
+
+  observeEvent(lang(), {
+    i18n$set_translation_language(lang())
+    update_lang(language = lang(), session = session)
+    shinyjs::html("beregn", i18n$t("Beregn resultat"))
+    session$sendCustomMessage("update-title", i18n$t("Dette er ikke en ADHD-test"))
+  }, ignoreInit = TRUE)
 
   observeEvent(input$beregn, {
 
@@ -308,7 +273,6 @@ div(style="position:relative; height:16px; margin-top:6px; font-size:12px; color
   })
 
 
-  con <- DBI::dbConnect(RSQLite::SQLite(), db_path)
 
   score_reaktiv <- eventReactive(input$beregn, {
 
@@ -328,29 +292,15 @@ div(style="position:relative; height:16px; margin-top:6px; font-size:12px; color
 
     ## flate ut og beregne
     svar_num <- as.numeric(unlist(svar))
-    scaled_score <- round(scaled_score(svar_num),0)
-    mean_score <- mean(svar_num)
+    res <- round(scaled_score(svar_num),0)
 
     list(
       gyldig = TRUE,
       beskjed = NULL,
-      score = scaled_score["T"]
+      score = res["T"]
     )
   })
 
-  observeEvent(input$selected_language, {
-    i18n$set_translation_language(input$selected_language)
-    update_lang(language = input$selected_language, session = session)
-
-    shinyjs::html("beregn", i18n$t("Beregn resultat"))
-
-
-    session$sendCustomMessage(
-              "update-title",
-              i18n$t("Dette er ikke en ADHD-test")
-            )
-
-  })
 
   output$score_tekst <- renderText({
     res <- score_reaktiv()
@@ -392,16 +342,57 @@ div(style="position:relative; height:16px; margin-top:6px; font-size:12px; color
 
     s <- res$score
 
-    if (s >= 4.0) {
-      i18n$t("Svarene dine viser få trekk som ligner de reguleringsvanskene man ser ved ADHD. Hverdagen virker stabil og forutsigbar.")
-    } else if (s >= 3.2) {
+    if (s >= 40) {
+      paste0(i18n$t("Svarene dine viser få trekk som ligner de reguleringsvanskene man ser ved ADHD."),
+             " ",
+             i18n$t("Hverdagen virker stabil og forutsigbar."))
+    } else if (s >= 35) {
       i18n$t("Mønsteret ditt ligger godt innenfor normal variasjon: noen styrker, litt friksjon, men ingenting som peker klart i én retning.")
-    } else if (s >= 2.5) {
+    } else if (s >= 30) {
       i18n$t("Du rapporterer en del trekk som kan minne om ADHD, men dette kan like gjerne handle om personlighet, vaner eller livssituasjon.")
     } else {
       i18n$t("Du beskriver flere områder som ofte skaper vansker i ADHD. Dette er fortsatt ikke diagnostikk, men det kan være verdt en mer formell vurdering dersom dette skaper problemer i hverdagen.")
     }
   })
+
+  output$t_meter <- renderUI({
+    sc <- score_reaktiv()
+    T  <- as.numeric(sc[["score"]])
+
+    lo <- 20; hi <- 80
+    pct <- max(0, min(100, (T - lo) / (hi - lo) * 100))
+
+    ## velg farge basert på T
+    bar_col <- if (T <= 30) {
+                 "#d9534f"   # rød
+               } else if (T <= 40) {
+                 "#f0ad4e"   # gul
+               } else {
+                 "#5cb85c"   # grønn
+               }
+
+    tagList(
+      div(style="font-size: 32px; font-weight: 700; margin: 6px 0;",
+          paste0("T = ", round(T))),
+
+      div(style="height:14px; background:#eee; border-radius:999px; overflow:hidden;",
+          div(style=paste0(
+                "height:100%; width:", pct, "%; background:", bar_col, ";"
+              ))
+          ),
+
+      div(style="position:relative; height:16px; margin-top:6px; font-size:12px; color:#444;",
+          span("20", style="position:absolute; left:0%; transform:translateX(-50%);"),
+          span("30", style="position:absolute; left:16.7%; transform:translateX(-50%);"),
+          span("40", style="position:absolute; left:33.3%; transform:translateX(-50%);"),
+          span("50", style="position:absolute; left:50%; transform:translateX(-50%);"),
+          span("60", style="position:absolute; left:66.7%; transform:translateX(-50%);"),
+          span("70", style="position:absolute; left:83.3%; transform:translateX(-50%);"),
+          span("80", style="position:absolute; left:100%; transform:translateX(-50%);")
+          )
+    )
+  })
+
 }
 
 shinyApp(ui=ui, server=server)
