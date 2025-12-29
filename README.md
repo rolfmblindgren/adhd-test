@@ -17,22 +17,30 @@ Data lagres i en SQLite-database for enkel logging av besvarelser.
 
 ```
 adhd-test/
-├── app.R                     # Shiny-applikasjon
-├── README.md                 # Kort dokumentasjon
-├── meta.yaml                 # Metadata (tittel, beskrivelse, URL, OG-bilde osv.)
-├── mod1_grendel_1f_graded.rds# Modell / skåringsgrunnlag (RDS)
-├── *.tskår.md                # Skåringstekster per språk (nb, nn, en, da, de, fr, se, smh, fkv, sv …)
-├── translation*.csv          # Oversettelser (CSV per språk + master)
-├── translation.numbers       # Redigeringskilde (Numbers)
-├── og.png                    # Open Graph-bilde
-├── og.graffle                # Kilde for OG-grafikk (OmniGraffle)
-├── app_cache/                # Cache generert ved kjøring (gitignored i praksis)
-│   └── sass/                 # Sass/bs-theme cache fra Shiny
-└── www/                      # Statiske filer
-    ├── custom.css            # CSS-overstyringer
-    ├── custom.js             # JS (små UI-triks / tracking e.l.)
-    ├── og.png                # (ev. kopi for serving)
-    └── *.svg                 # Flagg/ikoner per språk
+├── app.R                      # Shiny-applikasjon
+├── README.md                  # Kort dokumentasjon
+├── meta.yaml                  # Metadata (tittel, beskrivelse, URL, OG-bilde osv.)
+├── adhd.sqlite                # Lokal SQLite (dev/enkeltoppsett)
+├── content/                   # Tekstlig innhold
+│   ├── *.tskår.md              # Skåringstekster per språk (nb, nn, en, da, de, fr, se, smh, fkv, sv …)
+│   └── translations/          # Oversettelser + konfig
+│       ├── config.yml         # shiny.i18n-konfig
+│       ├── translation.csv    # Master
+│       ├── translation_*.csv  # Per språk
+│       └── translation.numbers# Redigeringskilde (Numbers)
+├── models/                    # Modeller / skåringsgrunnlag
+│   └── mod1_grendel_1f_graded.rds
+├── scripts/                   # Analyse- og vedlikeholdsskript + artefakter
+│   ├── analyze.R
+│   ├── make_translations.R
+│   ├── *.png                  # Figurer (IRT, scree, osv.)
+│   ├── *.csv                  # Mellomdata/eksport (data, norm_table, osv.)
+│   └── og.graffle             # Kilde for OG-grafikk (OmniGraffle)
+└── www/                       # Statiske filer (må ligge her for Shiny)
+    ├── custom.css             # CSS-overstyringer
+    ├── custom.js              # JS (UI-triks)
+    ├── og.png                 # Open Graph-bilde
+    └── *.svg                  # Flagg/ikoner per språk
 ```
 
 ## Krav
