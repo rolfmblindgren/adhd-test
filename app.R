@@ -59,6 +59,43 @@ ui <- fluidPage(
   usei18n(i18n),
   useShinyjs(),
   tags$head(
+         tags$meta(
+           name = "robots",
+           content = "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"
+         ),
+         tags$link(rel = "canonical", href = "https://shiny.grendel.no/adhd-test/"),
+         tags$meta(name = "twitter:card", content = "summary_large_image"),
+         tags$script(
+           type = "application/ld+json",
+           HTML(jsonlite::toJSON(
+             list(
+               "@context" = "https://schema.org",
+               "@type" = "WebApplication",
+               name = "Dette er ikke en ADHD-test",
+               applicationCategory = "MedicalWebApplication",
+               operatingSystem = "Any",
+               url = "https://shiny.grendel.no/adhd-test/",
+               inLanguage = c("nb", "nn", "sv", "da", "se", "fkv", "fr", "de", "en"),
+               author = list(
+                 "@type" = "Person",
+                 name = "Rolf Marvin Bøe Lindgren"
+               ),
+               publisher = list(
+                 "@type" = "Organization",
+                 name = "Grendel evidensbasert psykologi AS"
+               ),
+               description = paste(
+                 "En kort selvrapportert app om fravær av oppmerksomhets- og",
+                 "reguleringsvansker. Ikke diagnostisk, men laget som et",
+                 "pedagogisk verktøy."
+               ),
+               educationalUse = "Pedagogisk selvrefleksjon",
+               isAccessibleForFree = TRUE,
+               disclaimer = "Ikke for diagnostisk bruk."
+             ),
+             auto_unbox = TRUE
+           ))
+         ),
          tags$script(src = "custom.js"),
          tags$script(HTML("
   Shiny.addCustomMessageHandler('update-title', function(msg) {
