@@ -1,0 +1,105 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{csquotes}
+\usepackage[
+  backend=biber,
+  style=apa,
+  sorting=nyt
+]{biblatex}
+\addbibresource{adhd_psychometric_note.bib}
+\DeclareLanguageMapping{ngerman}{ngerman-apa}
+
+\setstretch{1.08}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  urlcolor=blue,
+  pdftitle={Was dieser Test vernünftigerweise anzeigen kann},
+  pdfauthor={Grendel}
+}
+
+\title{Was dieser Test vernünftigerweise anzeigen kann\\
+\large Eine kurze psychometrische Notiz}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Dieser Text fasst zusammen, was man vernünftigerweise darüber sagen kann, was eine kurze, positiv formulierte Selbstbeurteilungsskala zu Beginn, Fokus, Organisation und Regulation tatsächlich misst. Der Hauptpunkt ist, dass der Test nicht als diagnostisches Instrument für ADHS verwendet werden kann, aber offenbar eine breite und zusammenhängende Dimension von Regulationsfriktion erfasst, die für ADHS-ähnliche Schwierigkeiten relevant ist. Zugleich zeigen die Modelle, dass diese breite Dimension eine gewisse innere Struktur hat. Die am besten vertretbare Interpretation ist daher, dass der Test einen gemeinsamen Regulationsfaktor mit zwei teilweise unterscheidbaren Ausdrucksformen misst: ein eher inneres Muster, das mit Aufgabenengagement und mentalem Spurhalten zusammenhängt, und ein eher äußeres Muster, das mit praktischer Zuverlässigkeit und Alltagsorganisation zusammenhängt.
+\end{abstract}
+
+\section{Einleitung}
+Kurze Fragebögen werden leicht so beschrieben, als würden sie entweder ``ADHS erfassen'' oder ``ADHS nicht erfassen''. Eine reifere Sichtweise ist, dass solche Instrumente meist ein Muster selbstberichteter Schwierigkeiten messen, das mehr oder weniger typisch für ADHS sein kann, ohne deshalb schon eine Diagnose zu begründen. Dieser Test besteht aus zehn Aussagen, die als Funktionsaussagen und nicht als Symptombeschreibungen formuliert sind. Er fragt also nicht direkt, ob eine Person ADHS hat, sondern wie leicht oder schwer es ist, anzufangen, den Fokus zu halten, Termine zu behalten, Zeit zu organisieren, Gedanken auf Kurs zu halten und ohne ungewöhnlich viel äußere Struktur zu funktionieren.
+
+Ziel dieser Notiz ist es zu beschreiben, was die Ergebnisse tatsächlich stützen und ebenso wichtig, was sie nicht stützen. Es geht nicht darum, den Test sicherer erscheinen zu lassen, als er ist, sondern eine präzise Mittelposition zu formulieren: Der Test scheint etwas Reales und psychometrisch Zusammenhängendes zu messen, aber dieses ``Etwas'' ist am besten als Muster von Regulationsfriktion mit Relevanz für ADHS zu verstehen, nicht als diagnostisches Urteil.
+
+\section{Datenbasis und Screening}
+Die aktuelle Analyse beruhte auf $N = 309$ Rohantworten. Der Datensatz bestand in der Praxis fast nur aus Antworten auf Bokmål, mit sehr wenigen Antworten auf Nynorsk, Englisch und Kvenisch. In diesem Lauf wurden keine schnellen Duplikate entfernt, während 28 sogenannte flache Mittelmuster ausgeschlossen wurden, also Antwortmuster, bei denen alle zehn Aussagen mit Kategorie 3 beantwortet wurden. Die Analysen wurden damit auf 281 Antworten geschätzt.
+
+Der neuere Renormierungslauf, der zur Aktualisierung des Produktionsmodells verwendet wurde, ergab ein ähnliches, aber etwas größeres Material. Dort wurden 390 Rohantworten extrahiert, und 346 blieben nach Qualitätsfilterung übrig. Dieser neuere Lauf wird hier nur als Unterstützung für die übergeordnete Interpretation verwendet, nicht als Ersatz für die Hauptanalyse.
+
+\section{Software und Analyseaufbau}
+Die Analysen wurden in \texttt{R} \parencite{RCore2026} durchgeführt. Das zentrale Paket war \texttt{mirt} \parencite{Chalmers2012mirt}, das auf mehrere Arten verwendet wurde:
+
+\begin{itemize}
+\item \texttt{mirt(..., itemtype = "graded")} wurde zur Schätzung von graded-response-Modellen mit einem Faktor, zwei Faktoren und einer Bifaktorstruktur verwendet.
+\item \texttt{fscores()} wurde verwendet, um Personwerte mit EAP und MAP sowie summenwertbedingte erwartete latente Werte (\texttt{EAPsum}) zu berechnen.
+\item \texttt{anova()} wurde verwendet, um das Einfaktor- und das Zweifaktormodell zu vergleichen.
+\item \texttt{M2()} wurde als globaler Modellfit-Indikator für das Einfaktormodell verwendet.
+\item \texttt{itemfit()} wurde für Itemdiagnostik verwendet.
+\item \texttt{residuals(type = "Q3")} wurde verwendet, um lokale Abhängigkeiten zwischen den Items zu untersuchen.
+\end{itemize}
+
+Das Skript lud außerdem \texttt{careless} \parencite{YentesWilhelm2023careless}, doch im vorliegenden Lauf wurde das Paket in der eigentlichen Schätzung nicht explizit verwendet. Die Qualitätssichtung bestand in dieser Analyse praktisch aus einfacher Logik in Base-\texttt{R}: Sortierung nach Zeit, Entfernung möglicher schneller Duplikatmuster und Ausschluss flacher Mittelmuster. Die Pakete \texttt{stats4} und \texttt{lattice} \parencite{Sarkar2008lattice} wurden automatisch als Abhängigkeiten von \texttt{mirt} geladen; für \texttt{stats4} wird die Standardzitation von \texttt{R} verwendet \parencite{RCore2026}.
+
+\section{Hauptergebnisse}
+\subsection{Das Einfaktormodell}
+Das Einfaktormodell ergab ein klares und homogenes Muster. Die Faktorladungen lagen zwischen 0.659 und 0.825, und alle Items zeigten moderate bis hohe Kommunalitäten. Die Summe der Ladungen entsprach 5.682, und der erklärte Varianzanteil betrug 0.568. Die Reliabilität war hoch, sowohl ausgedrückt als $\alpha = 0.904$ als auch als faktorbasierte Reliabilität $r_{xx,F1} = 0.901$. Der Standard Error of Measurement lag bei 3.066.
+
+Der globale Fit des Einfaktormodells war in diesem Lauf gut. Der M2-Test ergab $\chi^2(40)=16.177$, $p=1.00$, und die Residualstruktur war ruhig. Die Q3-Residualen hatten ein Maximum von 0.169 bei einem Mittelwert von etwa $-0.095$, was gegen schwerwiegende lokale Abhängigkeiten zwischen den Items spricht. Auf diesem Niveau verhält sich der Test also wie eine gut funktionierende Kurzskala mit einer klaren Hauptdimension.
+
+\subsection{Das Zweifaktormodell}
+Wurde ein Zweifaktormodell geschätzt, verbesserte sich der Fit gegenüber dem Einfaktormodell. Der Vergleich ergab $\Delta \chi^2 = 68.12$ bei 9 Freiheitsgraden und $p < .001$. Das bedeutet, dass das Material in streng statistischem Sinn nicht perfekt eindimensional ist. Die entscheidende Frage ist jedoch, wofür diese zusätzliche Struktur steht.
+
+In früheren Läufen konnte diese zusätzliche Struktur teilweise wie Aufmerksamkeitsprobleme und teilweise wie lockerere individuelle Variation oder Methodeneffekte aussehen. Die neuere rotierte Zweifaktorlösung, die auf dem aktualisierten und gefilterten Material geschätzt wurde, wirkt etwas besser interpretierbar. Dort luden die Items 1, 4, 5, 9 und 10 am stärksten auf dem einen Faktor, während die Items 2, 3, 7 und 8 am stärksten auf dem anderen luden. Item 6 zeigte ein gemischteres Muster. Zugleich waren die beiden Faktoren hoch korreliert ($r = 0.75$). Das ist sehr wichtig: Die zusätzliche Struktur weist nicht auf zwei unabhängige Merkmale hin, sondern auf zwei eng verwandte Ausdrucksformen eines breiteren Regulationsfaktors.
+
+\subsection{Das Bifaktormodell}
+Das Bifaktormodell liefert das informativste Gesamtbild. In der vorliegenden Analyse luden alle zehn Items klar auf dem Generalfaktor $G$, mit Ladungen zwischen 0.574 und 0.792. Gleichzeitig traten zwei schwächere Gruppenfaktoren hervor. Der erste Gruppenfaktor war hauptsächlich mit den Items 1--5 verbunden, der zweite am deutlichsten mit Item 6 und in geringerem Maß mit den Items 7--10.
+
+Die entscheidende Beobachtung ist jedoch, dass der Generalfaktor den größten Teil der gemeinsamen Varianz trug. Proportion Var betrug 0.529 für $G$, gegenüber 0.039 und 0.065 für die beiden Gruppenfaktoren. Mit anderen Worten: Der Test hat mehr Struktur, als ein reines Einfaktormodell vollständig abbildet, aber der Haupteindruck bleibt, dass ein breiter Faktor dominiert.
+
+\section{Interpretation}
+Die am besten vertretbare Aussage lautet daher, dass der Test eine breite und wiederkehrende Dimension von Regulationsfriktion zu erfassen scheint, die für ADHS-ähnliche Schwierigkeiten relevant ist. Der starke Generalfaktor spricht dafür, dass es im Material mindestens einen gemeinsamen Faktor gibt, der sich quer über die Items zieht und das bündelt, was viele Klinikerinnen, Kliniker und Nutzerinnen intuitiv als Schwierigkeiten erkennen würden, den Alltag stabil und selbstgesteuert in Gang zu halten.
+
+Es ist verlockend, dies als ``einen Faktor, der bei allen mit ADHS vorkommt'' zu beschreiben. Empirisch reichen die Daten dafür nicht aus. Das Material enthält weder diagnostische Goldstandarddaten noch externe Validierung gegen etablierte ADHS-Instrumente. Was die Daten tatsächlich stützen, ist eine zurückhaltendere Formulierung: Die Skala scheint einen breiten und wahrscheinlich zentralen ADHS-relevanten Regulationsfaktor zu erfassen, von dem plausibel ist, dass er über verschiedene ADHS-Präsentationen hinweg wiederkehrt. Das ist ein wichtiger Befund, aber nicht dasselbe wie der Nachweis, dass dieser Faktor bei allen Menschen mit ADHS universell ist.
+
+Die sekundäre Struktur ist dennoch interessant und sinnvoll. Sie wirkt nicht länger wie bloßes Rauschen. In der neueren Lösung erscheint die eine Seite des Tests stärker mit innerem Aufgabenengagement verbunden: anfangen, Aufmerksamkeit zusammenhalten, nicht auf Krisenenergie angewiesen sein, Gedanken ordnen und ohne viel äußere Stütze zurechtkommen. Die andere Seite erscheint stärker mit äußerer Zuverlässigkeit und praktischer Organisation verbunden: Dinge nicht verlieren, Termine einhalten, Mitteilungen behalten und Alltagslogistik zum Funktionieren bringen. Das lässt sich als zwei Ausdrucksformen desselben übergeordneten Problembereichs verstehen: eine eher innere und eine eher äußere Seite der Regulation.
+
+\section{Was der Test vernünftigerweise anzeigen kann}
+Auf praktischer Ebene ist es deshalb vernünftig zu sagen, dass der Test anzeigt, wie stark das selbstberichtete Funktionieren einer Person einem ADHS-relevanten Muster von Regulationsschwierigkeiten ähnelt oder nicht ähnelt. Höhere Werte sprechen für weniger Ähnlichkeit mit einem solchen Muster. Niedrigere Werte sprechen für größere Ähnlichkeit. Das kann als strukturierter Ausgangspunkt für Reflexion nützlich sein, gerade weil der Test kurz, konsistent und psychometrisch vergleichsweise sauber zu sein scheint.
+
+Nicht vernünftig wäre es dagegen zu sagen, der Test entscheide, ob eine Person ADHS hat. Ein niedriger Wert kann mit ADHS vereinbar sein, aber ebenso mit einer Reihe anderer Zustände wie Stress, Schlafmangel, Depression, Angst, Überlastung oder anderen Formen kognitiver und emotionaler Erschöpfung. Ebenso kann ein hoher Wert mit dem Fehlen deutlicher Regulationsschwierigkeiten vereinbar sein, aber auch mit mildem ADHS, kompensierten Schwierigkeiten oder einem Funktionsniveau, das durch Struktur, Intelligenz, Routinen oder Umweltanpassung gut gestützt ist.
+
+\section{Einschränkungen}
+Es gibt mehrere offensichtliche Einschränkungen. Erstens basiert die Analyse auf Selbstbericht. Zweitens fehlt dem Material eine externe Validierung gegenüber klinischer Diagnostik oder etablierten ADHS-Skalen. Drittens ist die Sprachverteilung schief, sodass es bislang keine Grundlage für ernsthafte sprachspezifische Normen oder Messinvarianzanalysen gibt. Viertens sind die Bifaktor- und Zweifaktorlösungen diagnostische Modelle im methodischen Sinn: Sie sind nützlich, um die Datenstruktur zu verstehen, legitimieren aber nicht von selbst, den Test als zwei getrennte klinische Teilskalen zu deuten.
+
+\section{Schlussfolgerung}
+Die reifste und wissenschaftlich am besten vertretbare Beschreibung des Tests ist, dass er als kurzes normiertes Maß für Regulationsfriktion mit klarer Relevanz für ADHS-ähnliche Schwierigkeiten funktioniert. Die Ergebnisse stützen die Existenz eines starken und wiederkehrenden Generalfaktors, also einer gemeinsamen Dimension, die Anfang, Fokus, Organisation, innere Ruhe und stabiles Durchführen miteinander verbindet. Zugleich deuten sowohl Zwei-Faktor- als auch Bifaktormodelle darauf hin, dass dieser Generalfaktor eine gewisse innere Struktur hat, in der sich eine eher innere aufgaben- und aufmerksamkeitsbezogene Seite von einer eher äußeren, praktischen und zuverlässigkeitsbezogenen Seite unterscheiden lässt.
+
+Was der Test daher vernünftigerweise anzeigen kann, ist nicht ``ADHS'' als Diagnose, sondern der Grad der Ähnlichkeit zwischen den Antworten einer Person und einem zusammenhängenden Muster ADHS-relevanter Regulationsfriktion. Das ist ein wichtiger und nützlicher Befund. Es bleibt aber ein Befund auf Funktionsebene und keine endgültige Antwort auf Ursache, Kategorie oder klinische Identität.
+
+\printbibliography
+
+\end{document}

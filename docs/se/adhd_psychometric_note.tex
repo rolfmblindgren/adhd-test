@@ -1,0 +1,105 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{csquotes}
+\usepackage[
+  backend=biber,
+  style=apa,
+  sorting=nyt
+]{biblatex}
+\addbibresource{adhd_psychometric_note.bib}
+\DeclareLanguageMapping{english}{english-apa}
+
+\setstretch{1.08}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  urlcolor=blue,
+  pdftitle={Maid dat geahccaleapmi riekta lahkai sáhttá indikerejit},
+  pdfauthor={Grendel}
+}
+
+\title{Maid dat geahccaleapmi riekta lahkai sáhttá indikerejit\\
+\large Oanehaš psykometralaš nota}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Dát teavstta čoahkkáigeassu das maid lea jierbmi dadjat ahte oanehis, buorrin hámiheapmen čállojuvvon iešraportaskála mii guoská álggahahttimii, fokusii, organiseremii ja reguleremii duođaid mihtida. Váldopoenta lea ahte geahccaleapmi ii sáhte geavahuvvot diagnostihkalaš reaidun ADHD várás, muhto orru go dat gávdná viiddis ja oktii čatnasan dimensuvnna regulerenfrikšuvnnas mii lea relevánta ADHD-lágan váttisvuođaide. Seammás modeallaid vuođul orru ahte dán viiddis dimensuvnnas lea muhtun sissoš struktuvra. Danin buoremus dulkot lea ahte geahccaleapmi mihtida oktasaš regulerenfaktora mas leat guokte oasit erenoamáš govvuma: siskkáldas mii laktása bargguide seaguhuvvui ja jurdagiid bisuhii, ja olgguldas mii laktása praktihkalaš luohttevašvuhtii ja árgaorganiseremii.
+\end{abstract}
+
+\section{Alggaheapmi}
+Lea álki hupmat oanehis jearahallanskovviid birra nu go dat ``gávdnejit ADHD'' dahje ``eai gávdne ADHD''. Gaskalduvvon ipmirdus lea ahte dakkár instrumenttat dábálaččat mihtidit iešraporterejuvvon váttisvuođaid minstera mii sáhttá leat eanet dahje unnit typihkalaš ADHD várás, muhto dat ii dasto dahje diagnosa. Dát geahccaleapmi sisttisdoallá logi cealkaga mat leat hábmejuvvon doaimmahuscealkagiin iige symptomadadjamiin. Dat ii jeara njuolga ahte lea go olbmos ADHD, muhto man álki dahje váttis lea álggahit, doallat fokusa, muitit soahpamušaid, organiseret áiggi, doallat jurdagiid čuovvulin ja doaibmat ilman earenoamáš olu olggosráhkadusa.
+
+Ulbmil dán notas lea govvidit maid bohtosat duođaid doarjot, ja seamma dehálaš, maid dat eai doarjjo. Jurdda ii leat dahkat geahccaleami sihkkarabbun go dat lea, muhto hábmet dárkilis gaskabáikki: geahccaleapmi orru mihtideame juoidá duođalaš ja psykometralaččat oktii heivehuvvon, muhto dát ``juoidá'' lea buoremusat ipmirduvvon regulerenfrikšuvnna minsterin mii lea relevánta ADHD várás, iige diagnostihkalaš vástádussan.
+
+\section{Dátavuoddu ja sillin}
+Dát analyssa vuođđuduvai $N = 309$ rå vástádusain. Dátamateriálas ledje geavatlaččat dušše bokmål-vástádusat, ja hui unnán vástádusat nynorskii, eŋgelasgillii ja kveanagillii. Dán vuoru ii váldojuvvon eret jođánis duplikahtat, muhto 28 dásse gaskavástádusa guđege buot logi cealkaga ledje kategoriija 3, vuolggahuvvojedje eret. Danin analysat estiimerejuvvojedje 281 vástádussii.
+
+Odđa renormerenvuorru mii geavahuvvui produkšuvdnamodealla ođasmahttimii addii sullii seamma lágan, muhto veahá stuorát materiála. Doppe 390 rå vástádusa váldojuvvojedje olggos, ja 346 báhcce kvalitehtafilterema maŋŋel. Dát ođđaseamos vuorru geavahuvvo dás dušše doarjjan oppalaš dulkui, ii goitge váldoanalyssa sajádatin.
+
+\section{Prográmma ja analyssa}
+Analyssat čađahuvvojedje \texttt{R}:as \parencite{RCore2026}. Guovddáš pakka lei \texttt{mirt} \parencite{Chalmers2012mirt}, mii geavahuvvui máŋgga láhkai:
+
+\begin{itemize}
+\item \texttt{mirt(..., itemtype = "graded")} geavahuvvui graded response-modeallaid estimereheapmái ovtta faktoriin, guovtti faktoriin ja bifaktorastruktuvrrain.
+\item \texttt{fscores()} geavahuvvui olbmoskoaraid rehkenastimii EAP ja MAP láhkai, ja maiddái summaskora ektui vuordámuš latenta skoaraid (\texttt{EAPsum}).
+\item \texttt{anova()} geavahuvvui ovttafaktor- ja guovttafaktormodeallaid veardideapmái.
+\item \texttt{M2()} geavahuvvui oppalaš model-fit indikátoran ovttafaktormodeallii.
+\item \texttt{itemfit()} geavahuvvui itemdiagnostiikii.
+\item \texttt{residuals(type = "Q3")} geavahuvvui báikkálaš sorjjasvuođa guorahallamii itemaid gaskkas.
+\end{itemize}
+
+Skript loađai maiddái \texttt{careless} \parencite{YentesWilhelm2023careless}, muhto dán vuorus pakkageavaheapmi ii lean eksplisihtta ieš estimeremis. Kvalitehtasilliheapmi dán analysas lei geavatlaččat álki logihkka base-\texttt{R}:as: ortnet áiggi mielde, jođánis duplikahttaminsteraid eretváldin ja dásse gaskavástádusaid eretváldin. \texttt{stats4} ja \texttt{lattice} \parencite{Sarkar2008lattice} loađojuvvojedje automáhtalaččat \texttt{mirt}:a sorjjasvuođain; \texttt{stats4}:a várás geavahuvvo \texttt{R}:a standarda cite \parencite{RCore2026}.
+
+\section{Váldoboađus}
+\subsection{Ovttafaktormodealla}
+Ovttafaktormodealla addii čielga ja homogena minstera. Faktorláddagat ledje gaskka 0.659 ja 0.825, ja buot itemat čájehedje moderejuvvon dahje allit kommunalitehtaid. Láddagiid summa lei 5.682, ja čilgejuvvon variánssa oassi lei 0.568. Reliabilitehta lei alit, sihke $\alpha = 0.904$ ja faktoravuođđuduvvon reliabilitehtan $r_{xx,F1} = 0.901$. Standard Error of Measurement lei 3.066.
+
+Ovttafaktormodealla oppalaš fit lei buorre dán vuorus. M2-testta addii $\chi^2(40)=16.177$, $p=1.00$, ja residualastruktuvra lei ráfálaš. Q3-residualain lei maksimum 0.169 ja gaskamearri sullii $-0.095$, mii lohka vuostá duođalaš báikkálaš sorjjasvuođa itemaid gaskkas. Dán dásis geahccaleapmi orru doaibmame bures oanehaš skálan mas lea okta čielga váldodimensuvdna.
+
+\subsection{Guovttafaktormodealla}
+Go guovttafaktormodealla estiimerejuvvui, dat buoridii fitten ovttafaktormodeallii ektui. Veardádus addii $\Delta \chi^2 = 68.12$ 9 friijadgrádain ja $p < .001$. Dát mearkkaša ahte materiála ii leat ollásit unidimensjonála stricta statistihkalaš mielas. Deháleamos jearaldat lea goit dat maid dát lassestruktuvra govvida.
+
+Ovdalvuoruin dát lassestruktuvra sáhttii čájehit beali mielde fuomášumiváttisvuođa ja beali mielde luohtehas individuála variašuvnna dahje metođaefektaid. Ođđa rotašuvnnain gávdnan guovttafaktorløsning, mii lei estimerejuvvon ođasmahtton ja sillojuvvon materiálas, orru veahá buorebut dulkotlažžan. Doppe itemat 1, 4, 5, 9 ja 10 láddehedje garasat oktii faktori, muhto itemat 2, 3, 7 ja 8 láddehedje garasat nubbi faktori. Item 6 lei eanet seaguhuvvon. Seammás guokte faktorat ledje nanne korrelehuvvon ($r = 0.75$), ja dat lea dehálaš: dát lassestruktuvra ii čujut guokte iešheanalaš iešvuođaid, muhto guokte lahka oktii gullavaš govvuma viiddis regulerenfaktoris.
+
+\subsection{Bifaktormodealla}
+Bifaktormodealla addá informatiivvalaš oppalašgova. Dán analysas buot logi itema láddehedje čielga generalfaktori $G$:ii, láddagiin 0.574 rájes 0.792 rádjai. Seammás guokte heajut gruppafaktoraid bohte oidnosii. Vuosttaš gruppafaktor lei eanemusat čatnon itemaide 1--5, ja nubbi lei čielgaseamos item 6:s ja veahá itemain 7--10.
+
+Válduobservašuvdna lea goit ahte generalfaktor gieđahallii eanemus oktasaš variánsas. Proportion Var lei 0.529 $G$:ii, vuostá 0.039 ja 0.065 guovtti gruppafaktorii. Dát mearkkaša ahte geahccaleamis lea eanet struktuvra go maid čistta ovttafaktormodealla ollásit govvida, muhto váldodovddus lea ain ahte okta viiddis faktor dominere.
+
+\section{Dulkot}
+Buoremus dulkot lea danin ahte geahccaleapmi orru gávdnamin viiddis ja geardduhahtti dimensuvnna regulerenfrikšuvnnas mii lea relevánta ADHD-lágan váttisvuođaid várás. Nanne generalfaktor čujut ahte materiálas lea unnimusat okta oktasaš faktor mii manná itemaid rastá ja čoahkkáha dan maid olu klinihkkárat ja geavaheaddjit intuitiivvalaččat dovdet váttisvuođan bisuhit árggabeaivvi jođus stabiila ja iešstivrejuvvon láhkái.
+
+Lea geasuheapmi dadjat ahte dát lea ``faktor mii gávdno buohkain geain lea ADHD''. Empiriijalaččat data ii maná nu guhkás. Dás eai leat diagnostihkalaš gullstandardadátat dahje olgguldas validereapmi vuođđuduvvon etablerejuvvon ADHD-instrumentaide. Dat maid data duođaid doarju lea vejolaččat eanet roahkkat formuleret: skála orru gávdnamin viiddis ja sihkkarit guovddáš ADHD-relevánta regulerenfaktora mii lea jierbmi jurddahit geardduhuvvomin iešguđet ADHD-presentašuvnnaid rastá. Dat lea dehálaš bohtos, muhto ii seamma go duođaštit ahte faktor lea universála buot olbmuin geain lea ADHD.
+
+Sekundára struktuvra lea goitge miellagiddevaš ja ávvudeaddji. Dat ii orro šat dušše šuohppun. Ođđaseamos løsningas okta bealli geahccaleamis orru eanet laktáseame siskkáldas bargoseaguhussii: álggahit, doallat fuomášumi oktan, ii leat dárbu kriissaenergiijas, bisuhit jurdagiid ja birget ilma olu olggos doarjaga. Nubbi bealli orru eanet laktáseame olgguldas luohttevašvuođa ja praktihkalaš organiserema várás: ii massit áššiid, doallat soahpamušaid, muitit dieđuid ja oažžut árggalogistihka doaibmat. Dát sáhttá ipmirduvvot guokte govvuman seamma badjelgeahcci váttisvuođasuorggis: siskkáldas beali ja olgguldas beali reguleremis.
+
+\section{Maid geahccaleapmi riekta lahkai sáhttá indikerejit}
+Praktihkalaš dásis lea danin jierbmi dadjat ahte geahccaleapmi indikere man olu olbmo iešraporterejuvvon doaibman lea sullii dahje ii leat sullii ADHD-relevánta regulerenváttisvuođaid minstarii. Alit skorat čujuhit ahte sullasašvuohta dákkár minstarii lea unnit. Vuolit skorat čujuhit ahte sullasašvuohta lea stuorát. Dát sáhttá leat strukturerejuvvon vuolggasadjin reflekšuvdnii, erenoamážit go geahccaleapmi orru leat oanehis, konsistenta ja psykometralaččat veahá ráinnas.
+
+Ii leat jierbmi dadjat ahte geahccaleapmi mearrida lea go olbmos ADHD. Vuolit skora sáhttá leat heivehuvvon ADHD:ii, muhto maiddái máŋga eará diliide nugo stressa, unnán oađđin, depresšuvdna, balu, badjeloaddu dahje eará kognitiivalaš ja dovdduid geahččalasaid. Seamma láhkai alit skora sáhttá leat heivehuvvon dasa ahte eai leat čielga regulerenváttisvuođat, muhto maiddái liegga ADHD:ii, kompenserejuvvon váttisvuođaide dahje doaibmandássái mii doaibmá bures ráhkadusa, intellišeanssa, rutiinnaid dahje biraslaš heiveheapmiin.
+
+\section{Rádjit}
+Dás leat máŋga čielga ráji. Vuosttažettiin analyssa vuođđuduvvá iešraporteheapmái. Nubbi, materiálas váilu olgguldas validereapmi klinihkalaš diagnostihka dahje etablerejuvvon ADHD-skálaid ektui. Goalmmát, giellajuohkin lea vearrát, danin ii leat vel gievra vuođđu gielaspecifika normmaid dahje miihtoinvariánsaanalyssaide. Njealját, bifaktor- ja guovttafaktorløsningat leat diagnostihkalaš modeallat metodalaš mielas: dat leat ávkkálaččat datastruktuvrra ipmirdimii, muhto eai ieža leat doarjja dan dulkui ahte geahccaleapmi livččii guokte sierra klinihkalaš vuolle skála.
+
+\section{Loahppaboahttehus}
+Buoremus ja dieđalaččat gievrramus govahallan geahccaleamis lea ahte dat doaibmá oanehis normerejuvvon mihttun regulerenfrikšuvnnas mas lea čielga relevánsa ADHD-lágan váttisvuođaide. Bohtosat doarjot ahte lea nanne ja geardduhahtti generalfaktor, dat lea oktasaš dimensuvdna mii čatná oktii álggahahttima, fokusa, organiserema, siskkáldas ráfi ja stabiila čađaheami. Seammás sihke guovttafaktor- ja bifaktormodeallat čujuhit ahte dán generalfaktoris lea muhtun sissoš struktuvra, gos siskkáldas bargu- ja fuomášumilaktásaš bealli sáhttá earuhuvvot olgguldas, praktihkalaš ja luohttevašvuođalaktásaš beales.
+
+Dat maid geahccaleapmi danin riekta lahkai sáhttá indikerejit ii leat ``ADHD'' diagnosan, muhto dat man olu olbmo vástádusat sulastahttet oktii heivehuvvon ADHD-relevánta regulerenfrikšuvnna minstera. Dat lea dehálaš ja ávkkálaš bohtos. Muhto dat lea ain bohtos doaibmandási alde, ii ge loahpalaš vástádus sivva, kategoriija dahje klinihkalaš identitehta birra.
+
+\printbibliography
+
+\end{document}

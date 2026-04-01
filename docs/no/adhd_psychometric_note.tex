@@ -1,0 +1,105 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[norsk]{babel}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{csquotes}
+\usepackage[
+  backend=biber,
+  style=apa,
+  sorting=nyt
+]{biblatex}
+\addbibresource{adhd_psychometric_note.bib}
+\DeclareLanguageMapping{norsk}{english-apa}
+
+\setstretch{1.08}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  urlcolor=blue,
+  pdftitle={Hva denne testen rimelig kan sies å indikere},
+  pdfauthor={Grendel}
+}
+
+\title{Hva denne testen rimelig kan sies å indikere\\
+\large En kort psykometrisk note}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Denne teksten oppsummerer hva det er rimelig å hevde at en kort, positivt formulert selvrapportskala om oppstart, fokus, organisering og regulering faktisk måler. Hovedpoenget er at testen ikke kan brukes som diagnostisk verktøy for ADHD, men at den ser ut til å fange en bred og sammenhengende dimensjon av reguleringsfriksjon som er relevant for ADHD-lignende vansker. Samtidig viser modellene at denne brede dimensjonen har en viss indre struktur. Den mest forsvarlige tolkningen er derfor at testen måler en felles reguleringsfaktor med to delvis skillbare uttrykk: et mer indre mønster knyttet til oppgaveengasjement og mentalt sporhold, og et mer ytre mønster knyttet til praktisk pålitelighet og hverdagsorganisering.
+\end{abstract}
+
+\section{Innledning}
+Det er lett å omtale korte spørreskjemaer som om de enten ``fanger ADHD'' eller ``ikke fanger ADHD''. En mer moden forståelse er at slike instrumenter vanligvis måler et mønster av selvrapporterte vansker som kan være mer eller mindre typisk for ADHD, uten at de av den grunn gir grunnlag for en diagnose. Denne testen består av ti utsagn formulert som funksjonsutsagn heller enn som symptompåstander. Den spør derfor ikke direkte om personen har ADHD, men om hvor lett eller vanskelig det er å komme i gang, holde fokus, huske avtaler, organisere tid, holde tankene i spor og fungere uten uvanlig mye ytre struktur.
+
+Formålet med denne noten er å beskrive hva resultatene faktisk støtter, og like viktig, hva de ikke støtter. Ambisjonen er ikke å gjøre testen mer sikker enn den er, men å formulere en presis mellomposisjon: testen ser ut til å måle noe reelt og psykometrisk sammenhengende, men dette ``noe'' er best forstått som et mønster av reguleringsfriksjon med relevans for ADHD, ikke som en diagnostisk fasit.
+
+\section{Datagrunnlag og screening}
+Den aktuelle analysekjøringen bygget på $N = 309$ rå besvarelser. Datasettet inneholdt i praksis nesten bare bokmålsbesvarelser, med svært få svar på nynorsk, engelsk og kvensk. I den aktuelle kjøringen ble ingen raske duplikater fjernet, mens 28 såkalte flate midtsvar ble ekskludert, det vil si besvarelser der alle ti utsagn var besvart med kategori 3. Analysene ble dermed estimert på 281 besvarelser.
+
+Den nyere renormeringskjøringen, som ble brukt til å oppdatere produksjonsmodellen, ga et lignende, men noe større materiale. Der ble 390 rå besvarelser hentet ut, og 346 beholdt etter kvalitetsfiltrering. Denne nyere kjøringen brukes her bare som støtte for den overordnede tolkningen, ikke som erstatning for hovedanalysen.
+
+\section{Programvare og analyseoppsett}
+Analysene ble gjennomført i \texttt{R} \parencite{RCore2026}. Den sentrale pakken var \texttt{mirt} \parencite{Chalmers2012mirt}, som ble brukt på flere måter:
+
+\begin{itemize}
+\item \texttt{mirt(..., itemtype = "graded")} ble brukt til å estimere graded response-modeller med én faktor, to faktorer og bifaktorstruktur.
+\item \texttt{fscores()} ble brukt til å beregne personskårer med EAP og MAP, samt sumskårebetingede forventede latent-skårer (\texttt{EAPsum}).
+\item \texttt{anova()} ble brukt til å sammenligne én- og tofaktormodellen.
+\item \texttt{M2()} ble brukt som global modellfit-indeks for enfaktormodellen.
+\item \texttt{itemfit()} ble brukt til itemdiagnostikk.
+\item \texttt{residuals(type = "Q3")} ble brukt til å undersøke lokal avhengighet mellom itemene.
+\end{itemize}
+
+Skriptet lastet også \texttt{careless} \parencite{YentesWilhelm2023careless}, men i den foreliggende kjøringen ble pakken ikke brukt eksplisitt i selve estimeringen. Kvalitetsscreeningen i denne analysen bestod i praksis av enkel logikk skrevet i base-\texttt{R}: sortering etter tid, fjerning av eventuelle raske duplikatmønstre og eksklusjon av flate midtsvar. Pakkene \texttt{stats4} og \texttt{lattice} \parencite{Sarkar2008lattice} ble lastet automatisk som avhengigheter av \texttt{mirt}; for \texttt{stats4} brukes standard sitering av \texttt{R} \parencite{RCore2026}.
+
+\section{Hovedfunn}
+\subsection{Enfaktormodellen}
+Enfaktormodellen ga et klart og homogent mønster. Faktorlastningene lå mellom 0.659 og 0.825, og alle itemene hadde moderate til høye kommunaliteter. Summen av ladningene tilsvarte 5.682, og andelen forklart varians var 0.568. Reliabiliteten var høy, både uttrykt som $\alpha = 0.904$ og som faktorbasert reliabilitet $r_{xx,F1} = 0.901$. Standard Error of Measurement var 3.066.
+
+Den globale fitten for enfaktormodellen var god i den aktuelle kjøringen. M2-testen ga $\chi^2(40)=16.177$, $p=1.00$, og residualstrukturen var rolig. Q3-residualene hadde et maksimum på 0.169, med et gjennomsnitt på omtrent $-0.095$, noe som taler mot alvorlig lokal avhengighet mellom itemene. På dette nivået ser testen altså ut til å oppføre seg som en velfungerende kortskala med én tydelig hoveddimensjon.
+
+\subsection{Tofaktormodellen}
+Når en tofaktormodell ble estimert, forbedret den fitten relativt til enfaktormodellen. Sammenligningen ga $\Delta \chi^2 = 68.12$ med 9 frihetsgrader og $p < .001$. Dette betyr at materialet ikke er perfekt endimensjonalt i streng statistisk forstand. Spørsmålet er imidlertid hva denne ekstra strukturen representerer.
+
+I de tidligere kjøringene kunne det se ut som om denne ekstra strukturen dels handlet om oppmerksomhetssvikt og dels om mer løs individuell variasjon eller metodeeffekter. Den nyere roterte tofaktorløsningen, estimert på det oppdaterte og filtrerte materialet, virker noe mer tolkbar. Der lastet item 1, 4, 5, 9 og 10 sterkest på én faktor, mens item 2, 3, 7 og 8 lastet sterkest på den andre. Item 6 viste mer blandet tilhørighet. De to faktorene var samtidig høyt korrelert ($r = 0.75$), noe som er svært viktig: den ekstra strukturen peker ikke mot to uavhengige trekk, men mot to nært beslektede uttrykk for en bredere reguleringsfaktor.
+
+\subsection{Bifaktormodellen}
+Bifaktormodellen gir den mest informative helhetsforståelsen. I den foreliggende analysen lastet alle ti itemene tydelig på generalfaktoren $G$, med ladninger fra 0.574 til 0.792. Samtidig kom det fram to svakere gruppefaktorer. Den første gruppefaktoren var i hovedsak knyttet til item 1--5, mens den andre var tydeligst knyttet til item 6 og i mindre grad item 7--10.
+
+Den avgjørende observasjonen er likevel at generalfaktoren bar mesteparten av fellesvariansen. Proportion Var var 0.529 for $G$, mot 0.039 og 0.065 for de to gruppefaktorene. Med andre ord: testen har mer struktur enn en ren enfaktormodell fullt ut fanger, men hovedinntrykket er fortsatt at én bred faktor dominerer.
+
+\section{Tolkning}
+Det mest forsvarlige utsagnet er derfor at testen ser ut til å fange en bred og gjennomgående dimensjon av reguleringsfriksjon som er relevant for ADHD-lignende vansker. Den sterke generalfaktoren taler for at det finnes minst én felles faktor i materialet som går på tvers av itemene, og som samler det mange klinikere og brukere intuitivt vil kjenne igjen som vansker med å holde hverdagen i gang på en stabil og selvstyrt måte.
+
+Det er fristende å omtale dette som ``en faktor som går igjen hos alle med ADHD''. Empirisk går dataene ikke så langt. Det foreligger verken diagnostiske gullstandarddata eller ekstern validering mot etablerte ADHD-instrumenter i dette materialet. Det dataene faktisk støtter, er en mer nøktern formulering: skalaen ser ut til å fange en bred og sannsynligvis sentral ADHD-relevant reguleringsfaktor som det er plausibelt å tenke at vil gå igjen på tvers av ulike ADHD-presentasjoner. Det er et viktig funn, men det er ikke det samme som å ha bevist at faktoren er universell for alle personer med ADHD.
+
+Den sekundære strukturen er likevel interessant og meningsfull. Den ser ikke lenger ut som ren støy. I den nyere løsningen framstår den ene siden av testen som mer knyttet til indre oppgaveengasjement: å starte opp, holde oppmerksomheten samlet, ikke være avhengig av kriseenergi, holde tankene på plass og klare seg uten mye ytre støtte. Den andre siden framstår som mer knyttet til ytre pålitelighet og praktisk organisering: å ikke miste ting, holde avtaler, huske beskjeder og få hverdagslogistikken til å fungere. Dette kan forstås som to uttrykk for samme overordnede vanskelighetsområde: en mer indre og en mer ytre side av regulering.
+
+\section{Hva testen rimelig kan sies å indikere}
+På et praktisk nivå er det derfor rimelig å si at testen indikerer hvor mye en persons selvrapporterte fungering ligner eller ikke ligner et ADHD-relevant mønster av reguleringsvansker. Høyere skårer tyder på mindre likhet med slike vansker. Lavere skårer tyder på større likhet. Dette kan brukes pedagogisk og som et strukturert utgangspunkt for refleksjon, særlig fordi testen ser ut til å være kort, konsistent og psykometrisk forholdsvis ren.
+
+Det er derimot ikke rimelig å si at testen avgjør om en person har ADHD. En lav skår kan være forenlig med ADHD, men også med en rekke andre forhold, som stress, søvnsvikt, depresjon, angst, overbelastning eller andre former for kognitiv og emosjonell slitasje. Tilsvarende kan en høy skår være forenlig med fravær av betydelige reguleringsvansker, men også med mild ADHD, kompenserte vansker eller et funksjonsnivå som er godt støttet av struktur, intelligens, rutiner eller miljøtilpasning.
+
+\section{Begrensninger}
+Det er flere åpenbare begrensninger. For det første bygger analysen på selvrapport. For det andre mangler materialet ekstern validering mot klinisk diagnostikk eller etablerte ADHD-skalaer. For det tredje er språkfordelingen skjev, slik at det foreløpig ikke er grunnlag for seriøse språkspesifikke normer eller målingsinvariansanalyser. For det fjerde er bifaktor- og tofaktorløsningene diagnostiske modeller i metodisk forstand; de er nyttige for å forstå datastrukturen, men de legitimerer ikke i seg selv at man begynner å tolke testen som to separate kliniske delskalaer.
+
+\section{Konklusjon}
+Den mest modne og vitenskapelig forsvarlige beskrivelsen av testen er at den fungerer som et kort, normert mål på reguleringsfriksjon med klar relevans for ADHD-lignende vansker. Resultatene støtter at det finnes en sterk og gjennomgående generalfaktor, altså en felles dimensjon som binder sammen oppstart, fokus, organisering, indre ro og stabil gjennomføring. Samtidig tyder både to-faktor- og bifaktormodellene på at denne generalfaktoren har en viss indre struktur, der en mer indre oppgave- og oppmerksomhetsrelatert side kan skilles fra en mer ytre, praktisk og pålitelighetsrelatert side.
+
+Det testen derfor rimelig kan sies å indikere, er ikke ``ADHD'' som diagnose, men graden av likhet mellom personens svar og et sammenhengende mønster av ADHD-relevant reguleringsfriksjon. Det er et viktig og nyttig funn. Men det er fortsatt et funn på funksjonsnivå, ikke et endelig svar på årsak, kategori eller klinisk identitet.
+
+\printbibliography
+
+\end{document}

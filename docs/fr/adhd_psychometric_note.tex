@@ -1,0 +1,105 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{csquotes}
+\usepackage[
+  backend=biber,
+  style=apa,
+  sorting=nyt
+]{biblatex}
+\addbibresource{adhd_psychometric_note.bib}
+\DeclareLanguageMapping{french}{french-apa}
+
+\setstretch{1.08}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  urlcolor=blue,
+  pdftitle={Ce que ce test peut raisonnablement indiquer},
+  pdfauthor={Grendel}
+}
+
+\title{Ce que ce test peut raisonnablement indiquer\\
+\large Une courte note psychométrique}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Ce texte résume ce qu’il est raisonnable d’affirmer qu’une courte échelle d’autoévaluation, formulée positivement et portant sur le démarrage, l’attention, l’organisation et la régulation, mesure réellement. Le point essentiel est que ce test ne peut pas être utilisé comme outil diagnostique du TDAH, mais qu’il semble capter une dimension large et cohérente de friction dans la régulation, pertinente pour des difficultés ressemblant au TDAH. En même temps, les modèles suggèrent que cette dimension large possède une certaine structure interne. L’interprétation la plus défendable est donc que le test mesure un facteur commun de régulation avec deux expressions partiellement distinctes : un versant plus interne lié à l’engagement dans la tâche et au maintien du fil mental, et un versant plus externe lié à la fiabilité pratique et à l’organisation du quotidien.
+\end{abstract}
+
+\section{Introduction}
+Il est facile de parler des questionnaires courts comme s’ils ``détectaient le TDAH'' ou ``ne détectaient pas le TDAH''. Une compréhension plus mûre consiste à reconnaître que de tels instruments mesurent le plus souvent un ensemble de difficultés auto-rapportées qui peuvent être plus ou moins typiques du TDAH, sans pour autant permettre d’établir un diagnostic. Ce test comprend dix énoncés formulés comme des descriptions de fonctionnement plutôt que comme des affirmations symptomatiques. Il ne demande donc pas directement si la personne a un TDAH, mais à quel point il lui est facile ou difficile de commencer une tâche, de garder son attention, de se souvenir des rendez-vous, d’organiser son temps, de garder ses pensées sur leur trajectoire et de fonctionner sans quantité inhabituelle de structure externe.
+
+L’objectif de cette note est de décrire ce que les résultats soutiennent réellement, et tout aussi important, ce qu’ils ne soutiennent pas. L’ambition n’est pas de rendre le test plus certain qu’il ne l’est, mais de formuler une position intermédiaire précise : le test semble mesurer quelque chose de réel et de psychométriquement cohérent, mais ce ``quelque chose'' se comprend le mieux comme un motif de friction dans la régulation ayant une pertinence pour le TDAH, et non comme un verdict diagnostique.
+
+\section{Données et filtrage}
+L’analyse actuelle reposait sur $N = 309$ réponses brutes. En pratique, le jeu de données était presque entièrement composé de réponses en bokmål, avec très peu de réponses en nynorsk, en anglais et en kvène. Dans cette exécution, aucun doublon rapide n’a été retiré, tandis que 28 profils plats au milieu de l’échelle ont été exclus, c’est-à-dire des réponses où les dix items avaient tous été cotés 3. Les analyses ont donc été estimées sur 281 réponses.
+
+La nouvelle exécution de renormage, utilisée pour mettre à jour le modèle de production, a produit un matériel similaire mais un peu plus important. Dans ce cas, 390 profils bruts ont été extraits et 346 ont été conservés après filtrage de qualité. Cette exécution plus récente n’est utilisée ici que comme soutien à l’interprétation générale, et non comme remplacement de l’analyse principale.
+
+\section{Logiciels et cadre d’analyse}
+Les analyses ont été réalisées dans \texttt{R} \parencite{RCore2026}. Le paquet central était \texttt{mirt} \parencite{Chalmers2012mirt}, utilisé de plusieurs manières :
+
+\begin{itemize}
+\item \texttt{mirt(..., itemtype = "graded")} a été utilisé pour estimer des modèles graded response à un facteur, à deux facteurs et à structure bifactorielle.
+\item \texttt{fscores()} a été utilisé pour calculer des scores individuels par EAP et MAP, ainsi que des scores latents attendus conditionnés par le score total (\texttt{EAPsum}).
+\item \texttt{anova()} a été utilisé pour comparer le modèle à un facteur et le modèle à deux facteurs.
+\item \texttt{M2()} a été utilisé comme indice global d’ajustement pour le modèle à un facteur.
+\item \texttt{itemfit()} a été utilisé pour le diagnostic des items.
+\item \texttt{residuals(type = "Q3")} a été utilisé pour examiner la dépendance locale entre les items.
+\end{itemize}
+
+Le script chargeait aussi \texttt{careless} \parencite{YentesWilhelm2023careless}, mais dans l’exécution présente ce paquet n’a pas été utilisé explicitement dans l’estimation elle-même. En pratique, le filtrage de qualité dans cette analyse reposait sur une logique simple écrite en base-\texttt{R} : tri par temps, suppression d’éventuels motifs dupliqués rapprochés et exclusion des profils plats au milieu de l’échelle. Les paquets \texttt{stats4} et \texttt{lattice} \parencite{Sarkar2008lattice} ont été chargés automatiquement comme dépendances de \texttt{mirt}; pour \texttt{stats4}, la citation standard de \texttt{R} est utilisée \parencite{RCore2026}.
+
+\section{Principaux résultats}
+\subsection{Le modèle à un facteur}
+Le modèle à un facteur a produit un schéma clair et homogène. Les saturations factorielles allaient de 0.659 à 0.825, et tous les items montraient des communalités modérées à élevées. La somme des saturations correspondait à 5.682, et la proportion de variance expliquée était de 0.568. La fidélité était élevée, à la fois sous la forme de $\alpha = 0.904$ et de fidélité fondée sur le facteur $r_{xx,F1} = 0.901$. Le Standard Error of Measurement était de 3.066.
+
+L’ajustement global du modèle à un facteur était bon dans cette exécution. Le test M2 a donné $\chi^2(40)=16.177$, $p=1.00$, et la structure des résidus était calme. Les résidus Q3 avaient un maximum de 0.169, avec une moyenne d’environ $-0.095$, ce qui va contre l’idée d’une dépendance locale sévère entre les items. À ce niveau, le test se comporte donc comme une courte échelle fonctionnelle avec une dimension dominante claire.
+
+\subsection{Le modèle à deux facteurs}
+Lorsqu’un modèle à deux facteurs a été estimé, il a amélioré l’ajustement par rapport au modèle à un facteur. La comparaison a donné $\Delta \chi^2 = 68.12$ avec 9 degrés de liberté et $p < .001$. Cela signifie que le matériel n’est pas parfaitement unidimensionnel au sens statistique strict. La question importante est toutefois de savoir ce que représente cette structure supplémentaire.
+
+Dans les premières exécutions, cette structure additionnelle pouvait ressembler en partie à des difficultés attentionnelles et en partie à de la variation individuelle plus lâche ou à des effets de méthode. La solution rotée à deux facteurs obtenue plus récemment, estimée sur le matériel mis à jour et filtré, paraît un peu plus interprétable. Dans cette solution, les items 1, 4, 5, 9 et 10 chargeaient surtout sur un facteur, tandis que les items 2, 3, 7 et 8 chargeaient surtout sur l’autre. L’item 6 montrait un profil plus mixte. En même temps, les deux facteurs étaient fortement corrélés ($r = 0.75$), ce qui est très important : la structure supplémentaire ne pointe pas vers deux traits indépendants, mais vers deux expressions proches d’un facteur de régulation plus large.
+
+\subsection{Le modèle bifactoriel}
+Le modèle bifactoriel offre la vision d’ensemble la plus informative. Dans l’analyse présente, les dix items chargeaient nettement sur le facteur général $G$, avec des saturations allant de 0.574 à 0.792. En même temps, deux facteurs de groupe plus faibles apparaissaient. Le premier facteur de groupe était principalement lié aux items 1--5, tandis que le second était le plus nettement lié à l’item 6 et, dans une moindre mesure, aux items 7--10.
+
+L’observation décisive reste toutefois que le facteur général portait l’essentiel de la variance commune. Proportion Var était de 0.529 pour $G$, contre 0.039 et 0.065 pour les deux facteurs de groupe. Autrement dit, le test présente plus de structure qu’un pur modèle à un facteur n’en capte complètement, mais l’impression principale reste qu’un facteur large domine.
+
+\section{Interprétation}
+L’énoncé le plus défendable est donc que le test semble capter une dimension large et récurrente de friction dans la régulation, pertinente pour des difficultés ressemblant au TDAH. Le facteur général fort suggère qu’il existe dans les données au moins un facteur commun qui traverse les items et rassemble ce que beaucoup de cliniciens et de répondants reconnaîtraient intuitivement comme des difficultés à faire fonctionner la vie quotidienne de manière stable et auto-dirigée.
+
+Il est tentant de décrire cela comme ``un facteur qui apparaît chez toutes les personnes ayant un TDAH''. Empiriquement, les données ne vont pas jusque-là. Ce matériel ne contient ni données diagnostiques de référence ni validation externe contre des instruments établis du TDAH. Ce que les données soutiennent réellement est une formulation plus retenue : l’échelle semble capter un facteur de régulation large et probablement central, pertinent pour le TDAH, dont il est plausible qu’il se retrouve à travers différentes présentations du TDAH. C’est un résultat important, mais ce n’est pas la même chose que démontrer que ce facteur est universel chez toutes les personnes ayant un TDAH.
+
+La structure secondaire reste néanmoins intéressante et riche de sens. Elle ne ressemble plus à un simple bruit. Dans la solution plus récente, un versant du test paraît davantage lié à l’engagement interne dans la tâche : commencer, maintenir l’attention, ne pas dépendre de l’énergie de crise, garder les pensées en ligne et se débrouiller sans trop de soutien externe. L’autre versant paraît davantage lié à la fiabilité extérieure et à l’organisation pratique : ne pas perdre des choses, tenir ses rendez-vous, se souvenir des messages et faire tenir la logistique du quotidien. On peut comprendre cela comme deux expressions d’un même domaine général de difficulté : un versant plus interne et un versant plus externe de la régulation.
+
+\section{Ce que le test peut raisonnablement indiquer}
+Sur le plan pratique, il est donc raisonnable de dire que le test indique dans quelle mesure le fonctionnement auto-rapporté d’une personne ressemble ou non à un profil de difficultés de régulation pertinent pour le TDAH. Des scores plus élevés suggèrent une moindre ressemblance avec ce profil. Des scores plus faibles suggèrent une ressemblance plus grande. Cela peut servir de point de départ structuré pour la réflexion, d’autant plus que le test paraît court, cohérent et psychométriquement assez propre.
+
+En revanche, il n’est pas raisonnable de dire que le test décide si une personne a ou non un TDAH. Un score faible peut être compatible avec un TDAH, mais aussi avec toute une série d’autres conditions, comme le stress, le manque de sommeil, la dépression, l’anxiété, la surcharge ou d’autres formes d’usure cognitive et émotionnelle. De la même manière, un score élevé peut être compatible avec l’absence de difficultés marquées de régulation, mais aussi avec un TDAH léger, des difficultés compensées ou un niveau de fonctionnement bien soutenu par la structure, l’intelligence, les routines ou l’adaptation de l’environnement.
+
+\section{Limites}
+Plusieurs limites sont évidentes. Premièrement, l’analyse repose sur l’auto-rapport. Deuxièmement, le matériel ne dispose pas de validation externe contre un diagnostic clinique ou des échelles établies du TDAH. Troisièmement, la distribution des langues est déséquilibrée, de sorte qu’il n’existe pas encore de base solide pour des normes spécifiques à chaque langue ou des analyses d’invariance de mesure. Quatrièmement, les solutions bifactorielle et à deux facteurs sont des modèles diagnostiques au sens méthodologique : elles sont utiles pour comprendre la structure des données, mais ne justifient pas à elles seules de commencer à interpréter le test comme deux sous-échelles cliniques distinctes.
+
+\section{Conclusion}
+La description la plus mûre et la plus défendable scientifiquement du test est qu’il fonctionne comme une mesure courte et étalonnée de la friction dans la régulation, avec une pertinence claire pour des difficultés ressemblant au TDAH. Les résultats soutiennent l’existence d’un facteur général fort et récurrent, c’est-à-dire d’une dimension partagée qui relie le démarrage, l’attention, l’organisation, le calme intérieur et la capacité de mener les choses à terme de façon stable. En même temps, les modèles à deux facteurs et bifactoriels suggèrent que ce facteur général possède une certaine structure interne, où l’on peut distinguer un versant plus interne, lié à la tâche et à l’attention, d’un versant plus externe, pratique et lié à la fiabilité.
+
+Ce que le test peut donc raisonnablement être dit indiquer n’est pas un ``TDAH'' comme diagnostic, mais le degré de ressemblance entre les réponses d’une personne et un motif cohérent de friction de régulation pertinent pour le TDAH. C’est un résultat important et utile. Mais il reste un résultat au niveau du fonctionnement, et non une réponse définitive quant à la cause, à la catégorie ou à l’identité clinique.
+
+\printbibliography
+
+\end{document}

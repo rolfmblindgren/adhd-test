@@ -1,0 +1,105 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{csquotes}
+\usepackage[
+  backend=biber,
+  style=apa,
+  sorting=nyt
+]{biblatex}
+\addbibresource{adhd_psychometric_note.bib}
+\DeclareLanguageMapping{english}{english-apa}
+
+\setstretch{1.08}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  urlcolor=blue,
+  pdftitle={What this test can reasonably be said to indicate},
+  pdfauthor={Grendel}
+}
+
+\title{What this test can reasonably be said to indicate\\
+\large A brief psychometric note}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This note summarizes what it is reasonable to claim that a short, positively worded self-report scale about task initiation, focus, organization, and regulation is actually measuring. The main point is that the test should not be used as a diagnostic tool for ADHD, but that it appears to capture a broad and coherent dimension of regulatory friction that is relevant to ADHD-like difficulties. At the same time, the models suggest that this broad dimension has some internal structure. The most defensible interpretation, then, is that the test measures a shared regulatory factor with two partly distinguishable expressions: a more internal pattern tied to task engagement and mental track-keeping, and a more outward pattern tied to practical reliability and everyday organization.
+\end{abstract}
+
+\section{Introduction}
+It is easy to talk about short questionnaires as if they either ``detect ADHD'' or ``do not detect ADHD.'' A more mature view is that instruments like this usually measure a pattern of self-reported difficulties that may be more or less typical of ADHD, without thereby establishing a diagnosis. This test consists of ten statements framed as functional descriptions rather than symptom claims. It does not ask directly whether a person has ADHD. Instead, it asks how easy or difficult it is to get started, stay focused, remember appointments, organize time, keep thoughts on track, and function without unusual amounts of external structure.
+
+The purpose of this note is to describe what the results actually support, and just as important, what they do not support. The aim is not to make the test sound more certain than it is, but to state a precise middle position: the test appears to measure something real and psychometrically coherent, but that ``something'' is best understood as a pattern of regulatory friction relevant to ADHD, not as a diagnostic verdict.
+
+\section{Data and screening}
+The current analytic run was based on $N = 309$ raw responses. In practice, the dataset consisted almost entirely of Bokm\r{a}l responses, with only a small number of responses in Nynorsk, English, and Kven. In this run, no rapid duplicates were removed, while 28 flat middle-response patterns were excluded, meaning response sets in which all ten items were answered with category 3. The analyses were therefore estimated on 281 responses.
+
+The newer renorming run, which was used to update the production model, yielded a similar but somewhat larger dataset. In that run, 390 raw response sets were extracted, and 346 were retained after quality filtering. The newer run is used here only as supporting context for the overall interpretation, not as a replacement for the main analysis.
+
+\section{Software and analytic setup}
+The analyses were carried out in \texttt{R} \parencite{RCore2026}. The central package was \texttt{mirt} \parencite{Chalmers2012mirt}, which was used in several ways:
+
+\begin{itemize}
+\item \texttt{mirt(..., itemtype = "graded")} was used to estimate graded response models with one factor, two factors, and a bifactor structure.
+\item \texttt{fscores()} was used to compute person scores using EAP and MAP, as well as expected latent scores conditional on total score (\texttt{EAPsum}).
+\item \texttt{anova()} was used to compare the one-factor and two-factor models.
+\item \texttt{M2()} was used as a global model-fit index for the one-factor model.
+\item \texttt{itemfit()} was used for item-level diagnostics.
+\item \texttt{residuals(type = "Q3")} was used to examine local dependence among items.
+\end{itemize}
+
+The script also loaded \texttt{careless} \parencite{YentesWilhelm2023careless}, but in the current run the package was not used explicitly in the estimation itself. In practice, quality screening in this analysis relied on simple base-\texttt{R} logic: sorting by time, removing any rapid duplicate patterns, and excluding flat middle responses. The \texttt{stats4} and \texttt{lattice} packages \parencite{Sarkar2008lattice} were loaded automatically as dependencies of \texttt{mirt}; for \texttt{stats4}, the standard citation for \texttt{R} is used \parencite{RCore2026}.
+
+\section{Main findings}
+\subsection{The one-factor model}
+The one-factor model produced a clear and homogeneous pattern. Factor loadings ranged from 0.659 to 0.825, and all items showed moderate to high communalities. The sum of squared loadings was 5.682, and the proportion of explained variance was 0.568. Reliability was high, both as $\alpha = 0.904$ and as factor-based reliability $r_{xx,F1} = 0.901$. The Standard Error of Measurement was 3.066.
+
+Global fit for the one-factor model was good in this run. The M2 test gave $\chi^2(40)=16.177$, $p=1.00$, and the residual structure was quiet. The Q3 residuals had a maximum of 0.169 and a mean of about $-0.095$, which argues against serious local dependence among the items. At this level, then, the test behaves like a well-functioning short scale with one clear dominant dimension.
+
+\subsection{The two-factor model}
+When a two-factor model was estimated, it improved fit relative to the one-factor model. The comparison yielded $\Delta \chi^2 = 68.12$ with 9 degrees of freedom and $p < .001$. This means the material is not perfectly unidimensional in a strict statistical sense. The key question, though, is what that extra structure represents.
+
+In earlier runs, the added structure could look like a mix of attentional difficulty and looser person-specific variation or method effects. The newer rotated two-factor solution, estimated on the updated and filtered dataset, looks somewhat more interpretable. In that solution, items 1, 4, 5, 9, and 10 loaded most strongly on one factor, while items 2, 3, 7, and 8 loaded most strongly on the other. Item 6 showed a more mixed pattern. At the same time, the two factors were highly correlated ($r = 0.75$), and that matters a great deal: the extra structure does not point to two independent traits, but to two closely related expressions of a broader regulatory factor.
+
+\subsection{The bifactor model}
+The bifactor model provides the most informative overall view. In the present analysis, all ten items loaded clearly on the general factor $G$, with loadings from 0.574 to 0.792. At the same time, two weaker group factors emerged. The first group factor was mainly tied to items 1--5, while the second was clearest for item 6 and, to a lesser extent, items 7--10.
+
+The decisive observation, however, is that the general factor carried most of the shared variance. Proportion Var was 0.529 for $G$, compared with 0.039 and 0.065 for the two group factors. In other words, the test has more structure than a pure one-factor model fully captures, but the main impression is still that one broad factor dominates.
+
+\section{Interpretation}
+The most defensible statement, then, is that the test appears to capture a broad and recurring dimension of regulatory friction that is relevant to ADHD-like difficulties. The strong general factor suggests that there is at least one common factor in the data that cuts across items and gathers what many clinicians and respondents would intuitively recognize as difficulty keeping everyday life moving in a steady, self-directed way.
+
+It is tempting to describe this as ``a factor that shows up in everyone with ADHD.'' Empirically, the data do not go that far. This material does not include diagnostic gold-standard data or external validation against established ADHD instruments. What the data do support is a more restrained statement: the scale appears to capture a broad and probably central ADHD-relevant regulatory factor that it is plausible to expect across different ADHD presentations. That is an important finding, but it is not the same as proving that the factor is universal to all people with ADHD.
+
+The secondary structure is still interesting and meaningful. It no longer looks like mere noise. In the newer solution, one side of the test appears more tied to inner task engagement: getting started, keeping attention together, not depending on crisis energy, keeping thoughts in line, and managing without heavy external scaffolding. The other side appears more tied to outward reliability and practical organization: not losing things, keeping appointments, remembering messages, and making day-to-day logistics hold together. This can be understood as two expressions of the same overarching difficulty area: a more internal and a more external side of regulation.
+
+\section{What the test can reasonably be said to indicate}
+At a practical level, it is therefore reasonable to say that the test indicates how much a person's self-reported functioning does or does not resemble an ADHD-relevant pattern of regulatory difficulty. Higher scores suggest less resemblance to that pattern. Lower scores suggest more resemblance. That can be useful pedagogically and as a structured starting point for reflection, especially because the test appears to be short, consistent, and psychometrically fairly clean.
+
+What is not reasonable is to say that the test decides whether a person has ADHD. A low score may be consistent with ADHD, but it may also fit a range of other conditions, including stress, sleep loss, depression, anxiety, overload, or other forms of cognitive and emotional wear. In the same way, a high score may be consistent with the absence of meaningful regulatory difficulty, but it may also fit mild ADHD, compensated difficulties, or a level of functioning supported by structure, intelligence, routines, or environmental adaptations.
+
+\section{Limitations}
+Several limitations are plain. First, the analysis is based on self-report. Second, the material lacks external validation against clinical diagnosis or established ADHD scales. Third, the language distribution is skewed, so there is not yet a solid basis for serious language-specific norms or measurement-invariance analyses. Fourth, the bifactor and two-factor solutions are diagnostic models in a methodological sense: they are useful for understanding the structure of the data, but they do not by themselves justify interpreting the test as two separate clinical subscales.
+
+\section{Conclusion}
+The most mature and scientifically defensible description of the test is that it functions as a short, normed measure of regulatory friction with clear relevance to ADHD-like difficulties. The results support the existence of a strong and recurring general factor, that is, a shared dimension tying together task initiation, focus, organization, inner calm, and stable follow-through. At the same time, both the two-factor and bifactor models suggest that this general factor has some internal structure, where a more internal task- and attention-related side can be distinguished from a more outward, practical, reliability-related side.
+
+What the test can therefore reasonably be said to indicate is not ``ADHD'' as a diagnosis, but the degree of similarity between a person's responses and a coherent pattern of ADHD-relevant regulatory friction. That is an important and useful finding. But it is still a finding at the level of functioning, not a final answer about cause, category, or clinical identity.
+
+\printbibliography
+
+\end{document}

@@ -1,0 +1,105 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{csquotes}
+\usepackage[
+  backend=biber,
+  style=apa,
+  sorting=nyt
+]{biblatex}
+\addbibresource{adhd_psychometric_note.bib}
+\DeclareLanguageMapping{english}{english-apa}
+
+\setstretch{1.08}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  urlcolor=blue,
+  pdftitle={Mitä tämä testi kohtuulisesti voipii ossoottaa},
+  pdfauthor={Grendel}
+}
+
+\title{Mitä tämä testi kohtuulisesti voipii ossoottaa\\
+\large Lyhyt psykometrinen huomio}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Tämä teksti kokkoaa yhteen, mitä oon kohtuulista sanoa siitä, mitä lyhyt, positiivisesti muotoiltu itseraporttiskaala alottamisesta, fokuksesta, organisoinista ja säätelystä oikeasti mittaa. Pääasia oon se, ette testiä ei voi käyttää ADHD:n diagnostisena välineenä, mutta se näyttää mittaavan laajaa ja yhtenäistä säätelykitkan ulottuvuutta, joka oon olennainen ADHD:n tapasiin vaikeuksiin nähđhen. Samala mallit näyttävät, ette tällä laajalla ulottuvuulella oon jonkinmoinen sisäinen rakenne. Puolustettavin tulkinta oon siksi se, ette testi mittaa yhteistä säätelyfaktoria, jolla oon kaksi osittain erottuvaa ilmenemismuotoa: sisempi puoli, joka liittyy tehtävään sitoutumiseen ja ajatusten linjassa pitämisseen, ja ulompi puoli, joka liittyy käytännölliseen luotettavuutheen ja arjen organisointiin.
+\end{abstract}
+
+\section{Alku}
+Lyhyistä kyselyistä oon heleppo puhua niin ko ne joko ``löytävät ADHD:n'' eli ``eivät löyä ADHD:ta''. Kypsempi ymmärrys oon, ette tämmöiset välineet mittaavat tavalisesti itseraportoituja vaikeuksia, jotka voipaat olla enemmän eli vähemmän tyypillisiä ADHD:lle, mutta jokka eivät silti anna diagnoosia. Tässä testissä oon kymmenen lausetta, jokka oon muotoiltu toiminnan kuvauksiksi eikä symptomiväittämiksi. Se ei siksi kysy suoraan, onko ihmisellä ADHD, vaan kuinka heleppoa eli vaikeaa oon päästä alkuun, pitää fokus, muistaa sovitut asiat, järjestää aikaa, pitää ajatukset linjassa ja toimia ilman poikkeuksellisen paljon ulkopuolista struktuuria.
+
+Tämän huomion tarkotus oon kuvata, mitä tulokset oikeasti tukkeevat, ja yhtä tärkeästi, mitä ne eivät tue. Tarkotus ei ole tehä testistä varmeman kuulosta kuin se oon, vaan muotoilla tarkka väliasema: testi näyttää mittaavan jotaki todellista ja psykometrisesti yhtenäistä, mutta tämä ``jotaki'' ymmärrethään parhaiten säätelykitkan malliksi, jolla oon merkitystä ADHD:n kannalta, ei diagnostiseksi tuomioksi.
+
+\section{Aineisto ja seulonta}
+Nykyinen analyysiajo perustu $N = 309$ raakavastaukseen. Aineisto sisälsi käytännössä melkein tyhä bokmål-vastauksia, ja hyvin vähän vastauksia nynorskiksi, englanniksi ja kvääniksi. Tällä ajolla ei poistettu noppeita duplikaatteja, mutta 28 niin sanottua tasaista keskivastausta poistethiin, eli vastausprofiilia jossa kaikki kymmenen kohtaa oli merkitty kategorihaan 3. Sen jälkhiin analyysit estiimoithiin 281 vastaukseen.
+
+Uuempi renormeeringsajo, jota käytethiin tuotantomallin päivittämisseen, antoi samantapaisen mutta vähän isomman aineiston. Siinä haethiin ulos 390 raakavastausta ja 346 jäi jäljelle laatufiltteröinnin jälkhiin. Tätä uuempaa ajoa käytethään tässä vain tukemaan ylheistä tulkintaa, ei korvaamaan pääanalyysii.
+
+\section{Ohjelmisto ja analyysin rakenne}
+Analyysit tehtihiin \texttt{R}:ssä \parencite{RCore2026}. Keskinen paketti oli \texttt{mirt} \parencite{Chalmers2012mirt}, jota käytethiin monella tavoin:
+
+\begin{itemize}
+\item \texttt{mirt(..., itemtype = "graded")} käytethiin graded response -mallien estimointiin yhdellä faktorila, kahela faktorila ja bifaktorirakenteela.
+\item \texttt{fscores()} käytethiin henkilökohtasten skoorien laskemisseen EAP- ja MAP-menetelmillä sekä summapistemäärään ehtolistetuille latenttiskoorille (\texttt{EAPsum}).
+\item \texttt{anova()} käytethiin yhen faktorin ja kahen faktorin mallien vertaamisheen.
+\item \texttt{M2()} käytethiin yhen faktorin mallin ylheisenä fit-indikaattorina.
+\item \texttt{itemfit()} käytethiin itemdiagnostiikkaan.
+\item \texttt{residuals(type = "Q3")} käytethiin tarkastelemaan lokaalista riippuvuutta itemien välissä.
+\end{itemize}
+
+Skripti latasi kans \texttt{careless}-paketin \parencite{YentesWilhelm2023careless}, mutta tässä ajossa sitä ei käytetty suoraan varsinaisessa estimoinissa. Laadunseulonta perustu käytännössä yksinkertaisheen base-\texttt{R}-logiikkhaan: järjestethiin vastaukset aijan mukhaan, poistethiin maholliset noppeat duplikaattimallit ja jätethiin pois tasaiset keskivastaukset. \texttt{stats4}- ja \texttt{lattice}-paketit \parencite{Sarkar2008lattice} lattaantuivat automaattisesti \texttt{mirt}:n riippuvuuksina; \texttt{stats4}:n kohala käytethään tavallista \texttt{R}:n siteerausta \parencite{RCore2026}.
+
+\section{Pääfyndit}
+\subsection{Yhen faktorin malli}
+Yhen faktorin malli antoi selkeän ja yhtenäisen kuvion. Faktorilataukset olivat välillä 0.659--0.825, ja kaikki itemit näyttivät kohtalaisia eli korkeita kommunaliteetteja. Latausten summa vastasi 5.682:ta, ja selitetyn varianssin osuus oli 0.568. Reliabiliteetti oli korkea sekä muodossa $\alpha = 0.904$ että faktoriperustaisena reliabiliteettina $r_{xx,F1} = 0.901$. Standard Error of Measurement oli 3.066.
+
+Yhen faktorin mallin ylheinen sopivuus oli hyvä tällä ajolla. M2-testi antoi $\chi^2(40)=16.177$, $p=1.00$, ja residuaalirakenne oli rauhalinen. Q3-residuaalien maksimi oli 0.169 ja keskiarvo noin $-0.095$, mikä puhhuu sitä vastoin ettei itemien välillä ois vakavaa lokaalista riippuvuutta. Tällä tasola testi käyttäytyy hyvin toimivana lyhyenä skaalana, jolla oon yksi selvä pääulottuvuus.
+
+\subsection{Kahen faktorin malli}
+Ko kahen faktorin malli estiimoithiin, sen sopivuus parani suhteessa yhen faktorin malliin. Vertailu antoi $\Delta \chi^2 = 68.12$ 9 vapausasteela ja $p < .001$. Tämä tarkottaa, ette aineisto ei ole täydelisesti yhulotteinen tiukassa statistisessa mielessä. Ratkaiseva kysymys oon kuitenkin se, mitä tämä lisärakenne kuvaa.
+
+Varhaisemmissa ajoissa lisärakenne saattoi näyttää osittain huomiovaikeuksilta ja osittain löysemmältä yksilölliseltä vaihtelulta eli menetelmäefektiltä. Uuempi rotatoitu kahen faktorin ratkaisu, joka estiimoithiin päivitetystä ja filtteröidystä aineistosta, näyttää vähän tulkittavammalta. Siinä itemit 1, 4, 5, 9 ja 10 lattautuivat vahvimmin yhdelle faktorille, ko taas itemit 2, 3, 7 ja 8 lattautuivat vahvimmin toiselle. Itemillä 6 oli sekotetumpi kuvio. Samala faktorien välinen korrelaatio oli korkea ($r = 0.75$), ja juuri se oon tärkeää: lisärakenne ei viittaa kahteen toisistaan riippumattomhaan piirteesseen, vaan kahteen läheiseen ilmenemismuotoon laajemmassa säätelyfaktorissa.
+
+\subsection{Bifaktorimalli}
+Bifaktorimalli antaa informatiivisimman kokonaiskuvan. Tässä analyysissä kaikki kymmenen itemiä lattautuivat selvästi ylheiselle faktorille $G$, latausten vaihellessa 0.574:stä 0.792:heen. Samala eshiin tuli kaksi heikompaa ryhmäfaktoria. Ensimmäinen ryhmäfaktori liittyi pääosin itemeihin 1--5, ko taas toinen näkyi selvimmin itemissä 6 ja vähäisemmässä määrin itemeissä 7--10.
+
+Ratkaiseva havainto oon silti se, ette ylheinen faktori kantoi suuriman osan yhteisestä varianssista. Proportion Var oli 0.529 faktorille $G$, ko taas kahtele ryhmäfaktorille 0.039 ja 0.065. Toisin sanoen testissä oon enemmän rakennetta kuin puhas yhen faktorin malli täysin tavottaa, mutta päävaikutelma pysyy samana: yksi laaja faktori hallittee.
+
+\section{Tulkinta}
+Puolustettavin lausuma oon siksi se, ette testi näyttää tavoittavan laajan ja toistuvan säätelykitkan ulottuvuuen, jolla oon merkitystä ADHD:n tapasiin vaikeuksiin nähđhen. Vahva ylheinen faktori viittaa siihen, ette aineistossa oon vähintään yksi yhteinen tekijä, joka kulkee itemien poikki ja kokkoo sen, minkä moni kliinikko ja vastaaja tunnistais intuitiivisesti vaikeuksiksi pitää arki käynnissä vakaala ja iteohjautuvalla tavalla.
+
+Houkuttelevaa ois kuvata tätä ``tekijäksi, joka löytyy kaikilta ADHD:n kans eläviltä''. Empiirisesti aineisto ei mene niin pitkälle. Tässä materiaalissa ei ole diagnostista kultastandardia eikä ulkoista validointia vakiintuneita ADHD-instrumentteja vasten. Se, mitä aineisto oikeasti tukkee, oon varovaisempi muotoilu: skaala näyttää tavoittavan laajan ja todennäkösesti keskeisen ADHD:lle relevantin säätelyfaktorin, jonka voipii ajatella toistuvan eri ADHD-ilmenemismuotojen halki. Tämä oon tärkeä löyös, mutta se ei ole sama asia ko todistaa faktorin universaalisuutta kaikilla ADHD-ihmisillä.
+
+Sekundäärinen rakenne oon silti mielenkiintonen ja merkityksellinen. Se ei enää näytä pelkältä kohinalta. Uuemmassa ratkaisussa testin toinen puoli näyttää liittyvän enemmän sisäiseen tehtäväaktiivisuutheen: liikkeelle päässemisseen, huomion koossa pitämisseen, siihen ettei tarvii kriisienergiaa, ajatusten kasassa pitämisseen ja pärjäämisseen ilman raskasta ulkoista tukea. Toinen puoli näyttää liittyvän enemmän ulkoiseen luotettavuutheen ja käytännölliseen organisointiin: tavaroitten hukkaamattomhuutheen, sovituista ajoista kiinni pitämisseen, viestien muistamisseen ja arkilogistiikan toiminnassa pitämisseen. Tämän voipii ymmärtäät samhan ylätason vaikeusalueeseen kuuluviksi kahdeksi ilmenemismuovoksi: sisemmäksi ja ulommaksi säätelyn puoleksi.
+
+\section{Mitä testi kohtuulisesti voipii ossoottaa}
+Käytännöllisellä tasola oon siksi kohtuulista sanoa, ette testi osoittaa, kuinka paljon ihmisen itse kuvaama toiminta muistuttaa eli ei muistuta ADHD:lle relevanttia säätelyvaikeuksien mallia. Korkeammat skoorit viittaavat pienemphään samankaltaisuutheen tämän mallin kans. Matalaammat skoorit viittaavat suuremphaan samankaltaisuutheen. Tätä voipii käyttää järjestettynä lähtökohtana omhaan pohdinthaan, erityisesti koska testi näyttää olevan lyhyt, johdonmukainen ja psykometrisesti melko siisti.
+
+Se, mitä ei ole kohtuulista sanoa, oon ette testi päättää, onko ihmisellä ADHD. Matala skoora saattaa sopia ADHD:heen, mutta yhtä hyvin stressiin, univajeheseen, depressioon, ahistuksheen, ylikuormituksheen eli muihin kognitiivisen ja emotionaalisen kulumisen muotoihin. Samoin korkea skoora saattaa sopia siihen, ettei merkittävää säätelyvaikeutta ole, mutta yhtä hyvin lievähän ADHD:heen, kompensoituihin vaikeuksiin eli toiminnan tasoon, jota tukkeevat rakenne, älykkyys, rutiinit eli ympäristön mukhautukset.
+
+\section{Rajat}
+Rajotuksia oon monta. Ensiksi analyysi perustuu itseraporttiin. Toiseksi aineistosta puuttuu ulkoinen validointi kliinistä diagnoosia eli vakiintuneita ADHD-skaaloja vasten. Kolmanneksi kielijakauma oon vino, joten vakavia kielikohtasia normeja eli mittausinvarianssianalyysejä varten ei vielä ole tarpeeksi pohjaa. Neljänneksi bifaktori- ja kahen faktorin ratkaisut oon diagnostisia malleja metodisessa merkityksessä: ne auttaavat ymmärtämhään aineiston rakennetta, mutta eivät itessään oikeuta tulkittemhaan testiä kahtena erillisenä kliinisenä alaskaalana.
+
+\section{Lopetus}
+Kypsein ja tieteelisesti puolustettavin tapa kuvata testiä oon, ette se toimii lyhyenä normitettuna säätelykitkan mittana, jolla oon selvä merkitys ADHD:n tapasiin vaikeuksiin nähđhen. Tulokset tukkeevat vahvan ja toistuvan ylheisen faktorin olemassaoloo, eli yhteistä ulottuvuutta, joka sittoo yhhteen alottamisen, fokuksen, organisoinin, sisäisen rauhan ja vakaasti loppuun viemisen. Samala sekä kahen faktorin että bifaktorin mallit viittaavat siihen, ette tällä ylheisellä faktorilla oon jokin sisäinen rakenne, jossa sisempi tehtäviin ja huomhiin liittyvä puoli erottuu ulommasta, käytännöllisestä ja luotettavuuteen liittyvästä puolesta.
+
+Se, mitä testi siis kohtuulisesti voipii ossoottaa, ei ole ``ADHD'' diagnoosina, vaan se aste, jolla ihmisen vastaukset muistuttavat yhtenäistä ADHD:lle relevanttia säätelykitkan mallia. Tämä oon tärkeä ja hyödyllinen löyös. Mutta se pysyy silti toiminnan tason löyöksenä eikä anna lopullista vastausta syyhyn, kategoriaan eli kliiniseen identiteettiin.
+
+\printbibliography
+
+\end{document}
