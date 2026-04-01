@@ -397,8 +397,8 @@ server <- function(input, output, session) {
         amount_nok = amount_nok,
         success_url = success_url,
         cancel_url = cancel_url,
-        product_name = "Stott ADHD-appen",
-        product_description = "Frivillig stotte til videre arbeid med ADHD-appen",
+        product_name = i18n$t("Støtt ADHD-appen"),
+        product_description = i18n$t("Frivillig støtte til videre arbeid med ADHD-appen"),
         metadata = list(
           app = "ADHD",
           donation_amount_nok = format(amount_nok, trim = TRUE, scientific = FALSE),
