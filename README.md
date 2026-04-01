@@ -9,9 +9,13 @@ Dette er en liten Shiny-applikasjon som viser hvordan fravær av oppmerksomhets-
 
 ## Funksjon
 
-Applikasjonen består av ti utsagn. Brukeren vurderer hvor godt hvert utsagn beskriver dem over tid. Det beregnes deretter en gjennomsnittsskår samt en kort tolkning.
+Applikasjonen består av ti utsagn. Brukeren vurderer hvor godt hvert utsagn beskriver dem over tid. Det beregnes deretter en T-skår samt en kort tolkning.
 
 Data lagres i en SQLite-database for enkel logging av besvarelser.
+
+## Psykometri
+
+Intern konsistens var høy (ωₜ = .92). Generalfaktoren forklarte hoveddelen av variansen (ωₕ = .76, ECV = .69), noe som støtter bruk av en samlet totalskår.
 
 ## Filstruktur
 
@@ -120,4 +124,3 @@ eller alternativt settes opp med felles gruppe.
 Testen sier ingenting om diagnose. En klinisk vurdering krever utviklingshistorie, funksjon, observasjon og faglig skjønn. Skåren må tolkes som et grovt mønster, ikke som en medisinsk konklusjon.
 
 Repository structure is intentionally flat in v1.0. A later refactor will group content and translation resources into dedicated directories.
-

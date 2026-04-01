@@ -58,6 +58,22 @@ i18n$set_translation_language("nb")
   if (is.null(x) || length(x) == 0 || is.na(x)) y else x
 }
 
+map_browser_language <- function(browser_lang) {
+  browser_lang <- tolower(browser_lang %||% "")
+
+  if (startsWith(browser_lang, "nn")) return("nn")
+  if (startsWith(browser_lang, "nb") || startsWith(browser_lang, "no")) return("nb")
+  if (startsWith(browser_lang, "sv")) return("sv")
+  if (startsWith(browser_lang, "da")) return("da")
+  if (startsWith(browser_lang, "se")) return("se")
+  if (startsWith(browser_lang, "fkv")) return("fkv")
+  if (startsWith(browser_lang, "fr")) return("fr")
+  if (startsWith(browser_lang, "de")) return("de")
+  if (startsWith(browser_lang, "en")) return("en")
+
+  "nb"
+}
+
 default_app_url <- "https://shiny.grendel.no/adhd-test/"
 
 ui <- fluidPage(
@@ -207,6 +223,23 @@ sidebarLayout(
 )
 
 server <- function(input, output, session) {
+  detected_lang <- reactiveVal("nb")
+  user_selected_lang <- reactiveVal(NULL)
+
+  observeEvent(input$browser_lang, {
+    initial_lang <- map_browser_language(input$browser_lang)
+    detected_lang(initial_lang)
+
+    if (is.null(user_selected_lang())) {
+      updateSelectizeInput(session, "selected_language", selected = initial_lang)
+    }
+  }, ignoreInit = TRUE)
+
+  observeEvent(input$selected_language, {
+    if (!is.null(input$selected_language) && nzchar(input$selected_language)) {
+      user_selected_lang(input$selected_language)
+    }
+  }, ignoreInit = TRUE)
 
   t_score <- reactive({
     req(input$beregn)   # evt. hva som helst som trigger beregning
@@ -221,19 +254,19 @@ server <- function(input, output, session) {
   })
 
   output$tsk_md <- renderUI({
-    lang <- input$selected_language ## evt. i18n$get_lang() avhengig
+    current_lang <- lang()
     ## av din versjon
-    file <- sprintf("%s%s.tskår.md", md_files,lang)
+    file <- sprintf("%s%s.tskår.md", md_files, current_lang)
 
-    if (!file.exists(file)) file <- "nb.tskår.md"  # fallback
+    if (!file.exists(file)) file <- sprintf("%snb.tskår.md", md_files)  # fallback
 
     includeMarkdown(file)
   })
 
   items_r <- reactive({
 
-    lang <- input$selected_language   # <- gjør reactive() avhengig av språket
-    i18n$set_translation_language(lang)
+    current_lang <- lang()
+    i18n$set_translation_language(current_lang)
 
     tibble(
       id = paste0("item", 1:10),
@@ -293,8 +326,7 @@ server <- function(input, output, session) {
   db_path <- paste0(Sys.getenv("ADHD_DB_PATH"),"/",Sys.getenv("ADHD_DB_NAME"))
 
   lang <- reactive({
-    req(input$selected_language)
-    input$selected_language
+    user_selected_lang() %||% detected_lang()
   })
 
   observeEvent(lang(), {
@@ -431,23 +463,23 @@ server <- function(input, output, session) {
 
       lg <- i18n$get_translation_language()
       res <- switch (lg,
-                     nb = "Testen testet ut på ca hundre brukere, og viser gode psykometriske egenskaper. Det betyr ikke at den kan fortelle deg at du helt sikkert ikke har ADHD, men den kan fortelle deg at det er gode grunner til at det er overveiende sannsynlig at eventuelle problemer du har, skyldes noe annet.</p></p>Oversettelsene er gjort maskinmessig og kontrollert der det er mulig. Finner du feil, ikke nøl med å si fra.",
-                     nn = "Testen er prøvd ut på om lag hundre brukarar og viser gode psykometriske eigenskapar. Det betyr ikkje at han kan fortelje deg at du heilt sikkert ikkje har ADHD, men han kan vise at det finst gode grunnar til at det er overvegande sannsynleg at eventuelle vanskar du har, kjem av noko anna.</p>p>Omsetjingane er gjorde maskinelt og kontrollerte der det har vore mogleg. Finn du feil, må du gjerne seie frå.",
-                     da = "Testen er afprøvet på omkring hundrede brugere og viser gode psykometriske egenskaber. Det betyder ikke, at den med sikkerhed kan fortælle dig, at du ikke har ADHD, men den kan pege på, at der er gode grunde til, at det overvejende sandsynligt er, at eventuelle problemer skyldes noget andet.</p><p>Oversættelserne er lavet maskinelt og kontrolleret, hvor det har været muligt. Finder du fejl, er du meget velkommen til at sige til.",
-                     sv = "Testen har prövats på omkring hundra användare och uppvisar goda psykometriska egenskaper. Det innebär inte att den med säkerhet kan säga att du inte har ADHD, men den kan visa att det finns goda skäl att anta att eventuella svårigheter sannolikt beror på något annat.</p><p>Översättningarna är gjorda maskinellt och har kontrollerats där det varit möjligt. Om du hittar fel, tveka inte att säga till.",
-                     en = "The test has been tried out on about one hundred users and shows good psychometric properties. This does not mean it can tell you with certainty that you do not have ADHD, but it *can* indicate that there are good reasons to believe that any difficulties you experience are likely due to something else.</p></p>Translations are machine-generated and checked when possible. If you find errors, please let me know.",
-                     se = "Táhppa lea geavahuvvon máŋga olbmo mielde ja čájeha buori psykomehtera iešvuođaid. Dat ii mearkkaša ahte sáhttá čilgejuhttit du addiktii ahte dus ii leat ADHD, muhto sáhttá addit buori vuođđosaččaid árvvoštallamat ahte juoga eará sáhttá leat váikkuhan du birgejumi.</p></p>Jorgalusat leat mearriduvvon mearrihkka ja ovdáneaddji geavaheami bokte. Jus gávnnat meattáhusaid, de leat buorre jus dieđát.",
-                     fkv = "Testi on kokkeiltu satalta käyttäjältä ja se näyttää hyvät psykometriset ominaisuudet. Se ei tarkoita ette testi vois varmisttaa siele ette siele ei ole ADHD:ta, mutta se voi antaat hyvät syyt ussoa ette jos sulla oon ongelmia, niissä oon todenmukhaisemmin jotaki muuta taustala.</p></p>Käännökset oon tehty koneellisesti ja tarkistettu missä mahdollista. Jos löyät virheitä, ota ihmeessä yhteyttä.",
+                     nb = "Testen er prøvd ut på over tre hundre brukere, og viser gode psykometriske egenskaper. Det betyr ikke at den kan fortelle deg at du helt sikkert ikke har ADHD, men den kan fortelle deg at det er gode grunner til at det er overveiende sannsynlig at eventuelle problemer du har, skyldes noe annet.</p><p>Oversettelsene er gjort maskinmessig og kontrollert der det er mulig. Finner du feil, ikke nøl med å si fra.",
+                     nn = "Testen er prøvd ut på over tre hundre brukarar og viser gode psykometriske eigenskapar. Det betyr ikkje at han kan fortelje deg at du heilt sikkert ikkje har ADHD, men han kan vise at det finst gode grunnar til at det er overvegande sannsynleg at eventuelle vanskar du har, kjem av noko anna.</p><p>Omsetjingane er gjorde maskinelt og kontrollerte der det har vore mogleg. Finn du feil, må du gjerne seie frå.",
+                     da = "Testen er afprøvet på mere end tre hundrede brugere og viser gode psykometriske egenskaber. Det betyder ikke, at den med sikkerhed kan fortælle dig, at du ikke har ADHD, men den kan pege på, at der er gode grunde til, at det overvejende sandsynligt er, at eventuelle problemer skyldes noget andet.</p><p>Oversættelserne er lavet maskinelt og kontrolleret, hvor det har været muligt. Finder du fejl, er du meget velkommen til at sige til.",
+                     sv = "Testen har prövats på över trehundra användare och uppvisar goda psykometriska egenskaper. Det innebär inte att den med säkerhet kan säga att du inte har ADHD, men den kan visa att det finns goda skäl att anta att eventuella svårigheter sannolikt beror på något annat.</p><p>Översättningarna är gjorda maskinellt och har kontrollerats där det varit möjligt. Om du hittar fel, tveka inte att säga till.",
+                     en = "The test has been tried out on more than three hundred users and shows good psychometric properties. This does not mean it can tell you with certainty that you do not have ADHD, but it <em>can</em> indicate that there are good reasons to believe that any difficulties you experience are likely due to something else.</p><p>Translations are machine-generated and checked when possible. If you find errors, please let me know.",
+                     se = "Táhppa lea geavahuvvon máŋga olbmo mielde ja čájeha buori psykomehtera iešvuođaid. Dat ii mearkkaša ahte sáhttá čilgejuhttit du addiktii ahte dus ii leat ADHD, muhto sáhttá addit buori vuođđosaččaid árvvoštallamat ahte juoga eará sáhttá leat váikkuhan du birgejumi.</p><p>Jorgalusat leat mearriduvvon mearrihkka ja ovdáneaddji geavaheami bokte. Jus gávnnat meattáhusaid, de leat buorre jus dieđát.",
+                     fkv = "Testi on kokkeiltu yli kolmensadalta käyttäjältä ja se näyttää hyvät psykometriset ominaisuudet. Se ei tarkoita ette testi vois varmisttaa siele ette siele ei ole ADHD:ta, mutta se voi antaat hyvät syyt ussoa ette jos sulla oon ongelmia, niissä oon todenmukhaisemmin jotaki muuta taustala.</p><p>Käännökset oon tehty koneellisesti ja tarkistettu missä mahdollista. Jos löyät virheitä, ota ihmeessä yhteyttä.",
 
-                     de = "Der Test wurde mit etwa hundert Nutzerinnen und Nutzern erprobt und zeigt gute psychometrische Eigenschaften. Das bedeutet nicht, dass er Ihnen mit Sicherheit sagen kann, dass Sie kein ADHS haben, aber er kann gute Gründe dafür liefern, dass eventuelle Schwierigkeiten, die Sie erleben, wahrscheinlich auf etwas anderes zurückzuführen sind.</p></p>Die Übersetzungen wurden maschinell erstellt und dort überprüft, wo es möglich war. Wenn Sie Fehler finden, zögern Sie bitte nicht, mich darauf hinzuweisen.",
+                     de = "Der Test wurde mit mehr als dreihundert Nutzerinnen und Nutzern erprobt und zeigt gute psychometrische Eigenschaften. Das bedeutet nicht, dass er Ihnen mit Sicherheit sagen kann, dass Sie kein ADHS haben, aber er kann gute Gründe dafür liefern, dass eventuelle Schwierigkeiten, die Sie erleben, wahrscheinlich auf etwas anderes zurückzuführen sind.</p><p>Die Übersetzungen wurden maschinell erstellt und dort überprüft, wo es möglich war. Wenn Sie Fehler finden, zögern Sie bitte nicht, mich darauf hinzuweisen.",
 
-                     fr = "Le test a été essayé auprès d’environ une centaine d’utilisateurs et présente de bonnes propriétés psychométriques. Cela ne signifie pas qu’il puisse affirmer avec certitude que vous n’avez pas de TDAH, mais il peut indiquer qu’il existe de bonnes raisons de penser que les difficultés que vous rencontrez sont probablement dues à autre chose.</p><p>Les traductions ont été générées automatiquement et vérifiées lorsque cela était possible. Si vous repérez des erreurs, n’hésitez pas à me le signaler.",
+                     fr = "Le test a été essayé auprès de plus de trois cents utilisateurs et présente de bonnes propriétés psychométriques. Cela ne signifie pas qu’il puisse affirmer avec certitude que vous n’avez pas de TDAH, mais il peut indiquer qu’il existe de bonnes raisons de penser que les difficultés que vous rencontrez sont probablement dues à autre chose.</p><p>Les traductions ont été générées automatiquement et vérifiées lorsque cela était possible. Si vous repérez des erreurs, n’hésitez pas à me le signaler.",
 
                                         # fallback hvis språk mangler
                      "Mensura fallax est, sed mensurare oportet."
                      )
 
-      paste0("<p>",res,"<p><p><a href='mailto:rolf@grendel.no?subject=ADHD-testen'>© 2025 Grendel AS</a></p>")
+      paste0("<p>", res, "</p><p><a href='mailto:rolf@grendel.no?subject=ADHD-testen'>© 2025 Grendel AS</a></p>")
     })
   })
 
