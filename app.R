@@ -76,6 +76,18 @@ map_browser_language <- function(browser_lang) {
 
 default_app_url <- "https://shiny.grendel.no/adhd-test/"
 
+score_thresholds <- list(
+  stable = 45,
+  typical = 40,
+  friction = 35
+)
+
+score_colors <- list(
+  low = "#d9534f",
+  mid = "#f0ad4e",
+  high = "#5cb85c"
+)
+
 ui <- fluidPage(
   social_meta("meta.yaml"),
   theme = custom_theme,
@@ -490,13 +502,13 @@ server <- function(input, output, session) {
 
     s <- res$score
 
-    if (s >= 45) {
+    if (s >= score_thresholds$stable) {
       paste0(i18n$t("Svarene dine viser få trekk som ligner de reguleringsvanskene man ser ved ADHD."),
              " ",
              i18n$t("Hverdagen virker stabil og forutsigbar."))
-    } else if (s >= 40) {
+    } else if (s >= score_thresholds$typical) {
       i18n$t("Mønsteret ditt ligger godt innenfor normal variasjon: noen styrker, litt friksjon, men ingenting som peker klart i én retning.")
-    } else if (s >= 35) {
+    } else if (s >= score_thresholds$friction) {
       i18n$t("Du rapporterer en del trekk som kan minne om ADHD, men dette kan like gjerne handle om personlighet, vaner eller livssituasjon.")
     } else {
       i18n$t("Du beskriver flere områder som ofte skaper vansker i ADHD. Dette er fortsatt ikke diagnostikk, men det kan være verdt en mer formell vurdering dersom dette skaper problemer i hverdagen.")
@@ -511,12 +523,12 @@ server <- function(input, output, session) {
     pct <- max(0, min(100, (T - lo) / (hi - lo) * 100))
 
     ## velg farge basert på T
-    bar_col <- if (T < 35) {
-                 "#d9534f"   # rød
-               } else if (T < 45) {
-                 "#f0ad4e"   # gul
+    bar_col <- if (T < score_thresholds$friction) {
+                 score_colors$low
+               } else if (T < score_thresholds$stable) {
+                 score_colors$mid
                } else {
-                 "#5cb85c"   # grønn
+                 score_colors$high
                }
 
     tagList(
