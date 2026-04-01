@@ -17,11 +17,11 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SHINY_DEPLOY_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H mysql.grendel.no >> ~/.ssh/known_hosts
+          ssh-keyscan -H dnsgrendel.grendel.no >> ~/.ssh/known_hosts
 
       - name: Sett korrekt eierskap og tilgang (gruppe shinyapps)
         run: |
-          ssh deployshiny@mysql.grendel.no "\
+          ssh deployshiny@dnsgrendel.grendel.no "\
           sudo chown -R deployshiny:shinyapps /srv/shiny-server/adhd-test && \
           sudo chown -R shiny:shiny /srv/shiny-server/adhd-test/app_cache && \
           sudo chown -R shiny:shiny /srv/shiny-server/data && \
@@ -36,11 +36,11 @@ jobs:
             ./ \
             --exclude 'app_cache' \
             --exclude '.git' \
-            deployshiny@mysql.grendel.no:/srv/shiny-server/adhd-test/
+            deployshiny@dnsgrendel.grendel.no:/srv/shiny-server/adhd-test/
 
       - name: Reett korrekt eierskap og tilgang (gruppe shinyapps)
         run: |
-          ssh deployshiny@mysql.grendel.no "\
+          ssh deployshiny@dnsgrendel.grendel.no "\
           sudo chown -R deployshiny:shinyapps /srv/shiny-server/adhd-test && \
           sudo chown -R shiny:shiny /srv/shiny-server/adhd-test/app_cache && \
           sudo chown -R deployshiny:shinyapps /srv/shiny-server/data && \
@@ -51,4 +51,4 @@ jobs:
 
       - name: Restart Shiny Server
         run: |
-          ssh deployshiny@mysql.grendel.no "sudo systemctl restart shiny-server"
+          ssh deployshiny@dnsgrendel.grendel.no "sudo systemctl restart shiny-server"
