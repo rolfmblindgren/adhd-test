@@ -37,3 +37,9 @@ Shiny.renderFlagOption = function(item) {
     </div>
   `;
 };
+
+Shiny.addCustomMessageHandler("redirect-to-url", function(message) {
+  if (message && message.url) {
+    window.location.href = message.url;
+  }
+});

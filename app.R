@@ -7,6 +7,7 @@ library(shiny.i18n)
 library(bslib)
 library(mirt)
 library(grendelMeta)
+library(grendelStripe)
 options(bslib.cache = FALSE)
 
 md_files <- "./content/"
@@ -52,6 +53,12 @@ i18n <- Translator$new(translation_csvs_path = translations_csvs_path,
 
 i18n$set_translation_language("nb")
 ## print(i18n$get_languages())
+
+`%||%` <- function(x, y) {
+  if (is.null(x) || length(x) == 0 || is.na(x)) y else x
+}
+
+default_app_url <- "https://shiny.grendel.no/adhd-test/"
 
 ui <- fluidPage(
   social_meta("meta.yaml"),
@@ -174,6 +181,25 @@ sidebarLayout(
                   i18n$t("Om testen"),
                   br(),
                   htmlOutput("om_testen")
+                ),
+                tabPanel(
+                  value = "doner",
+                  i18n$t("Støtt arbeidet"),
+                  br(),
+                  h3(i18n$t("Støtt arbeidet")),
+                  p(i18n$t("Du kan støtte videre utvikling av ADHD-appen med en frivillig donasjon via Stripe.")),
+                  numericInput(
+                    "donation_amount",
+                    i18n$t("Beløp i NOK"),
+                    value = 75,
+                    min = 20,
+                    step = 10
+                  ),
+                  actionButton("donate", i18n$t("Doner")),
+                  p(
+                    style = "margin-top: 10px; color: #666;",
+                    i18n$t("Du sendes til en sikker Stripe-side for betaling.")
+                  )
                 )
                 )
   )
@@ -275,8 +301,21 @@ server <- function(input, output, session) {
     i18n$set_translation_language(lang())
     update_lang(language = lang(), session = session)
     shinyjs::html("beregn", i18n$t("Beregn resultat"))
+    shinyjs::html("donate", i18n$t("Doner"))
     session$sendCustomMessage("update-title", i18n$t("Dette er ikke en ADHD-test"))
   }, ignoreInit = TRUE)
+
+  observe({
+    query <- session$clientData$url_search %||% ""
+
+    if (grepl("donation=success", query, fixed = TRUE)) {
+      showNotification(i18n$t("Takk for støtten!"), type = "message", duration = 8)
+    }
+
+    if (grepl("donation=cancel", query, fixed = TRUE)) {
+      showNotification(i18n$t("Donasjonen ble avbrutt."), type = "warning", duration = 6)
+    }
+  })
 
   observeEvent(input$beregn, {
 
@@ -308,6 +347,46 @@ server <- function(input, output, session) {
     updateTabsetPanel(session, "tabs", selected = "res")
 
   })
+
+  observeEvent(input$donate, {
+    amount_nok <- input$donation_amount %||% 0
+
+    if (!is.numeric(amount_nok) || is.na(amount_nok) || amount_nok < 20) {
+      showNotification(i18n$t("Velg minst 20 kroner."), type = "error")
+      return()
+    }
+
+    base_url <- grendelStripe::build_app_url(session, fallback = default_app_url)
+    success_url <- paste0(base_url, "?donation=success")
+    cancel_url <- paste0(base_url, "?donation=cancel")
+
+    checkout_url <- tryCatch(
+      grendelStripe::create_checkout_session(
+        amount_nok = amount_nok,
+        success_url = success_url,
+        cancel_url = cancel_url,
+        product_name = "Stott ADHD-appen",
+        product_description = "Frivillig stotte til videre arbeid med ADHD-appen",
+        metadata = list(
+          app = "ADHD",
+          donation_amount_nok = format(amount_nok, trim = TRUE, scientific = FALSE),
+          purpose = "donation"
+        )
+      ),
+      error = function(e) {
+        showNotification(
+          paste(i18n$t("Noe gikk galt ved opprettelse av betalingen:"), conditionMessage(e)),
+          type = "error",
+          duration = 8
+        )
+        NULL
+      }
+    )
+
+    if (!is.null(checkout_url)) {
+      session$sendCustomMessage("redirect-to-url", list(url = checkout_url))
+    }
+  }, ignoreInit = TRUE)
 
 
 
