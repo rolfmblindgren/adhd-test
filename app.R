@@ -490,13 +490,13 @@ server <- function(input, output, session) {
 
     s <- res$score
 
-    if (s >= 40) {
+    if (s >= 45) {
       paste0(i18n$t("Svarene dine viser få trekk som ligner de reguleringsvanskene man ser ved ADHD."),
              " ",
              i18n$t("Hverdagen virker stabil og forutsigbar."))
-    } else if (s >= 35) {
+    } else if (s >= 40) {
       i18n$t("Mønsteret ditt ligger godt innenfor normal variasjon: noen styrker, litt friksjon, men ingenting som peker klart i én retning.")
-    } else if (s >= 30) {
+    } else if (s >= 35) {
       i18n$t("Du rapporterer en del trekk som kan minne om ADHD, men dette kan like gjerne handle om personlighet, vaner eller livssituasjon.")
     } else {
       i18n$t("Du beskriver flere områder som ofte skaper vansker i ADHD. Dette er fortsatt ikke diagnostikk, men det kan være verdt en mer formell vurdering dersom dette skaper problemer i hverdagen.")
@@ -511,9 +511,9 @@ server <- function(input, output, session) {
     pct <- max(0, min(100, (T - lo) / (hi - lo) * 100))
 
     ## velg farge basert på T
-    bar_col <- if (T <= 30) {
+    bar_col <- if (T < 35) {
                  "#d9534f"   # rød
-               } else if (T <= 40) {
+               } else if (T < 45) {
                  "#f0ad4e"   # gul
                } else {
                  "#5cb85c"   # grønn
