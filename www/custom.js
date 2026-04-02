@@ -12,6 +12,7 @@ window.Shiny.renderFlagOption = function(item) {
     // smh: "smh.svg",
     fkv: "kven.svg",
     fr:  "france.svg",
+    es:  "es.svg",
     de:  "germany.svg",
     en:  "uk.svg"
   };
@@ -25,6 +26,7 @@ window.Shiny.renderFlagOption = function(item) {
 //    smh: "Julevsámegiella",
     fkv: "Kainuun kieli",
     fr:  "Français",
+    es:  "Español",
     de:  "Deutsch",
     en:  "English"
   };

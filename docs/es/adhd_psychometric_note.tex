@@ -1,0 +1,105 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{csquotes}
+\usepackage[
+  backend=biber,
+  style=apa,
+  sorting=nyt
+]{biblatex}
+\addbibresource{adhd_psychometric_note.bib}
+\DeclareLanguageMapping{spanish}{spanish-apa}
+
+\setstretch{1.08}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  urlcolor=blue,
+  pdftitle={Que es razonable decir que indica esta prueba},
+  pdfauthor={Grendel}
+}
+
+\title{Qué es razonable decir que indica esta prueba\\
+\large Una breve nota psicométrica}
+\author{}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Esta nota resume qué es razonable afirmar que está midiendo realmente una escala breve de autoinforme, redactada en positivo, sobre inicio de tareas, foco, organización y regulación. La idea principal es que la prueba no debe usarse como instrumento diagnóstico del TDAH, pero sí parece captar una dimensión amplia y coherente de fricción regulatoria relevante para dificultades parecidas al TDAH. Al mismo tiempo, los modelos sugieren que esa dimensión amplia tiene cierta estructura interna. La interpretación más defendible, por tanto, es que la prueba mide un factor regulatorio compartido con dos expresiones parcialmente distinguibles: un patrón más interno, relacionado con la implicación en la tarea y el mantenimiento del hilo mental, y un patrón más externo, relacionado con la fiabilidad práctica y la organización cotidiana.
+\end{abstract}
+
+\section{Introducción}
+Es fácil hablar de cuestionarios breves como si o bien \enquote{detectaran TDAH} o bien \enquote{no detectaran TDAH}. Una visión más madura es que instrumentos como este suelen medir un patrón de dificultades autoinformadas que puede ser más o menos típico del TDAH, sin establecer por ello un diagnóstico. Esta prueba consta de diez afirmaciones formuladas como descripciones funcionales más que como afirmaciones de síntomas. No pregunta directamente si una persona tiene TDAH. En cambio, pregunta hasta qué punto resulta fácil o difícil ponerse en marcha, mantener el foco, recordar citas, organizar el tiempo, mantener los pensamientos encauzados y funcionar sin cantidades inusuales de estructura externa.
+
+El propósito de esta nota es describir qué es lo que los resultados realmente respaldan y, con la misma importancia, qué es lo que no respaldan. La intención no es hacer que la prueba parezca más segura de lo que es, sino expresar una posición intermedia precisa: la prueba parece medir algo real y psicométricamente coherente, pero ese \enquote{algo} se entiende mejor como un patrón de fricción regulatoria relevante para el TDAH, no como un veredicto diagnóstico.
+
+\section{Datos y cribado}
+La ejecución analítica actual se basó en $N = 309$ respuestas brutas. En la práctica, el conjunto de datos consistía casi por completo en respuestas en bokmål, con solo un pequeño número de respuestas en nynorsk, inglés y kven. En esta ejecución no se eliminaron duplicados rápidos, mientras que sí se excluyeron 28 patrones planos de respuesta intermedia, es decir, conjuntos en los que los diez ítems fueron respondidos con la categoría 3. Por tanto, los análisis se estimaron sobre 281 respuestas.
+
+La ejecución de renormación más reciente, utilizada para actualizar el modelo de producción, dio un conjunto de datos parecido pero algo mayor. En esa ejecución se extrajeron 390 conjuntos de respuestas brutas y se conservaron 346 tras el filtrado de calidad. Esa ejecución más nueva se usa aquí solo como contexto de apoyo para la interpretación global, no como sustituto del análisis principal.
+
+\section{Software y planteamiento analítico}
+Los análisis se llevaron a cabo en \texttt{R} \parencite{RCore2026}. El paquete central fue \texttt{mirt} \parencite{Chalmers2012mirt}, que se utilizó de varias maneras:
+
+\begin{itemize}
+\item \texttt{mirt(..., itemtype = "graded")} se utilizó para estimar modelos de respuesta graduada con un factor, dos factores y una estructura bifactorial.
+\item \texttt{fscores()} se utilizó para calcular puntuaciones de persona mediante EAP y MAP, así como puntuaciones latentes esperadas condicionadas a la puntuación total (\texttt{EAPsum}).
+\item \texttt{anova()} se utilizó para comparar los modelos de un factor y dos factores.
+\item \texttt{M2()} se utilizó como índice global de ajuste del modelo unifactorial.
+\item \texttt{itemfit()} se utilizó para diagnósticos a nivel de ítem.
+\item \texttt{residuals(type = "Q3")} se utilizó para examinar la dependencia local entre ítems.
+\end{itemize}
+
+El script también cargó \texttt{careless} \parencite{YentesWilhelm2023careless}, pero en la ejecución actual el paquete no se utilizó explícitamente en la estimación misma. En la práctica, el cribado de calidad en este análisis se apoyó en lógica sencilla de \texttt{R} base: ordenar por tiempo, eliminar posibles patrones duplicados rápidos y excluir respuestas planas en el punto medio. Los paquetes \texttt{stats4} y \texttt{lattice} \parencite{Sarkar2008lattice} se cargaron automáticamente como dependencias de \texttt{mirt}; para \texttt{stats4} se utiliza la cita estándar de \texttt{R} \parencite{RCore2026}.
+
+\section{Hallazgos principales}
+\subsection{El modelo de un factor}
+El modelo de un factor produjo un patrón claro y homogéneo. Las cargas factoriales oscilaron entre 0.659 y 0.825, y todos los ítems mostraron comunalidades de moderadas a altas. La suma de cuadrados de las cargas fue 5.682, y la proporción de varianza explicada fue 0.568. La fiabilidad fue alta, tanto como $\alpha = 0.904$ como en la fiabilidad basada en factor $r_{xx,F1} = 0.901$. El error estándar de medida fue 3.066.
+
+El ajuste global del modelo de un factor fue bueno en esta ejecución. La prueba M2 dio $\chi^2(40)=16.177$, $p=1.00$, y la estructura residual fue tranquila. Los residuos Q3 tuvieron un máximo de 0.169 y una media aproximada de $-0.095$, lo que va en contra de una dependencia local seria entre los ítems. A este nivel, por tanto, la prueba se comporta como una escala breve bien funcional con una dimensión dominante clara.
+
+\subsection{El modelo de dos factores}
+Cuando se estimó un modelo de dos factores, mejoró el ajuste con respecto al modelo de un factor. La comparación dio $\Delta \chi^2 = 68.12$ con 9 grados de libertad y $p < .001$. Esto significa que el material no es perfectamente unidimensional en un sentido estadístico estricto. La pregunta clave, sin embargo, es qué representa esa estructura adicional.
+
+En ejecuciones anteriores, la estructura añadida podía parecer una mezcla de dificultad atencional y variación más laxa específica de la persona o de efectos de método. La solución rotada más nueva de dos factores, estimada sobre el conjunto de datos actualizado y filtrado, parece algo más interpretable. En esa solución, los ítems 1, 4, 5, 9 y 10 cargaron con mayor fuerza en un factor, mientras que los ítems 2, 3, 7 y 8 cargaron con mayor fuerza en el otro. El ítem 6 mostró un patrón más mixto. Al mismo tiempo, los dos factores estaban altamente correlacionados ($r = 0.75$), y eso importa mucho: la estructura adicional no apunta a dos rasgos independientes, sino a dos expresiones estrechamente relacionadas de un factor regulatorio más amplio.
+
+\subsection{El modelo bifactorial}
+El modelo bifactorial ofrece la visión global más informativa. En el análisis presente, los diez ítems cargaron con claridad en el factor general $G$, con cargas entre 0.574 y 0.792. Al mismo tiempo, surgieron dos factores de grupo más débiles. El primer factor de grupo se vinculó principalmente con los ítems 1--5, mientras que el segundo fue más claro para el ítem 6 y, en menor medida, para los ítems 7--10.
+
+La observación decisiva, sin embargo, es que el factor general concentró la mayor parte de la varianza compartida. La proporción de varianza fue 0.529 para $G$, frente a 0.039 y 0.065 para los dos factores de grupo. En otras palabras, la prueba tiene más estructura de la que un modelo puramente unifactorial capta por completo, pero la impresión principal sigue siendo que domina un único factor amplio.
+
+\section{Interpretación}
+La afirmación más defendible, entonces, es que la prueba parece captar una dimensión amplia y recurrente de fricción regulatoria que es relevante para dificultades parecidas al TDAH. El fuerte factor general sugiere que existe al menos un factor común en los datos que atraviesa los ítems y reúne lo que muchas personas clínicas y respondientes reconocerían intuitivamente como dificultad para mantener la vida cotidiana en marcha de una manera estable y autodirigida.
+
+Puede resultar tentador describir esto como \enquote{un factor que aparece en todo el mundo con TDAH}. Empíricamente, los datos no llegan tan lejos. Este material no incluye datos diagnósticos de patrón oro ni validación externa frente a instrumentos establecidos de TDAH. Lo que sí respaldan los datos es una afirmación más contenida: la escala parece captar un factor regulatorio amplio y probablemente central, relevante para el TDAH, que es plausible esperar en distintas presentaciones del trastorno. Ese es un hallazgo importante, pero no equivale a demostrar que el factor sea universal en todas las personas con TDAH.
+
+La estructura secundaria sigue siendo interesante y significativa. Ya no parece mero ruido. En la solución más nueva, una cara de la prueba parece estar más ligada a la implicación interna en la tarea: ponerse en marcha, mantener la atención unida, no depender de la energía de crisis, mantener los pensamientos encauzados y arreglárselas sin un andamiaje externo pesado. La otra cara parece estar más ligada a la fiabilidad externa y a la organización práctica: no perder cosas, cumplir citas, recordar mensajes y hacer que la logística cotidiana se sostenga. Esto puede entenderse como dos expresiones de una misma área general de dificultad: un lado más interno y otro más externo de la regulación.
+
+\section{Qué es razonable decir que indica la prueba}
+En un plano práctico, por tanto, es razonable decir que la prueba indica hasta qué punto el funcionamiento autoinformado de una persona se parece o no a un patrón de dificultad regulatoria relevante para el TDAH. Las puntuaciones más altas sugieren menor semejanza con ese patrón. Las puntuaciones más bajas sugieren mayor semejanza. Eso puede ser útil como punto de partida estructurado para la reflexión, sobre todo porque la prueba parece ser breve, consistente y psicométricamente bastante limpia.
+
+Lo que no es razonable es decir que la prueba decide si una persona tiene TDAH. Una puntuación baja puede ser coherente con el TDAH, pero también puede encajar con toda una gama de otras condiciones, entre ellas estrés, falta de sueño, depresión, ansiedad, sobrecarga u otras formas de desgaste cognitivo y emocional. Del mismo modo, una puntuación alta puede ser coherente con la ausencia de dificultades regulatorias relevantes, pero también puede encajar con un TDAH leve, con dificultades compensadas o con un nivel de funcionamiento sostenido por estructura, inteligencia, rutinas o adaptaciones del entorno.
+
+\section{Limitaciones}
+Varias limitaciones son evidentes. En primer lugar, el análisis se basa en autoinforme. En segundo lugar, el material carece de validación externa frente a diagnóstico clínico o escalas establecidas de TDAH. En tercer lugar, la distribución lingüística está sesgada, por lo que todavía no existe una base sólida para normas específicas por lengua o análisis serios de invarianza de medida. En cuarto lugar, las soluciones bifactoriales y de dos factores son modelos diagnósticos en sentido metodológico: resultan útiles para comprender la estructura de los datos, pero no justifican por sí solas interpretar la prueba como dos subescalas clínicas separadas.
+
+\section{Conclusión}
+La descripción más madura y científicamente defendible de la prueba es que funciona como una medida breve y normada de fricción regulatoria con clara relevancia para dificultades parecidas al TDAH. Los resultados respaldan la existencia de un factor general fuerte y recurrente, es decir, una dimensión compartida que une el inicio de tareas, el foco, la organización, la calma interna y la continuidad estable de la conducta. Al mismo tiempo, tanto el modelo de dos factores como el bifactorial sugieren que este factor general tiene cierta estructura interna, en la que puede distinguirse un lado más interno relacionado con la tarea y la atención de un lado más externo, práctico y relacionado con la fiabilidad.
+
+Lo que, por tanto, es razonable decir que indica la prueba no es el \enquote{TDAH} como diagnóstico, sino el grado de semejanza entre las respuestas de una persona y un patrón coherente de fricción regulatoria relevante para el TDAH. Ese es un hallazgo importante y útil. Pero sigue siendo un hallazgo en el nivel del funcionamiento, no una respuesta final sobre la causa, la categoría o la identidad clínica.
+
+\printbibliography
+
+\end{document}
