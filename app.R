@@ -495,6 +495,9 @@ server <- function(input, output, session) {
                      "Mensura fallax est, sed mensurare oportet."
                      )
 
+      app_base <- sub("/?$", "/", grendelStripe::build_app_url(session, fallback = default_app_url))
+      res <- gsub("href='/docs/", paste0("href='", app_base, "docs/"), res, fixed = TRUE)
+
       paste0("<p>", res, "</p><p><a href='mailto:rolf@grendel.no?subject=ADHD-testen'>© 2025 Grendel AS</a></p>")
     })
   })
