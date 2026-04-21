@@ -259,10 +259,8 @@ server <- function(input, output, session) {
   t_score <- reactive({
     req(input$beregn)   # evt. hva som helst som trigger beregning
 
-    items <- c(
-      input$i1, input$i2, input$i3, input$i4, input$i5,
-      input$i6, input$i7, input$i8, input$i9, input$i10
-    )
+    core_item_ids <- core_items_r()$id
+    items <- vapply(core_item_ids, function(id) input[[id]], numeric(1))
 
     res <- scaled_score(items)   # funksjonen du allerede har
     as.numeric(res["T"])
@@ -278,7 +276,7 @@ server <- function(input, output, session) {
     includeMarkdown(file)
   })
 
-  items_r <- reactive({
+  core_items_r <- reactive({
 
     current_lang <- lang()
     i18n$set_translation_language(current_lang)
@@ -300,12 +298,24 @@ server <- function(input, output, session) {
     )
   })
 
+  experimental_items_r <- reactive({
+
+    current_lang <- lang()
+    i18n$set_translation_language(current_lang)
+
+    tibble(
+      id = paste0("item", 11:13),
+      tekst = c(
+        i18n$t("Jeg blir ikke så rastløs at jeg må reise meg når det egentlig forventes at jeg sitter rolig."),
+        i18n$t("Jeg blir ikke så urolig i kroppen at jeg må tromme, vippe eller fikle for å holde ut."),
+        i18n$t("Jeg føler sjelden et sterkt behov for å gå rundt eller skifte aktivitet bare for å få ro i kroppen.")
+      )
+    )
+  })
+
 
   output$sporsmals_ui <- renderUI({
-    items <- items_r()   # <- reaktiv tibble
-    lapply(seq_len(nrow(items)), function(i) {
-      item <- items[i, ]
-
+    render_question <- function(item) {
       div(style = "width: 100%; max-width: 600px;",
           strong(item$tekst),
           div(class = "scale-labels",
@@ -315,26 +325,43 @@ server <- function(input, output, session) {
      <span>%s</span>
      <span>%s</span>
      <span>%s</span>",
-     i18n$t("Stemmer ikke"),
-     i18n$t("Litt"),
-     i18n$t("Delvis"),
-     i18n$t("Ganske"),
-     i18n$t("Stemmer helt")
-     ))
-     ),
-     sliderInput(
-       inputId = item$id,
-       label = NULL,
-       min = 1,
-       max = 5,
-       value = 3,
-       step = 1,
-       ticks = FALSE,
-       width = "100%"
-     ),
-     br()
-     )
-    })
+                i18n$t("Stemmer ikke"),
+                i18n$t("Litt"),
+                i18n$t("Delvis"),
+                i18n$t("Ganske"),
+                i18n$t("Stemmer helt")
+              ))
+          ),
+          sliderInput(
+            inputId = item$id,
+            label = NULL,
+            min = 1,
+            max = 5,
+            value = 3,
+            step = 1,
+            ticks = FALSE,
+            width = "100%"
+          ),
+          br()
+      )
+    }
+
+    core_items <- core_items_r()
+    experimental_items <- experimental_items_r()
+
+    tagList(
+      lapply(seq_len(nrow(core_items)), function(i) {
+        render_question(core_items[i, ])
+      }),
+      tags$hr(style = "margin: 1.5rem 0;"),
+      div(
+        style = "width: 100%; max-width: 600px; margin-bottom: 0.75rem; font-style: italic; color: #555;",
+        i18n$t("Foreløpige spørsmål om kroppslig uro. Disse tre spørsmålene brukes ikke i hovedskåren ennå.")
+      ),
+      lapply(seq_len(nrow(experimental_items)), function(i) {
+        render_question(experimental_items[i, ])
+      })
+    )
   })
 
 
@@ -375,19 +402,31 @@ server <- function(input, output, session) {
 
     timestamp <- format(Sys.time(), "%Y-%m-%d %H:%M:%S")
 
-    item_ids <- items_r()$id   # ta ID-er fra tibblen, ikke fra input
+    current_language <- lang()
 
-    scores <- vapply(item_ids, function(id) input[[id]], numeric(1))
+    core_item_ids <- core_items_r()$id   # ta ID-er fra tibblen, ikke fra input
+    core_scores <- vapply(core_item_ids, function(id) input[[id]], numeric(1))
 
-    df <- data.frame(
-      timestamp = rep(timestamp, length(item_ids)),
-      item_id = item_ids,
-      score = scores,
-      language = rep(input$selected_language, length(item_ids))
-
+    core_df <- data.frame(
+      timestamp = rep(timestamp, length(core_item_ids)),
+      item_id = core_item_ids,
+      score = core_scores,
+      language = rep(current_language, length(core_item_ids))
     )
 
-    dbWriteTable(con, "responses", df, append = TRUE)
+    dbWriteTable(con, "responses", core_df, append = TRUE)
+
+    experimental_item_ids <- experimental_items_r()$id
+    experimental_scores <- vapply(experimental_item_ids, function(id) input[[id]], numeric(1))
+
+    experimental_df <- data.frame(
+      timestamp = rep(timestamp, length(experimental_item_ids)),
+      item_id = experimental_item_ids,
+      score = experimental_scores,
+      language = rep(current_language, length(experimental_item_ids))
+    )
+
+    dbWriteTable(con, "experimental_responses", experimental_df, append = TRUE)
 
     dbDisconnect(con)
 
@@ -441,7 +480,7 @@ server <- function(input, output, session) {
 
 
     ## hent alle svar som liste
-    svar <- lapply(items_r()$id, function(id) input[[id]])
+    svar <- lapply(core_items_r()$id, function(id) input[[id]])
     ## sjekk ubesvarte
     mangler <- vapply(svar, function(x) is.null(x) || is.na(x), logical(1))
 
@@ -563,3 +602,7 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui=ui, server=server)
+
+# Local Variables:
+# mode: R
+# End:
