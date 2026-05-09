@@ -6,7 +6,7 @@ library(RSQLite)
 library(shiny.i18n)
 library(bslib)
 library(mirt)
-library(grendelMeta)
+library(shinyseo)
 library(grendelStripe)
 options(bslib.cache = FALSE)
 
