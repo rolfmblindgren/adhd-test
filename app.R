@@ -95,7 +95,7 @@ ui <- fluidPage(
   social_meta("meta.yaml"),
   theme = custom_theme,
   usei18n(i18n),
-  useShinyjs(),
+  useShinyjs(debug=FALSE),
   tags$head(
          tags$meta(
            name = "robots",
