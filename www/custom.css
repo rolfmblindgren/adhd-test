@@ -110,11 +110,12 @@ p {
 }
 
 .hero-header {
-  display: flex;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
   align-items: flex-start;
-  gap: 16px;
+  column-gap: 16px;
+  row-gap: 0;
   margin-bottom: 16px;
-  flex-wrap: wrap;
 }
 
 .hero-mark {
@@ -222,6 +223,7 @@ p {
 .sidebar-card {
   position: sticky;
   top: 20px;
+  overflow: visible;
 }
 
 .main-card {
@@ -241,6 +243,8 @@ p {
 .sidebar-card .action-button {
   margin-top: 6px;
   width: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .action-button,
@@ -276,9 +280,15 @@ p {
   padding: 11px 14px !important;
 }
 
+.sidebar-card .selectize-control {
+  position: relative;
+  z-index: 40;
+}
+
 .selectize-dropdown {
   border-radius: 16px;
   overflow: hidden;
+  z-index: 9999 !important;
 }
 
 .sidebar-card .panel-title,
