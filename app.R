@@ -154,10 +154,9 @@ tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
       h1(i18n$t("Dette er ikke en ADHD-test")),
       p(
         class = "hero-text",
-        paste(
-          i18n$t("Denne testen viser hvordan fravær av oppmerksomhets- og reguleringsvansker kan se ut."),
-          i18n$t("Den er ikke diagnostisk. Den kan verken bekrefte eller avkrefte ADHD.")
-        )
+        HTML(i18n$t("Denne testen viser hvordan fravær av oppmerksomhets- og reguleringsvansker kan se ut.")),
+        " ",
+        HTML(i18n$t("Den er ikke diagnostisk. Den kan verken bekrefte eller avkrefte ADHD."))
       ),
       div(
         class = "hero-badges",
