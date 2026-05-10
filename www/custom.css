@@ -1,66 +1,403 @@
-/* Dette er egentlig det eneste som skal til */
-
-
-/* Tving hele Ion.RangeSlider til å følge containerens bredde */
-.irs, .irs-line, .irs-bar, .irs-slider, .irs-grid {
-    width: 100% !important;
-    max-width: 100% !important;
+:root {
+  --bg-0: #031817;
+  --bg-1: #052522;
+  --bg-2: #073530;
+  --surface: rgba(6, 24, 23, 0.74);
+  --surface-strong: rgba(10, 35, 33, 0.90);
+  --border: rgba(153, 247, 235, 0.12);
+  --border-strong: rgba(153, 247, 235, 0.20);
+  --text: #edfefb;
+  --muted: #afcfc9;
+  --accent: #76e9d9;
+  --accent-soft: rgba(118, 233, 217, 0.16);
+  --accent-2: #b6fff4;
+  --shadow: 0 24px 80px rgba(2, 11, 10, 0.48);
 }
 
-/* Mobil-spesifikk fiks */
-@media (max-width: 600px) {
-
-  /* Skaler ned etikettene under slideren */
-  .irs-grid-text {
-    font-size: 0.75rem !important;
-    white-space: normal !important;   /* gjør at de kan bryte linje */
-    line-height: 1.1;
-  }
-
-  /* Hindrer at grid-linjene utvider hele komponenten */
-  .irs-grid-pol {
-    max-width: 100% !important;
-  }
-
-  /* Sørger for at selve slider-boksen ikke trekker seg større enn skjermen */
-  .irs-with-grid {
-    padding-right: 0 !important;
-    padding-left: 0 !important;
-    margin-right: 0 !important;
-    margin-left: 0 !important;
-  }
+html,
+body {
+  min-height: 100%;
 }
 
+body {
+  color: var(--text);
+  background:
+    radial-gradient(1200px 800px at 10% 0%, rgba(118, 233, 217, 0.18), transparent 55%),
+    radial-gradient(900px 700px at 90% 10%, rgba(182, 255, 244, 0.10), transparent 50%),
+    linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 42%, var(--bg-2) 100%);
+  font-family: "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(circle at center, black, transparent 92%);
+  opacity: 0.45;
+}
+
+h1,
+h2,
+h3,
+h4,
+.eyebrow {
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: clamp(2.6rem, 5vw, 4.8rem);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+  margin: 8px 0 14px;
+}
+
+h2 {
+  margin-top: 0;
+  margin-bottom: 14px;
+  font-size: 1.4rem;
+  letter-spacing: -0.03em;
+}
+
+h3 {
+  font-size: 1.02rem;
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+h4 {
+  font-size: 0.94rem;
+  margin-top: 0;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+p {
+  line-height: 1.65;
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(320px, 0.92fr);
+  gap: 24px;
+  margin: 28px auto 24px;
+  max-width: 1240px;
+  padding: 0 24px;
+}
+
+.hero-copy,
+.hero-panel,
+.sidebar-card,
+.main-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.hero-copy {
+  position: relative;
+  overflow: hidden;
+  padding: 28px;
+}
+
+.hero-copy::after {
+  content: "";
+  position: absolute;
+  right: -40px;
+  bottom: -60px;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(118, 233, 217, 0.18), transparent 68%);
+  pointer-events: none;
+}
+
+.hero-panel {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background:
+    linear-gradient(180deg, rgba(118, 233, 217, 0.14), rgba(6, 24, 23, 0.74)),
+    var(--surface);
+}
+
+.hero-panel p {
+  color: var(--muted);
+  margin-bottom: 0.9rem;
+}
+
+.hero-panel h2 {
+  margin-top: 4px;
+}
+
+.hero-text {
+  max-width: 58ch;
+  margin: 0;
+  font-size: 1.08rem;
+  color: var(--muted);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #96e8db;
+}
+
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.hero-badge {
+  padding: 9px 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(118, 233, 217, 0.18);
+  background: rgba(118, 233, 217, 0.08);
+  color: #effffb;
+  font-size: 0.92rem;
+}
+
+.sidebar-card,
+.main-card {
+  padding: 24px;
+}
+
+.sidebar-card {
+  position: sticky;
+  top: 20px;
+}
+
+.main-card {
+  min-height: 100%;
+}
+
+.sidebar-card .form-group {
+  margin-bottom: 16px;
+}
+
+.sidebar-card .control-label {
+  margin-bottom: 8px;
+  color: #edf3f9;
+  font-weight: 600;
+}
+
+.sidebar-card .action-button {
+  margin-top: 6px;
+  width: 100%;
+}
+
+.action-button,
+.btn-primary {
+  background: linear-gradient(135deg, rgba(118, 233, 217, 0.95), rgba(182, 255, 244, 0.95));
+  color: #07211d !important;
+  border: 0 !important;
+  box-shadow: 0 10px 24px rgba(118, 233, 217, 0.18);
+}
+
+.action-button:hover,
+.btn-primary:hover {
+  filter: brightness(1.03);
+}
+
+.form-control,
+.selectize-input {
+  min-height: 46px;
+  color: var(--text) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 16px !important;
+  box-shadow: none !important;
+}
+
+.form-control:focus,
+.selectize-input.focus {
+  border-color: rgba(118, 233, 217, 0.72) !important;
+  box-shadow: 0 0 0 4px rgba(118, 233, 217, 0.14) !important;
+}
+
+.selectize-input {
+  padding: 11px 14px !important;
+}
+
+.selectize-dropdown {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.sidebar-card .panel-title,
+.main-card .panel-title {
+  color: var(--text);
+}
+
+.sidebar-card p,
+.main-card p,
+.sidebar-card label,
+.main-card label {
+  color: var(--muted);
+}
+
+#tabs {
+  margin-top: 0.25rem;
+}
+
+#tabs .nav-tabs,
+#tabs .nav-pills {
+  border-bottom: 1px solid rgba(118, 233, 217, 0.14);
+  gap: 8px;
+}
+
+#tabs .nav-link {
+  border: 0;
+  border-radius: 999px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.7rem 1rem;
+  margin-bottom: 8px;
+}
+
+#tabs .nav-link:hover {
+  color: var(--text);
+  background: rgba(118, 233, 217, 0.08);
+}
+
+#tabs .nav-link.active {
+  color: #06211c;
+  background: linear-gradient(135deg, rgba(118, 233, 217, 0.95), rgba(182, 255, 244, 0.95));
+  box-shadow: 0 10px 20px rgba(118, 233, 217, 0.14);
+}
+
+#tabs .tab-content {
+  padding-top: 22px;
+}
 
 .scale-labels {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 6px;
-    font-size: 0.9em;
-    color: #666;
-    padding: 0 4px;   /* litt luft, juster om ønskelig */
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 8px;
+  font-size: 0.9em;
+  color: var(--muted);
+  padding: 0 4px;
 }
 
 .scale-labels span {
-    text-align: center;
-    flex: 1;               /* alle får lik bredde */
+  text-align: center;
+  flex: 1;
 }
 
-/* på mobil: litt mindre font, men samme logikk */
-@media (max-width: 600px) {
-    .scale-labels {
-        font-size: 0.8em;
-        margin-bottom: 8px;
-    }
-}
-
-/* Venstre */
 .scale-labels span:first-child {
   text-align: left;
 }
 
-/* Høyre */
 .scale-labels span:last-child {
   text-align: right;
 }
+
+.irs,
+.irs-line,
+.irs-bar,
+.irs-slider,
+.irs-grid {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.irs-single,
+.irs-max,
+.irs-min,
+.irs-grid-text {
+  color: var(--muted) !important;
+}
+
+.irs-bar {
+  background: linear-gradient(90deg, rgba(118, 233, 217, 0.95), rgba(182, 255, 244, 0.88)) !important;
+}
+
+.irs-slider {
+  background: #effffb !important;
+  border: 2px solid rgba(118, 233, 217, 0.85) !important;
+  box-shadow: 0 0 0 4px rgba(118, 233, 217, 0.12) !important;
+}
+
+.irs-line {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.irs-grid-pol {
+  background: rgba(255, 255, 255, 0.12) !important;
+}
+
+.irs-grid-text {
+  white-space: normal !important;
+  line-height: 1.1;
+}
+
+.main-card h3,
+.main-card h4 {
+  color: var(--text);
+}
+
+.main-card .well {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(118, 233, 217, 0.12);
+  border-radius: 20px;
+  box-shadow: none;
+}
+
+.main-card .btn {
+  border-radius: 14px;
+}
+
+@media (max-width: 992px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar-card {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    margin-top: 18px;
+    padding: 0 14px;
+  }
+
+  .hero-copy,
+  .hero-panel,
+  .sidebar-card,
+  .main-card {
+    border-radius: 22px;
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 10vw, 3.4rem);
+  }
+
+  .irs-grid-text {
+    font-size: 0.75rem !important;
+  }
+}
+
+/* Local Variables: */
+/* mode: css */
+/* End: */

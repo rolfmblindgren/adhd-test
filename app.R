@@ -16,13 +16,16 @@ md_files <- "./content/"
 
 custom_theme <- bs_theme(
   version = 5,
-  bootswatch = "flatly",
-  bg = "#FFFFFF",
-  fg = "#000000",
-  primary = "#0199F8",
-  secondary = "#FF374B",
-  base_font = "Verdana",
-  heading_font = "Verdana"
+  bg = "#031817",
+  fg = "#EDFDFB",
+  primary = "#76E9D9",
+  secondary = "#B6FFF4",
+  success = "#6FCF97",
+  info = "#A7F3E9",
+  warning = "#F2CF7F",
+  danger = "#F28C8C",
+  base_font = "Avenir Next",
+  heading_font = "Avenir Next"
 )
 
 mod1 <- readRDS("./models/mod1_grendel_1f_graded.rds")
@@ -92,6 +95,7 @@ score_colors <- list(
 )
 
 ui <- fluidPage(
+  title = i18n$t("Dette er ikke en ADHD-test"),
   social_meta("meta.yaml"),
   theme = custom_theme,
   usei18n(i18n),
@@ -141,21 +145,46 @@ ui <- fluidPage(
   });
 ")),
 tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
-),
-titlePanel(title=i18n$t("Dette er ikke en ADHD-test"),
-           windowTitle="ADHD"),
-sidebarLayout(
-  sidebarPanel(
+  ),
+  div(
+    class = "hero",
+    div(
+      class = "hero-copy",
+      span(class = "eyebrow", i18n$t("Kort om testen")),
+      h1(i18n$t("Dette er ikke en ADHD-test")),
+      p(
+        class = "hero-text",
+        paste(
+          i18n$t("Denne testen viser hvordan fravær av oppmerksomhets- og reguleringsvansker kan se ut."),
+          i18n$t("Den er ikke diagnostisk. Den kan verken bekrefte eller avkrefte ADHD.")
+        )
+      ),
+      div(
+        class = "hero-badges",
+        span(class = "hero-badge", i18n$t("Spørsmål")),
+        span(class = "hero-badge", i18n$t("Resultat")),
+        span(class = "hero-badge", i18n$t("Om testen")),
+        span(class = "hero-badge", i18n$t("Støtt arbeidet"))
+      )
+    ),
+    div(
+      class = "hero-panel",
+      h2(i18n$t("Kort om testen")),
+      p(i18n$t("Denne testen viser hvordan fravær av oppmerksomhets- og reguleringsvansker kan se ut.")),
+      p(i18n$t("Den er ikke diagnostisk. Den kan verken bekrefte eller avkrefte ADHD."))
+    )
+  ),
+  sidebarLayout(
+    sidebarPanel(
+      class = "sidebar-card",
 
-
-
-    selectizeInput(
-      inputId = "selected_language",
-      label = i18n$t("Skift språk"),
-      choices = c("nb", "nn", "sv", "da", "se", "fkv", "fr", "es", "de", "en"),
-      selected = "nb",   # <- viktig
-      options = list(
-        render = I("
+      selectizeInput(
+        inputId = "selected_language",
+        label = i18n$t("Skift språk"),
+        choices = c("nb", "nn", "sv", "da", "se", "fkv", "fr", "es", "de", "en"),
+        selected = "nb",   # <- viktig
+        options = list(
+          render = I("
       {
         option: function(item, escape) {
           return Shiny.renderFlagOption(item);
@@ -165,23 +194,15 @@ sidebarLayout(
         }
       }
     ")
-    )
-    )
+        )
+      )
+      ,
+      actionButton("beregn", i18n$t("Beregn resultat"))
+    ),
 
-
-   ,
-
-
-
-    h4(i18n$t("Kort om testen")),
-    p(i18n$t("Denne testen viser hvordan fravær av oppmerksomhets- og reguleringsvansker kan se ut.")),
-    p(i18n$t("Den er ikke diagnostisk. Den kan verken bekrefte eller avkrefte ADHD.")),
-    br(),
-    actionButton("beregn", i18n$t("Beregn resultat"))
-  ),
-
-  mainPanel(
-    tabsetPanel(id="tabs",
+    mainPanel(
+      class = "main-card",
+      tabsetPanel(id = "tabs", type = "pills",
                 tabPanel(
                   value = "spm",
                   i18n$t("Spørsmål"),
@@ -228,7 +249,7 @@ sidebarLayout(
                   ),
                   actionButton("donate", i18n$t("Doner")),
                   p(
-                    style = "margin-top: 10px; color: #666;",
+                    style = "margin-top: 10px; color: #afcfc9;",
                     i18n$t("Du sendes til en sikker Stripe-side for betaling.")
                   )
                 )
