@@ -97,6 +97,7 @@ score_colors <- list(
 ui <- fluidPage(
   title = i18n$t("Dette er ikke en ADHD-test"),
   social_meta("meta.yaml"),
+  includeCSS("www/custom.css"),
   theme = custom_theme,
   usei18n(i18n),
   useShinyjs(debug=FALSE),
@@ -144,7 +145,6 @@ ui <- fluidPage(
     document.title = msg;
   });
 ")),
-tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
   ),
   div(
     class = "hero",
