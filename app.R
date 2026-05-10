@@ -150,8 +150,22 @@ ui <- fluidPage(
     class = "hero",
     div(
       class = "hero-copy",
-      span(class = "eyebrow", i18n$t("Kort om testen")),
-      h1(i18n$t("Dette er ikke en ADHD-test")),
+      div(
+        class = "hero-header",
+        div(
+          class = "hero-mark",
+          tags$img(
+            src = "https://www.grendel.no/wp-content/uploads/sites/7/2021/02/Grendel-G.png.webp",
+            alt = "Grendel-logo",
+            class = "hero-logo"
+          )
+        ),
+        div(
+          class = "hero-heading",
+          span(class = "eyebrow", i18n$t("Kort om testen")),
+          h1(i18n$t("Dette er ikke en ADHD-test"))
+        )
+      ),
       p(
         class = "hero-text",
         HTML(paste0(

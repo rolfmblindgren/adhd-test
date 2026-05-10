@@ -109,6 +109,46 @@ p {
   padding: 28px;
 }
 
+.hero-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.hero-mark {
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  overflow: hidden;
+  border-radius: 14px;
+  background: rgba(245, 252, 250, 0.94);
+  border: 1px solid rgba(118, 233, 217, 0.18);
+  box-shadow: 0 10px 30px rgba(2, 11, 10, 0.16);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.hero-logo {
+  display: block;
+  width: 66px;
+  max-width: none;
+  height: auto;
+  margin-left: -5px;
+  margin-top: -2px;
+  object-fit: contain;
+  filter: none;
+}
+
+.hero-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 1px;
+}
+
 .hero-copy::after {
   content: "";
   position: absolute;
@@ -391,6 +431,11 @@ p {
 
   h1 {
     font-size: clamp(2.2rem, 10vw, 3.4rem);
+  }
+
+  .hero-logo {
+    width: 60px;
+    margin-left: -4px;
   }
 
   .irs-grid-text {
