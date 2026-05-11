@@ -6,6 +6,7 @@ library(RSQLite)
 library(shiny.i18n)
 library(bslib)
 library(mirt)
+library(grendelshiny)
 library(shinyseo)
 library(grendelStripe)
 options(bslib.cache = FALSE)
@@ -118,11 +119,26 @@ ui <- fluidPage(
     }
 
     document.body.classList.toggle('selectize-menu-open', isOpen);
+
+    var button = document.getElementById('beregn');
+    if (button) {
+      button.style.visibility = isOpen ? 'hidden' : '';
+      button.style.pointerEvents = isOpen ? 'none' : '';
+    }
   }
 
   function update(delta) {
     openCount = Math.max(0, openCount + delta);
     setOpen(openCount > 0);
+  }
+
+  function syncSelectizeState() {
+    var dropdowns = Array.from(document.querySelectorAll('.selectize-dropdown'));
+    var anyOpen = dropdowns.some(function(node) {
+      return window.getComputedStyle(node).display !== 'none';
+    });
+
+    setOpen(anyOpen);
   }
 
   function bindSelectize() {
@@ -141,7 +157,10 @@ ui <- fluidPage(
     });
   }
 
-  document.addEventListener('DOMContentLoaded', bindSelectize);
+  document.addEventListener('DOMContentLoaded', function() {
+    bindSelectize();
+    window.setInterval(syncSelectizeState, 200);
+  });
   document.addEventListener('shiny:connected', bindSelectize);
   document.addEventListener('shiny:value', bindSelectize);
   document.addEventListener('click', function(event) {
@@ -390,9 +409,9 @@ server <- function(input, output, session) {
     tibble(
       id = paste0("item", 11:13),
       tekst = c(
-        i18n$t("Jeg blir ikke så rastløs at jeg må reise meg når det egentlig forventes at jeg sitter rolig."),
-        i18n$t("Jeg blir ikke så urolig i kroppen at jeg må tromme, vippe eller fikle for å holde ut."),
-        i18n$t("Jeg føler sjelden et sterkt behov for å gå rundt eller skifte aktivitet bare for å få ro i kroppen.")
+        i18n$t("Jeg blir ikke så rastløs at jeg må reise meg når det egentlig forventes at jeg sitter rolig"),
+        i18n$t("Jeg blir ikke så urolig i kroppen at jeg må tromme, vippe eller fikle for å holde ut"),
+        i18n$t("Jeg føler sjelden et sterkt behov for å gå rundt eller skifte aktivitet bare for å få ro i kroppen")
       )
     )
   })
