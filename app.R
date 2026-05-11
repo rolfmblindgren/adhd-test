@@ -82,6 +82,10 @@ map_browser_language <- function(browser_lang) {
 }
 
 default_app_url <- "https://shiny.grendel.no/adhd-test/"
+custom_css_href <- paste0(
+  "custom.css?v=",
+  format(file.info("./www/custom.css")$mtime, "%Y%m%d%H%M%S")
+)
 
 score_thresholds <- list(
   stable = 45,
@@ -99,7 +103,7 @@ ui <- fluidPage(
   title = i18n$t("Dette er ikke en ADHD-test"),
   social_meta("meta.yaml"),
   grendelshiny::grendelshiny_css(),
-  includeCSS("www/custom.css"),
+  tags$link(rel = "stylesheet", type = "text/css", href = custom_css_href),
   theme = custom_theme,
   usei18n(i18n),
   useShinyjs(debug=FALSE),
