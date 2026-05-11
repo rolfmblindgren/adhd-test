@@ -25,7 +25,7 @@ body {
     radial-gradient(1200px 800px at 10% 0%, rgba(118, 233, 217, 0.18), transparent 55%),
     radial-gradient(900px 700px at 90% 10%, rgba(182, 255, 244, 0.10), transparent 50%),
     linear-gradient(180deg, var(--bg-0) 0%, var(--bg-1) 42%, var(--bg-2) 100%);
-  font-family: "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-family: "Inter", "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
 }
 
