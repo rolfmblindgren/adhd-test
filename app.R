@@ -108,6 +108,53 @@ ui <- fluidPage(
            content = "index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1"
          ),
          tags$link(rel = "canonical", href = "https://shiny.grendel.no/adhd-test/"),
+         tags$script(HTML("
+(function() {
+  var openCount = 0;
+
+  function setOpen(isOpen) {
+    if (!document.body) {
+      return;
+    }
+
+    document.body.classList.toggle('selectize-menu-open', isOpen);
+  }
+
+  function update(delta) {
+    openCount = Math.max(0, openCount + delta);
+    setOpen(openCount > 0);
+  }
+
+  function bindSelectize() {
+    document.querySelectorAll('select.selectized').forEach(function(node) {
+      if (node.dataset.grendelSelectizeBound === '1' || !node.selectize) {
+        return;
+      }
+
+      node.dataset.grendelSelectizeBound = '1';
+      node.selectize.on('dropdown_open', function() {
+        update(1);
+      });
+      node.selectize.on('dropdown_close', function() {
+        update(-1);
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', bindSelectize);
+  document.addEventListener('shiny:connected', bindSelectize);
+  document.addEventListener('shiny:value', bindSelectize);
+  document.addEventListener('click', function(event) {
+    if (!event.target.closest('.selectize-control')) {
+      openCount = 0;
+      setOpen(false);
+    }
+  });
+
+  setOpen(false);
+  bindSelectize();
+})();
+")),
          tags$meta(name = "twitter:card", content = "summary_large_image"),
          tags$script(
            type = "application/ld+json",

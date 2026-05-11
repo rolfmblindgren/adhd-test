@@ -248,6 +248,7 @@ p {
   width: 100%;
   position: relative;
   z-index: 1;
+  transition: opacity 0.15s ease, transform 0.15s ease;
 }
 
 .action-button,
@@ -261,6 +262,12 @@ p {
 .action-button:hover,
 .btn-primary:hover {
   filter: brightness(1.03);
+}
+
+body.selectize-menu-open .sidebar-card .action-button {
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
 }
 
 .form-control,
