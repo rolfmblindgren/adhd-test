@@ -162,7 +162,7 @@ ui <- fluidPage(
         ),
         div(
           class = "hero-heading",
-          span(class = "eyebrow", i18n$t("Kort om testen")),
+          span(class = "eyebrow", "Har du ikke ADHD?"),
           h1(i18n$t("Dette er ikke en ADHD-test"))
         )
       ),
