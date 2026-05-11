@@ -51,7 +51,7 @@ h4,
 }
 
 h1 {
-  font-size: clamp(2.6rem, 5vw, 4.8rem);
+  font-size: clamp(2.35rem, 4.2vw, 4.15rem);
   line-height: 0.92;
   letter-spacing: -0.05em;
   margin: 8px 0 14px;
@@ -224,10 +224,13 @@ p {
   position: sticky;
   top: 20px;
   overflow: visible;
+  z-index: 10;
 }
 
 .main-card {
   min-height: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .sidebar-card .form-group {
@@ -289,6 +292,10 @@ p {
   border-radius: 16px;
   overflow: hidden;
   z-index: 9999 !important;
+}
+
+.selectize-dropdown-content {
+  z-index: 10000 !important;
 }
 
 .sidebar-card .panel-title,
