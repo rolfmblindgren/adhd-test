@@ -1,6 +1,6 @@
 window.Shiny = window.Shiny || {};
 
-window.Shiny.renderFlagOption = function(item) {
+function flagMarkup(item, kind) {
   const lang = item.value;
 
   const flags = {
@@ -31,15 +31,25 @@ window.Shiny.renderFlagOption = function(item) {
     en:  "English"
   };
 
-  const flag  = flags[lang] || "";
+  const flag = flags[lang] || "";
   const label = names[lang] || lang;
+  const rootTag = kind === "item" ? "span" : "div";
+  const rootClass = kind === "item" ? "flag-choice flag-choice--item" : "flag-choice flag-choice--option";
 
   return `
-    <span style="display:inline-flex; align-items:center; gap:6px; white-space:nowrap; vertical-align:middle;">
-      ${flag ? `<img src="${flag}" height="15" style="border:1px solid #ccc;">` : ""}
-      <span>${label}</span>
-    </span>
+    <${rootTag} class="${rootClass}">
+      ${flag ? `<img src="${flag}" height="15" class="flag-choice__flag" alt="">` : ""}
+      <span class="flag-choice__label">${label}</span>
+    </${rootTag}>
   `;
+}
+
+window.Shiny.renderFlagOption = function(item) {
+  return flagMarkup(item, "option");
+};
+
+window.Shiny.renderFlagItem = function(item) {
+  return flagMarkup(item, "item");
 };
 
 function sendBrowserLanguageToShiny() {

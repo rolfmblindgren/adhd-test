@@ -276,7 +276,7 @@ ui <- fluidPage(
           return Shiny.renderFlagOption(item);
         },
         item: function(item, escape) {
-          return Shiny.renderFlagOption(item);
+          return Shiny.renderFlagItem(item);
         }
       }
     ")

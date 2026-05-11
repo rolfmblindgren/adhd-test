@@ -33,6 +33,25 @@ body.selectize-menu-open #beregn {
   margin: 0 !important;
 }
 
+.flag-choice {
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.flag-choice--option {
+  display: flex;
+  width: 100%;
+}
+
+.flag-choice--item {
+  display: inline-flex;
+}
+
+.flag-choice__flag {
+  border: 1px solid #ccc;
+}
+
 .sidebar-card .action-button {
   transition: opacity 0.15s ease, transform 0.15s ease;
 }
