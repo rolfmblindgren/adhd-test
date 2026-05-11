@@ -35,10 +35,10 @@ window.Shiny.renderFlagOption = function(item) {
   const label = names[lang] || lang;
 
   return `
-    <div style="display:flex; align-items:center; gap:6px;">
+    <span style="display:inline-flex; align-items:center; gap:6px; white-space:nowrap; vertical-align:middle;">
       ${flag ? `<img src="${flag}" height="15" style="border:1px solid #ccc;">` : ""}
       <span>${label}</span>
-    </div>
+    </span>
   `;
 };
 
