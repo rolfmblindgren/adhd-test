@@ -9,6 +9,9 @@ image_width: 1200
 image_height: 630
 image_type: "image/png"
 twitter_site: "@GrendelEP"
+favicon: "/adhd-test/favicon.svg"
+favicon_type: "image/svg+xml"
+theme_color: "#76E9D9"
 
 schema_type: "WebApplication"
 application_category: "MedicalWebApplication"
