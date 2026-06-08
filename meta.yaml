@@ -1,13 +1,14 @@
 title: "Dette er ikke en ADHD-test"
 description: "En kort selvrapportert test av fravær av oppmerksomhets- og reguleringsvansker. Ikke diagnostikk."
 url: "https://shiny.grendel.no/adhd-test/"
-image: "https://shiny.grendel.no/adhd-test/og.png"
+image: "https://shiny.grendel.no/adhd-test/og.svg"
 image_alt: "Dette er ikke en ADHD-test"
+image_type: "image/svg+xml"
 site_name: "Grendel"
 locale: "nb_NO"
 image_width: 1200
 image_height: 630
-image_type: "image/png"
+image_type: "image/svg+xml"
 twitter_site: "@GrendelEP"
 favicon: "/adhd-test/favicon.svg"
 favicon_type: "image/svg+xml"
