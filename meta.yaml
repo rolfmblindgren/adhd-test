@@ -11,6 +11,7 @@ image_type: "image/png"
 twitter_site: "@GrendelEP"
 favicon: "/adhd-test/favicon.svg"
 favicon_type: "image/svg+xml"
+favicon_png: "/adhd-test/favicon-32.png"
 theme_color: "#76E9D9"
 
 schema_type: "WebApplication"
