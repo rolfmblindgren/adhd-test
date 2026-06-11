@@ -1,0 +1,105 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{csquotes}
+\usepackage[
+  backend=biber,
+  style=apa,
+  sorting=nyt
+]{biblatex}
+\addbibresource{adhd_psychometric_note.bib}
+\DeclareLanguageMapping{polish}{english-apa}
+
+\setstretch{1.08}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  urlcolor=blue,
+  pdftitle={Co ten test może zasadnie wskazywać},
+  pdfauthor={Grendel}
+}
+
+\title{Co ten test może zasadnie wskazywać\\
+\large Krótka nota psychometryczna}
+\author{Grendel evidensbasert psykologi AS}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Tekst ten podsumowuje, co można zasadnie twierdzić na temat tego, co faktycznie mierzy krótka, pozytywnie sformułowana skala samoopisowa dotycząca zabierania się do pracy, skupienia, organizacji i samoregulacji. Główna teza brzmi: testu nie można używać jako narzędzia diagnostycznego dla ADHD, ale wydaje się on uchwytywać szeroki i spójny wymiar tarcia regulacyjnego, istotny dla trudności podobnych do ADHD. Zarazem modele pokazują, że ten szeroki wymiar ma pewną strukturę wewnętrzną. Najbardziej uzasadniona interpretacja jest więc taka, że test mierzy wspólny czynnik regulacyjny o dwóch częściowo rozróżnialnych przejawach: bardziej wewnętrznym wzorcu związanym z zaangażowaniem w zadania i utrzymywaniem toku myśli, oraz bardziej zewnętrznym wzorcu związanym z praktyczną niezawodnością i organizacją codzienności.
+\end{abstract}
+
+\section{Wprowadzenie}
+O krótkich kwestionariuszach łatwo mówić tak, jakby albo ``uchwytywały ADHD'', albo ``nie uchwytywały ADHD''. Dojrzalsze rozumienie jest takie, że narzędzia tego rodzaju mierzą zwykle wzorzec samoopisowych trudności, który może być mniej lub bardziej typowy dla ADHD, nie dając przy tym podstaw do diagnozy. Test składa się z dziesięciu stwierdzeń sformułowanych jako stwierdzenia o funkcjonowaniu, a nie o objawach. Nie pyta więc wprost, czy dana osoba ma ADHD, lecz o to, jak łatwo lub trudno przychodzi jej zabieranie się do pracy, utrzymywanie skupienia, pamiętanie o umówionych sprawach, organizowanie czasu, utrzymywanie toku myśli i funkcjonowanie bez niezwykle dużej zewnętrznej struktury.
+
+Celem tej noty jest opisanie, co wyniki faktycznie potwierdzają, oraz — co równie ważne — czego nie potwierdzają. Ambicją nie jest uczynienie testu pewniejszym, niż jest, lecz sformułowanie precyzyjnego stanowiska pośredniego: test wydaje się mierzyć coś realnego i psychometrycznie spójnego, ale to ``coś'' najlepiej rozumieć jako wzorzec tarcia regulacyjnego istotny dla ADHD, a nie jako rozstrzygnięcie diagnostyczne.
+
+\section{Dane i selekcja}
+Niniejsza analiza opierała się na $N = 309$ surowych odpowiedziach. Zbiór danych zawierał w praktyce niemal wyłącznie odpowiedzi w bokmålu, z bardzo nielicznymi odpowiedziami w nynorsku, po angielsku i kweńsku. W tym przebiegu nie usuwano szybkich duplikatów, natomiast wykluczono 28 tak zwanych płaskich odpowiedzi środkowych, to znaczy takich, w których na wszystkie dziesięć stwierdzeń odpowiedziano kategorią 3. Analizy oszacowano zatem na 281 odpowiedziach.
+
+Nowszy przebieg renormalizacyjny, użyty do aktualizacji modelu produkcyjnego, dał podobny, lecz nieco większy materiał. Pobrano w nim 390 surowych odpowiedzi, z których 346 zachowano po filtrowaniu jakościowym. Ten nowszy przebieg służy tutaj jedynie jako wsparcie dla ogólnej interpretacji, a nie jako zamiennik analizy głównej.
+
+\section{Oprogramowanie i układ analiz}
+Analizy przeprowadzono w \texttt{R} \parencite{RCore2026}. Centralnym pakietem był \texttt{mirt} \parencite{Chalmers2012mirt}, używany na kilka sposobów:
+
+\begin{itemize}
+\item \texttt{mirt(..., itemtype = "graded")} posłużył do oszacowania modeli graded response z jednym czynnikiem, dwoma czynnikami oraz strukturą bifaktorową.
+\item \texttt{fscores()} posłużył do obliczenia wyników osobowych metodami EAP i MAP oraz oczekiwanych wyników latentnych warunkowanych sumą punktów (\texttt{EAPsum}).
+\item \texttt{anova()} posłużył do porównania modelu jedno- i dwuczynnikowego.
+\item \texttt{M2()} posłużył jako globalny wskaźnik dopasowania modelu jednoczynnikowego.
+\item \texttt{itemfit()} posłużył do diagnostyki pozycji.
+\item \texttt{residuals(type = "Q3")} posłużył do zbadania lokalnej zależności między pozycjami.
+\end{itemize}
+
+Skrypt ładował również pakiet \texttt{careless} \parencite{YentesWilhelm2023careless}, ale w niniejszym przebiegu nie był on jawnie używany w samym oszacowaniu. Selekcja jakościowa w tej analizie składała się w praktyce z prostej logiki napisanej w bazowym \texttt{R}: sortowania według czasu, usuwania ewentualnych szybkich wzorców duplikatów i wykluczania płaskich odpowiedzi środkowych. Pakiety \texttt{stats4} i \texttt{lattice} \parencite{Sarkar2008lattice} zostały załadowane automatycznie jako zależności \texttt{mirt}; dla \texttt{stats4} stosuje się standardowe cytowanie \texttt{R} \parencite{RCore2026}.
+
+\section{Główne wyniki}
+\subsection{Model jednoczynnikowy}
+Model jednoczynnikowy dał wyraźny i jednorodny obraz. Ładunki czynnikowe mieściły się między 0.659 a 0.825, a wszystkie pozycje miały umiarkowane lub wysokie zasoby zmienności wspólnej. Suma ładunków wyniosła 5.682, a udział wyjaśnionej wariancji 0.568. Rzetelność była wysoka, zarówno w postaci $\alpha = 0.904$, jak i rzetelności czynnikowej $r_{xx,F1} = 0.901$. Standardowy błąd pomiaru wyniósł 3.066.
+
+Globalne dopasowanie modelu jednoczynnikowego było w tym przebiegu dobre. Test M2 dał $\chi^2(40)=16.177$, $p=1.00$, a struktura reszt była spokojna. Reszty Q3 miały maksimum 0.169 przy średniej około $-0.095$, co przemawia przeciwko poważnej lokalnej zależności między pozycjami. Na tym poziomie test wydaje się więc zachowywać jak dobrze funkcjonująca krótka skala z jednym wyraźnym wymiarem głównym.
+
+\subsection{Model dwuczynnikowy}
+Oszacowany model dwuczynnikowy poprawił dopasowanie względem modelu jednoczynnikowego. Porównanie dało $\Delta \chi^2 = 68.12$ przy 9 stopniach swobody i $p < .001$. Oznacza to, że materiał nie jest doskonale jednowymiarowy w ścisłym sensie statystycznym. Pytanie brzmi jednak, co ta dodatkowa struktura reprezentuje.
+
+We wcześniejszych przebiegach mogło się wydawać, że ta dodatkowa struktura dotyczyła po części deficytów uwagi, a po części luźniejszej zmienności indywidualnej lub efektów metody. Nowsze, zrotowane rozwiązanie dwuczynnikowe, oszacowane na zaktualizowanym i przefiltrowanym materiale, wydaje się nieco lepiej interpretowalne. Pozycje 1, 4, 5, 9 i 10 ładowały tam najsilniej na jeden czynnik, podczas gdy pozycje 2, 3, 7 i 8 najsilniej na drugi. Pozycja 6 wykazywała bardziej mieszaną przynależność. Oba czynniki były przy tym wysoko skorelowane ($r = 0.75$), co jest bardzo istotne: dodatkowa struktura nie wskazuje na dwie niezależne cechy, lecz na dwa blisko spokrewnione przejawy szerszego czynnika regulacyjnego.
+
+\subsection{Model bifaktorowy}
+Model bifaktorowy daje najbardziej pouczający obraz całości. W niniejszej analizie wszystkie dziesięć pozycji ładowało wyraźnie na czynnik ogólny $G$, z ładunkami od 0.574 do 0.792. Zarazem ujawniły się dwa słabsze czynniki grupowe. Pierwszy czynnik grupowy wiązał się głównie z pozycjami 1--5, drugi zaś najwyraźniej z pozycją 6 i w mniejszym stopniu z pozycjami 7--10.
+
+Rozstrzygająca obserwacja jest jednak taka, że czynnik ogólny niósł większość wariancji wspólnej. Udział wyjaśnionej wariancji (Proportion Var) wyniósł 0.529 dla $G$, wobec 0.039 i 0.065 dla obu czynników grupowych. Innymi słowy: test ma więcej struktury, niż w pełni uchwytuje czysty model jednoczynnikowy, ale głównym wrażeniem pozostaje dominacja jednego szerokiego czynnika.
+
+\section{Interpretacja}
+Najbardziej uzasadnione twierdzenie brzmi zatem: test wydaje się uchwytywać szeroki i przekrojowy wymiar tarcia regulacyjnego, istotny dla trudności podobnych do ADHD. Silny czynnik ogólny przemawia za tym, że w materiale istnieje co najmniej jeden wspólny czynnik przebiegający w poprzek pozycji, skupiający to, co wielu klinicystów i użytkowników intuicyjnie rozpozna jako trudność z utrzymywaniem codzienności w toku w sposób stabilny i samosterowny.
+
+Kuszące jest nazwanie tego ``czynnikiem powtarzającym się u wszystkich osób z ADHD''. Empirycznie dane tak daleko nie sięgają. W materiale tym nie ma ani diagnostycznych danych złotego standardu, ani zewnętrznej walidacji względem uznanych narzędzi ADHD. To, co dane faktycznie potwierdzają, to sformułowanie bardziej powściągliwe: skala wydaje się uchwytywać szeroki i prawdopodobnie centralny czynnik regulacyjny istotny dla ADHD, co do którego wiarygodne jest przypuszczenie, że będzie się powtarzał w różnych prezentacjach ADHD. To ważne ustalenie, ale nie to samo, co udowodnienie, że czynnik ten jest uniwersalny dla wszystkich osób z ADHD.
+
+Struktura wtórna jest mimo to interesująca i sensowna. Nie wygląda już na czysty szum. W nowszym rozwiązaniu jedna strona testu jawi się jako bardziej związana z wewnętrznym zaangażowaniem w zadania: zabieraniem się do pracy, utrzymywaniem skupienia, niezależnością od energii kryzysowej, utrzymywaniem toku myśli i radzeniem sobie bez dużego zewnętrznego wsparcia. Druga strona jawi się jako bardziej związana z zewnętrzną niezawodnością i praktyczną organizacją: niegubieniem rzeczy, dotrzymywaniem umówionych spraw, pamiętaniem o wiadomościach i sprawnym ogarnianiem codziennej logistyki. Można to rozumieć jako dwa przejawy tego samego nadrzędnego obszaru trudności: bardziej wewnętrzną i bardziej zewnętrzną stronę regulacji.
+
+\section{Co test może zasadnie wskazywać}
+Na poziomie praktycznym zasadne jest więc stwierdzenie, że test wskazuje, na ile samoopisowe funkcjonowanie danej osoby przypomina lub nie przypomina istotnego dla ADHD wzorca trudności regulacyjnych. Wyższe wyniki sugerują mniejsze podobieństwo do takich trudności. Niższe wyniki sugerują podobieństwo większe. Można to wykorzystywać edukacyjnie i jako ustrukturyzowany punkt wyjścia do refleksji, zwłaszcza że test wydaje się krótki, spójny i psychometrycznie stosunkowo czysty.
+
+Nie jest natomiast zasadne twierdzenie, że test rozstrzyga, czy dana osoba ma ADHD. Niski wynik może być zgodny z ADHD, ale także z szeregiem innych okoliczności, takich jak stres, niedobór snu, depresja, lęk, przeciążenie czy inne formy zmęczenia poznawczego i emocjonalnego. Analogicznie wysoki wynik może być zgodny z brakiem istotnych trudności regulacyjnych, ale także z łagodnym ADHD, trudnościami skompensowanymi lub poziomem funkcjonowania dobrze wspieranym przez strukturę, inteligencję, rutyny czy dostosowanie środowiska.
+
+\section{Ograniczenia}
+Ograniczeń jest kilka oczywistych. Po pierwsze, analiza opiera się na samoopisie. Po drugie, materiałowi brakuje zewnętrznej walidacji względem diagnostyki klinicznej lub uznanych skal ADHD. Po trzecie, rozkład językowy jest skośny, więc na razie nie ma podstaw do poważnych norm specyficznych językowo ani analiz inwariancji pomiarowej. Po czwarte, rozwiązania bifaktorowe i dwuczynnikowe są modelami diagnostycznymi w sensie metodologicznym; są przydatne do zrozumienia struktury danych, ale same w sobie nie uprawniają do interpretowania testu jako dwóch odrębnych klinicznych podskal.
+
+\section{Wniosek}
+Najdojrzalszy i naukowo najbardziej uzasadniony opis testu brzmi: działa on jako krótka, znormalizowana miara tarcia regulacyjnego o wyraźnym znaczeniu dla trudności podobnych do ADHD. Wyniki potwierdzają istnienie silnego i przekrojowego czynnika ogólnego, a więc wspólnego wymiaru spinającego zabieranie się do pracy, skupienie, organizację, wewnętrzny spokój i stabilne doprowadzanie spraw do końca. Zarazem zarówno model dwuczynnikowy, jak i bifaktorowy sugerują, że ten czynnik ogólny ma pewną strukturę wewnętrzną, w której bardziej wewnętrzną, zadaniowo-uwagową stronę można odróżnić od strony bardziej zewnętrznej, praktycznej i związanej z niezawodnością.
+
+To, co test może zatem zasadnie wskazywać, to nie ``ADHD'' jako diagnoza, lecz stopień podobieństwa między odpowiedziami danej osoby a spójnym wzorcem istotnego dla ADHD tarcia regulacyjnego. To ustalenie ważne i użyteczne. Pozostaje ono jednak ustaleniem na poziomie funkcjonowania, a nie ostateczną odpowiedzią co do przyczyny, kategorii czy tożsamości klinicznej.
+
+\printbibliography
+
+\end{document}

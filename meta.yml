@@ -28,6 +28,8 @@ in_language:
   - "fr"
   - "es"
   - "de"
+  - "pl"
+  - "lt"
   - "uk"
   - "en"
 author_name: "Rolf Marvin Bøe Lindgren"

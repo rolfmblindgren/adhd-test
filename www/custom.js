@@ -15,6 +15,8 @@ function flagMarkup(item, kind) {
     fr:  "france.svg",
     es:  "es.svg",
     de:  "germany.svg",
+    pl:  "pl.svg",
+    lt:  "lt.svg",
     uk: "ua.svg",
     en:  "uk.svg"
   };
@@ -30,6 +32,8 @@ function flagMarkup(item, kind) {
     fr:  "Français",
     es:  "Español",
     de:  "Deutsch",
+    pl:  "Polski",
+    lt:  "Lietuvių",
     uk:  "Українська",
     en:  "English"
   };

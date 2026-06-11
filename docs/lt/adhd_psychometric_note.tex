@@ -1,0 +1,105 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[lithuanian]{babel}
+\usepackage{lmodern}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{setspace}
+\usepackage{csquotes}
+\usepackage[
+  backend=biber,
+  style=apa,
+  sorting=nyt
+]{biblatex}
+\addbibresource{adhd_psychometric_note.bib}
+\DeclareLanguageMapping{lithuanian}{english-apa}
+
+\setstretch{1.08}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  urlcolor=blue,
+  pdftitle={Ką šis testas gali pagrįstai rodyti},
+  pdfauthor={Grendel}
+}
+
+\title{Ką šis testas gali pagrįstai rodyti\\
+\large Trumpa psichometrinė pastaba}
+\author{Grendel evidensbasert psykologi AS}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Šis tekstas apibendrina, ką pagrįstai galima teigti apie tai, ką iš tikrųjų matuoja trumpa, teigiamai suformuluota savistabos skalė, apimanti darbų pradėjimą, dėmesį, organizavimą ir savireguliaciją. Pagrindinė mintis: testo negalima naudoti kaip ADHD diagnostikos priemonės, tačiau jis, regis, užfiksuoja platų ir nuoseklų reguliacinės trinties matmenį, reikšmingą į ADHD panašiems sunkumams. Kartu modeliai rodo, kad šis platus matmuo turi tam tikrą vidinę struktūrą. Todėl labiausiai pagrįsta interpretacija yra ta, kad testas matuoja bendrą reguliacinį veiksnį su dviem iš dalies atskiriamomis raiškomis: labiau vidiniu modeliu, susijusiu su įsitraukimu į užduotis ir minčių sekos išlaikymu, ir labiau išoriniu modeliu, susijusiu su praktiniu patikimumu ir kasdienybės organizavimu.
+\end{abstract}
+
+\section{Įvadas}
+Apie trumpus klausimynus lengva kalbėti taip, tarsi jie arba ``užfiksuoja ADHD'', arba ``neužfiksuoja ADHD''. Brandesnis supratimas yra toks: tokie instrumentai paprastai matuoja savistabos būdu nurodytų sunkumų modelį, kuris gali būti daugiau ar mažiau būdingas ADHD, bet vien dėl to nesuteikia pagrindo diagnozei. Šį testą sudaro dešimt teiginių, suformuluotų kaip teiginiai apie funkcionavimą, o ne apie simptomus. Taigi jis tiesiogiai neklausia, ar žmogus turi ADHD, o klausia, kaip lengva ar sunku pradėti darbus, išlaikyti dėmesį, prisiminti susitarimus, planuoti laiką, išlaikyti minčių seką ir funkcionuoti be neįprastai didelės išorinės struktūros.
+
+Šios pastabos tikslas — aprašyti, ką rezultatai iš tikrųjų patvirtina, ir, kas ne mažiau svarbu, ko jie nepatvirtina. Siekiama ne padaryti testą patikimesnį, nei jis yra, o suformuluoti tikslią tarpinę poziciją: testas, regis, matuoja kažką realaus ir psichometriškai nuoseklaus, tačiau tą ``kažką'' geriausia suprasti kaip ADHD požiūriu reikšmingą reguliacinės trinties modelį, o ne kaip diagnostinį atsakymą.
+
+\section{Duomenys ir atranka}
+Ši analizė rėmėsi $N = 309$ neapdorotais atsakymais. Duomenų rinkinyje praktiškai buvo beveik vien bukmolo atsakymai, su labai nedaug atsakymų naujanorvegių, anglų ir kvenų kalbomis. Šiame vykdyme greiti dublikatai nebuvo šalinami, tačiau buvo pašalinti 28 vadinamieji lygūs viduriniai atsakymai, t.\,y. atsakymai, kuriuose į visus dešimt teiginių atsakyta 3 kategorija. Taigi analizės buvo įvertintos pagal 281 atsakymą.
+
+Naujesnis pernormavimo vykdymas, naudotas gamybiniam modeliui atnaujinti, davė panašią, bet kiek didesnę medžiagą. Jame buvo gauta 390 neapdorotų atsakymų, iš kurių 346 išliko po kokybės filtravimo. Šis naujesnis vykdymas čia naudojamas tik bendrai interpretacijai paremti, o ne pagrindinei analizei pakeisti.
+
+\section{Programinė įranga ir analizės schema}
+Analizės atliktos su \texttt{R} \parencite{RCore2026}. Pagrindinis paketas buvo \texttt{mirt} \parencite{Chalmers2012mirt}, naudotas keliais būdais:
+
+\begin{itemize}
+\item \texttt{mirt(..., itemtype = "graded")} naudotas graded response modeliams su vienu veiksniu, dviem veiksniais ir bifaktorine struktūra įvertinti.
+\item \texttt{fscores()} naudotas asmenų įverčiams apskaičiuoti EAP ir MAP metodais, taip pat sumos balu sąlygotiems laukiamiems latentiniams įverčiams (\texttt{EAPsum}).
+\item \texttt{anova()} naudotas vieno ir dviejų veiksnių modeliams palyginti.
+\item \texttt{M2()} naudotas kaip globalus vieno veiksnio modelio atitikties indeksas.
+\item \texttt{itemfit()} naudotas užduočių diagnostikai.
+\item \texttt{residuals(type = "Q3")} naudotas lokaliai priklausomybei tarp užduočių tirti.
+\end{itemize}
+
+Skriptas taip pat įkėlė \texttt{careless} \parencite{YentesWilhelm2023careless}, tačiau šiame vykdyme paketas nebuvo tiesiogiai naudojamas pačiame vertinime. Kokybės atranka šioje analizėje praktiškai buvo paprasta baziniu \texttt{R} parašyta logika: rikiavimas pagal laiką, galimų greitų dublikatų modelių šalinimas ir lygių vidurinių atsakymų pašalinimas. Paketai \texttt{stats4} ir \texttt{lattice} \parencite{Sarkar2008lattice} buvo įkelti automatiškai kaip \texttt{mirt} priklausomybės; \texttt{stats4} atveju naudojama standartinė \texttt{R} citata \parencite{RCore2026}.
+
+\section{Pagrindiniai rezultatai}
+\subsection{Vieno veiksnio modelis}
+Vieno veiksnio modelis davė aiškų ir vienalytį vaizdą. Veiksnio svoriai buvo tarp 0.659 ir 0.825, o visų užduočių bendrumai buvo vidutiniai arba aukšti. Svorių suma siekė 5.682, o paaiškintos dispersijos dalis — 0.568. Patikimumas buvo aukštas tiek išreikštas $\alpha = 0.904$, tiek kaip veiksniu grįstas patikimumas $r_{xx,F1} = 0.901$. Standartinė matavimo paklaida buvo 3.066.
+
+Globali vieno veiksnio modelio atitiktis šiame vykdyme buvo gera. M2 testas davė $\chi^2(40)=16.177$, $p=1.00$, o liekanų struktūra buvo rami. Q3 liekanų maksimumas buvo 0.169, o vidurkis apie $-0.095$, ir tai liudija prieš rimtą lokalią priklausomybę tarp užduočių. Taigi šiame lygmenyje testas elgiasi kaip gerai veikianti trumpa skalė su vienu aiškiu pagrindiniu matmeniu.
+
+\subsection{Dviejų veiksnių modelis}
+Įvertinus dviejų veiksnių modelį, jis pagerino atitiktį, palyginti su vieno veiksnio modeliu. Palyginimas davė $\Delta \chi^2 = 68.12$ su 9 laisvės laipsniais ir $p < .001$. Tai reiškia, kad medžiaga nėra tobulai vienmatė griežtąja statistine prasme. Tačiau klausimas, ką ši papildoma struktūra reprezentuoja.
+
+Ankstesniuose vykdymuose galėjo atrodyti, kad ši papildoma struktūra iš dalies buvo susijusi su dėmesio trūkumais, o iš dalies — su laisvesne individualia variacija ar metodo efektais. Naujesnis pasuktas dviejų veiksnių sprendimas, įvertintas pagal atnaujintą ir filtruotą medžiagą, atrodo kiek geriau interpretuojamas. Jame 1, 4, 5, 9 ir 10 užduotys stipriausiai krovėsi ant vieno veiksnio, o 2, 3, 7 ir 8 — ant kito. 6 užduotis rodė mišresnę priklausomybę. Kartu abu veiksniai buvo stipriai koreliuoti ($r = 0.75$), ir tai labai svarbu: papildoma struktūra rodo ne du nepriklausomus bruožus, o dvi artimai susijusias platesnio reguliacinio veiksnio raiškas.
+
+\subsection{Bifaktorinis modelis}
+Bifaktorinis modelis suteikia informatyviausią visumos vaizdą. Šioje analizėje visos dešimt užduočių aiškiai krovėsi ant bendrojo veiksnio $G$, su svoriais nuo 0.574 iki 0.792. Kartu išryškėjo du silpnesni grupiniai veiksniai. Pirmasis grupinis veiksnys daugiausia buvo susijęs su 1--5 užduotimis, o antrasis aiškiausiai — su 6 užduotimi ir mažesniu mastu su 7--10 užduotimis.
+
+Lemiamas pastebėjimas vis dėlto yra tas, kad bendrasis veiksnys nešė didžiąją bendrosios dispersijos dalį. Paaiškintos dispersijos dalis (Proportion Var) buvo 0.529 veiksniui $G$, palyginti su 0.039 ir 0.065 dviem grupiniams veiksniams. Kitaip tariant: testas turi daugiau struktūros, nei visiškai užfiksuoja grynas vieno veiksnio modelis, bet pagrindinis įspūdis išlieka — dominuoja vienas platus veiksnys.
+
+\section{Interpretacija}
+Todėl labiausiai pagrįstas teiginys yra tas, kad testas, regis, užfiksuoja platų ir persmelkiantį reguliacinės trinties matmenį, reikšmingą į ADHD panašiems sunkumams. Stiprus bendrasis veiksnys liudija, kad medžiagoje yra bent vienas bendras, per visas užduotis einantis veiksnys, sutelkiantis tai, ką daugelis klinicistų ir naudotojų intuityviai atpažins kaip sunkumą stabiliai ir savarankiškai palaikyti kasdienybės eigą.
+
+Vilioja tai pavadinti ``veiksniu, pasikartojančiu visiems, turintiems ADHD''. Empiriškai duomenys taip toli nesiekia. Šioje medžiagoje nėra nei aukso standarto diagnostinių duomenų, nei išorinės validacijos pagal pripažintus ADHD instrumentus. Tai, ką duomenys iš tikrųjų patvirtina, yra santūresnė formuluotė: skalė, regis, užfiksuoja platų ir tikriausiai centrinį ADHD požiūriu reikšmingą reguliacinį veiksnį, apie kurį pagrįsta manyti, kad jis kartosis skirtingose ADHD raiškose. Tai svarbus radinys, bet tai nėra tas pats, kas įrodyti, jog veiksnys universalus visiems, turintiems ADHD.
+
+Antrinė struktūra vis dėlto įdomi ir prasminga. Ji nebeatrodo kaip grynas triukšmas. Naujesniame sprendime viena testo pusė atrodo labiau susijusi su vidiniu įsitraukimu į užduotis: pradėti, išlaikyti sutelktą dėmesį, nepriklausyti nuo krizės energijos, išlaikyti minčių seką ir išsiversti be didelės išorinės paramos. Kita pusė atrodo labiau susijusi su išoriniu patikimumu ir praktiniu organizavimu: nepamesti daiktų, laikytis susitarimų, prisiminti žinutes ir priversti kasdienę logistiką veikti. Tai galima suprasti kaip dvi tos pačios viršesnės sunkumų srities raiškas: labiau vidinę ir labiau išorinę reguliacijos pusę.
+
+\section{Ką testas gali pagrįstai rodyti}
+Praktiniu lygmeniu todėl pagrįsta sakyti, kad testas rodo, kiek žmogaus savistabos būdu nurodytas funkcionavimas panašus ar nepanašus į ADHD požiūriu reikšmingą reguliacinių sunkumų modelį. Aukštesni balai rodo mažesnį panašumą į tokius sunkumus. Žemesni balai rodo didesnį panašumą. Tai galima naudoti šviečiamai ir kaip struktūruotą atspirties tašką refleksijai, juolab kad testas atrodo trumpas, nuoseklus ir psichometriškai palyginti švarus.
+
+Tačiau nepagrįsta sakyti, kad testas nusprendžia, ar žmogus turi ADHD. Žemas balas gali derėti su ADHD, bet taip pat su daugybe kitų aplinkybių, tokių kaip stresas, miego trūkumas, depresija, nerimas, perkrova ar kitos kognityvinio ir emocinio nuovargio formos. Atitinkamai aukštas balas gali derėti su reikšmingų reguliacinių sunkumų nebuvimu, bet taip pat su lengvu ADHD, kompensuotais sunkumais ar funkcionavimo lygiu, kurį gerai palaiko struktūra, intelektas, rutinos ar aplinkos pritaikymas.
+
+\section{Apribojimai}
+Akivaizdžių apribojimų yra keletas. Pirma, analizė remiasi savistaba. Antra, medžiagai trūksta išorinės validacijos pagal klinikinę diagnostiką ar pripažintas ADHD skales. Trečia, kalbų pasiskirstymas yra iškreiptas, todėl kol kas nėra pagrindo rimtoms kalbai specifinėms normoms ar matavimo invariantiškumo analizėms. Ketvirta, bifaktorinis ir dviejų veiksnių sprendimai metodologine prasme yra diagnostiniai modeliai; jie naudingi duomenų struktūrai suprasti, bet patys savaime nesuteikia teisės interpretuoti testo kaip dviejų atskirų klinikinių poskalių.
+
+\section{Išvada}
+Brandžiausias ir moksliškai labiausiai pagrįstas testo apibūdinimas: jis veikia kaip trumpas, normuotas reguliacinės trinties matas, aiškiai reikšmingas į ADHD panašiems sunkumams. Rezultatai patvirtina, kad egzistuoja stiprus ir persmelkiantis bendrasis veiksnys, t.\,y. bendras matmuo, siejantis darbų pradėjimą, dėmesį, organizavimą, vidinę ramybę ir stabilų užbaigimą. Kartu tiek dviejų veiksnių, tiek bifaktorinis modeliai rodo, kad šis bendrasis veiksnys turi tam tikrą vidinę struktūrą, kurioje labiau vidinę, su užduotimis ir dėmesiu susijusią pusę galima atskirti nuo labiau išorinės, praktinės ir su patikimumu susijusios pusės.
+
+Taigi tai, ką testas gali pagrįstai rodyti, yra ne ``ADHD'' kaip diagnozė, o panašumo laipsnis tarp žmogaus atsakymų ir nuoseklaus ADHD požiūriu reikšmingos reguliacinės trinties modelio. Tai svarbus ir naudingas radinys. Bet tai vis tiek radinys funkcionavimo lygmeniu, o ne galutinis atsakymas dėl priežasties, kategorijos ar klinikinės tapatybės.
+
+\printbibliography
+
+\end{document}
