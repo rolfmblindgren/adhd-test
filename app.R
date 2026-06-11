@@ -94,6 +94,11 @@ custom_css_href <- paste0(
   format(file.info("./www/custom.css")$mtime, "%Y%m%d%H%M%S")
 )
 
+custom_js_href <- paste0(
+  "custom.js?v=",
+  format(file.info("./www/custom.js")$mtime, "%Y%m%d%H%M%S")
+)
+
 score_thresholds <- list(
   stable = 45,
   typical = 40,
@@ -116,7 +121,7 @@ ui <- fluidPage(
   useShinyjs(debug=FALSE),
   tags$head(
     grendelshiny::grendelshiny_js(),
-    tags$script(src = "custom.js"),
+    tags$script(src = custom_js_href),
     tags$script(HTML("
   Shiny.addCustomMessageHandler('update-title', function(msg) {
     document.title = msg;
