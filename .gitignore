@@ -1,6 +1,4 @@
 .Rhistory
 adhd.sqlite
 app_cache/
-translation.numbers
 scripts/
-make_translations.R

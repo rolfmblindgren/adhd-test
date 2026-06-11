@@ -27,11 +27,10 @@ adhd-test/
 ├── adhd.sqlite                # Lokal SQLite (dev/enkeltoppsett)
 ├── content/                   # Tekstlig innhold
 │   ├── *.tskår.md              # Skåringstekster per språk (nb, nn, en, da, de, fr, se, smh, fkv, sv …)
-│   └── translations/          # Oversettelser + konfig
+│   └── translations/          # Oversettelser + konfig (CSV-ene er kilden)
 │       ├── config.yml         # shiny.i18n-konfig
-│       ├── translation.csv    # Master
-│       ├── translation_*.csv  # Per språk
-│       └── translation.numbers# Redigeringskilde (Numbers, lokal — ikke i git)
+│       ├── translation.csv    # Masteroversikt (alle språk, semikolon)
+│       └── translation_*.csv  # Per språk — disse leses av appen
 ├── docs/                      # Psykometrisk note per språk (no er original)
 │   └── <språk>/adhd_psychometric_note.{tex,bib,pdf}
 ├── models/                    # Modeller / skåringsgrunnlag
