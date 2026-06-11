@@ -10,7 +10,7 @@ function flagMarkup(item, kind) {
     da: "da.svg",
     fi: "fi.svg",
     se:  "sami.svg",
-    // smh: "smh.svg",
+    // smh deaktivert: oversettelsen er forsøkt, men ikke kvalitetssikret nok til utgivelse.
     fkv: "kven.svg",
     fr:  "france.svg",
     es:  "es.svg",
@@ -26,7 +26,6 @@ function flagMarkup(item, kind) {
     da: "Dansk",
     fi:  "Suomi",
     se:  "Davvisámegiella",
-//    smh: "Julevsámegiella",
     fkv: "Kainuun kieli",
     fr:  "Français",
     es:  "Español",

@@ -72,6 +72,9 @@ map_browser_language <- function(browser_lang) {
   if (startsWith(browser_lang, "sv")) return("sv")
   if (startsWith(browser_lang, "da")) return("da")
   if (startsWith(browser_lang, "fi")) return("fi")
+  # Julevsámegiella er forsøkt, men vi mener ikke at oversettelsen holder
+  # mål ennå, så vi ruter smj/smh til bokmål inntil den er kvalitetssikret.
+  if (startsWith(browser_lang, "smj") || startsWith(browser_lang, "smh")) return("nb")
   if (startsWith(browser_lang, "se")) return("se")
   if (startsWith(browser_lang, "fkv")) return("fkv")
   if (startsWith(browser_lang, "fr")) return("fr")
