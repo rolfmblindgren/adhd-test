@@ -103,7 +103,7 @@ score_colors <- list(
 
 ui <- fluidPage(
   title = i18n$t("Dette er ikke en ADHD-test"),
-  social_meta("meta.yaml"),
+  social_meta("meta.yml"),
   grendelshiny::grendelshiny_css(),
   tags$link(rel = "stylesheet", type = "text/css", href = custom_css_href),
   theme = custom_theme,

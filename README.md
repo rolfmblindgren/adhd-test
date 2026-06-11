@@ -23,7 +23,7 @@ Intern konsistens var høy (ωₜ = .92). Generalfaktoren forklarte hoveddelen a
 adhd-test/
 ├── app.R                      # Shiny-applikasjon
 ├── README.md                  # Kort dokumentasjon
-├── meta.yaml                  # Metadata (tittel, beskrivelse, URL, OG-bilde osv.)
+├── meta.yml                   # Metadata (tittel, beskrivelse, URL, OG-bilde osv.)
 ├── adhd.sqlite                # Lokal SQLite (dev/enkeltoppsett)
 ├── content/                   # Tekstlig innhold
 │   ├── *.tskår.md              # Skåringstekster per språk (nb, nn, en, da, de, fr, se, smh, fkv, sv …)
