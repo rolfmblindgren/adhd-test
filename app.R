@@ -127,7 +127,7 @@ ui <- fluidPage(
         div(
           class = "hero-mark",
           tags$img(
-            src = "https://www.grendel.no/wp-content/uploads/sites/7/2021/02/Grendel-G.png.webp",
+            src = "grendel-g.webp",
             alt = "Grendel-logo",
             class = "hero-logo"
           )
@@ -264,16 +264,6 @@ server <- function(input, output, session) {
     }
   }, ignoreInit = TRUE)
 
-  t_score <- reactive({
-    req(input$beregn)   # evt. hva som helst som trigger beregning
-
-    core_item_ids <- core_items_r()$id
-    items <- vapply(core_item_ids, function(id) input[[id]], numeric(1))
-
-    res <- scaled_score(items)   # funksjonen du allerede har
-    as.numeric(res["T"])
-  })
-
   output$tsk_md <- renderUI({
     current_lang <- lang()
     ## av din versjon
@@ -373,7 +363,10 @@ server <- function(input, output, session) {
   })
 
 
-  db_path <- paste0(Sys.getenv("ADHD_DB_PATH"),"/",Sys.getenv("ADHD_DB_NAME"))
+  db_path <- file.path(
+    Sys.getenv("ADHD_DB_PATH", unset = "."),
+    Sys.getenv("ADHD_DB_NAME", unset = "adhd.sqlite")
+  )
 
   lang <- reactive({
     user_selected_lang() %||% detected_lang()
@@ -512,18 +505,9 @@ server <- function(input, output, session) {
   })
 
 
-  output$score_tekst <- renderText({
-    res <- score_reaktiv()
-    if (!res$gyldig) return(res$beskjed)
-    paste0(round(res$score, 2))
-  })
+  output$om_testen <- renderText({
 
-
-  observeEvent(input$selected_language, {
-
-    output$om_testen <- renderText({
-
-      lg <- i18n$get_translation_language()
+      lg <- lang()
       res <- switch (lg,
                      nb = "Testen er prøvd ut på over tre hundre brukere, og viser gode psykometriske egenskaper. Det betyr ikke at den kan fortelle deg at du helt sikkert ikke har ADHD, men den kan fortelle deg at det er gode grunner til at det er overveiende sannsynlig at eventuelle problemer du har, skyldes noe annet.</p><p>Funnene tyder på at testen først og fremst fanger ett hovedmønster i hvordan folk regulerer oppmerksomhet og hverdag. Samtidig ser dette mønsteret ut til å ha to sider: en mer indre side knyttet til å komme i gang, holde fokus og styre tankene, og en mer ytre side knyttet til organisering, avtaler og praktisk pålitelighet. Testen kan derfor forstås som et mål på hvor mye friksjon en person opplever i ulike deler av livet. Slike vansker kan merkes på jobb eller skole, hjemme, i relasjoner, i tidsbruk og i praktiske gjøremål. Lavere skårer tyder på større likhet med et ADHD-relevant mønster av reguleringsvansker, mens høyere skårer tyder på mindre likhet. For en mer utførlig gjennomgang, se <a href='/docs/no/adhd_psychometric_note.pdf' target='_blank' rel='noopener'>artikkelen</a>.</p><p>Oversettelsene er gjort maskinmessig og kontrollert der det er mulig. Finner du feil, ikke nøl med å si fra.",
                      nn = "Testen er prøvd ut på over tre hundre brukarar og viser gode psykometriske eigenskapar. Det betyr ikkje at han kan fortelje deg at du heilt sikkert ikkje har ADHD, men han kan vise at det finst gode grunnar til at det er overvegande sannsynleg at eventuelle vanskar du har, kjem av noko anna.</p><p>Funna tyder på at testen først og fremst fangar eitt hovudmønster i korleis folk regulerer merksemd og kvardag. Samstundes ser dette mønsteret ut til å ha to sider: ei meir indre side knytt til å kome i gang, halde fokus og styre tankane, og ei meir ytre side knytt til organisering, avtalar og praktisk pålitelegheit. Testen kan derfor forståast som eit mål på kor mykje friksjon ein person opplever i ulike delar av livet. Slike vanskar kan merkast på jobb eller skule, heime, i relasjonar, i tidsbruk og i praktiske gjeremål. Lågare skårar tyder på større likskap med eit ADHD-relevant mønster av reguleringsvanskar, medan høgare skårar tyder på mindre likskap. For ei meir utførleg gjennomgåing, sjå <a href='/docs/nn/adhd_psychometric_note.pdf' target='_blank' rel='noopener'>artikkelen</a>.</p><p>Omsetjingane er gjorde maskinelt og kontrollerte der det har vore mogleg. Finn du feil, må du gjerne seie frå.",
@@ -548,7 +532,6 @@ server <- function(input, output, session) {
       res <- gsub("href='/docs/", paste0("href='", app_base, "docs/"), res, fixed = TRUE)
 
       paste0("<p>", res, "</p><p><a href='mailto:rolf@grendel.no?subject=ADHD-testen'>© 2025 Grendel AS</a></p>")
-    })
   })
 
   output$resultat_tekst <- renderText({
@@ -573,6 +556,7 @@ server <- function(input, output, session) {
 
   output$t_meter <- renderUI({
     sc <- score_reaktiv()
+    if (!sc$gyldig) return(NULL)
     T  <- as.numeric(sc[["score"]])
 
     lo <- 20; hi <- 80
