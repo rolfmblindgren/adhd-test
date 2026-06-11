@@ -50,9 +50,16 @@ adhd-test/
 ## Krav
 	•	R ≥ 4.2
 	•	shiny
+	•	shinyjs
+	•	shiny.i18n
+	•	bslib
 	•	tibble
 	•	DBI
 	•	RSQLite
+	•	mirt
+	•	grendelshiny
+	•	shinyseo
+	•	grendelStripe
 
 På Ubuntu via shiny-server må brukeren som kjører appen ha skrivetilgang til data/-mappen.
 
@@ -61,28 +68,31 @@ På Ubuntu via shiny-server må brukeren som kjører appen ha skrivetilgang til 
 Applikasjonen bruker:
 
 ```
-SHINY_DATA_DIR=/srv/shiny-server/data
+ADHD_DB_PATH=/srv/shiny-server/data
+ADHD_DB_NAME=adhd.sqlite
 ```
 
-Dette brukes til å finne både SQLite-databasen og Shiny-cache-mappen.
+Disse settes sammen til stien til SQLite-databasen. Uten dem brukes
+`./adhd.sqlite` i appmappen (greit for lokal utvikling).
 
 ## Database
 
-Tabellen genereres automatisk:
+Tabellene genereres automatisk av `dbWriteTable()` ved første besvarelse.
+Kjernespørsmålene (item1–item10) lagres i `responses`, de eksperimentelle
+spørsmålene (item11–item13) i `experimental_responses`. Begge har samme
+kolonner:
 
 ```
-CREATE TABLE responses (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    timestamp TEXT NOT NULL,
-    item_id TEXT NOT NULL,
-    score INTEGER NOT NULL
-);
+timestamp   TEXT     -- felles for hele besvarelsen
+item_id     TEXT
+score       REAL
+language    TEXT     -- aktivt språk ved innsending
 ```
 
 For å inspisere data:
 
 ```
-sqlite3 adhd_test.sqlite
+sqlite3 adhd.sqlite
 sqlite> SELECT * FROM responses LIMIT 20;
 ```
 
