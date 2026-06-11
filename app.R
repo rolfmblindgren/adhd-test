@@ -71,11 +71,13 @@ map_browser_language <- function(browser_lang) {
   if (startsWith(browser_lang, "nb") || startsWith(browser_lang, "no")) return("nb")
   if (startsWith(browser_lang, "sv")) return("sv")
   if (startsWith(browser_lang, "da")) return("da")
+  if (startsWith(browser_lang, "fi")) return("fi")
   if (startsWith(browser_lang, "se")) return("se")
   if (startsWith(browser_lang, "fkv")) return("fkv")
   if (startsWith(browser_lang, "fr")) return("fr")
   if (startsWith(browser_lang, "es")) return("es")
   if (startsWith(browser_lang, "de")) return("de")
+  if (startsWith(browser_lang, "uk")) return("uk")
   if (startsWith(browser_lang, "en")) return("en")
 
   "nb"
@@ -132,7 +134,7 @@ ui <- fluidPage(
         ),
         div(
           class = "hero-heading",
-          span(class = "eyebrow", "Har du ikke ADHD?"),
+          span(class = "eyebrow", i18n$t("Har du ikke ADHD?")),
           h1(i18n$t("Dette er ikke en ADHD-test"))
         )
       ),
@@ -166,7 +168,7 @@ ui <- fluidPage(
       selectizeInput(
         inputId = "selected_language",
         label = i18n$t("Skift språk"),
-        choices = c("nb", "nn", "sv", "da", "se", "fkv", "fr", "es", "de", "en"),
+        choices = c("nb", "nn", "sv", "da", "fi", "se", "fkv", "fr", "es", "de", "uk", "en"),
         selected = "nb",   # <- viktig
         options = list(
           render = I("
@@ -536,7 +538,9 @@ server <- function(input, output, session) {
 
                      fr = "Le test a été essayé auprès de plus de trois cents utilisateurs et présente de bonnes propriétés psychométriques. Cela ne signifie pas qu’il puisse affirmer avec certitude que vous n’avez pas de TDAH, mais il peut indiquer qu’il existe de bonnes raisons de penser que les difficultés que vous rencontrez sont probablement dues à autre chose.</p><p>Les résultats suggèrent que le test repère avant tout un grand schéma commun dans la manière dont les personnes régulent leur attention et leur vie quotidienne. En même temps, ce schéma semble avoir deux versants : un versant plus interne, lié au démarrage, au maintien de l’attention et à la maîtrise des pensées, et un versant plus externe, lié à l’organisation, aux rendez-vous et à la fiabilité pratique. Le test peut donc être compris comme une mesure du degré de friction qu’une personne éprouve dans différentes parties de la vie. Ces difficultés peuvent se faire sentir au travail ou à l’école, à la maison, dans les relations, dans la gestion du temps et dans les tâches pratiques du quotidien. Des scores plus faibles indiquent une plus grande ressemblance avec un profil de difficultés de régulation pertinent pour le TDAH, tandis que des scores plus élevés indiquent une moindre ressemblance. Pour une présentation plus détaillée, voir <a href='/docs/fr/adhd_psychometric_note.pdf' target='_blank' rel='noopener'>l’article</a>.</p><p>Les traductions ont été générées automatiquement et vérifiées lorsque cela était possible. Si vous repérez des erreurs, n’hésitez pas à me le signaler.",
 
-                                        # fallback hvis språk mangler
+
+                     fi = "Testiä on kokeiltu yli kolmensadan käyttäjän kanssa, ja se näyttää hyviä psykometrisiä ominaisuuksia. Tämä ei tarkoita, että testi voisi varmasti sanoa, ettei sinulla ole ADHD:ta, mutta se viittaa siihen, että mahdolliset vaikeudet johtuvat todennäköisesti jostakin muusta.</p><p>Tulokset viittaavat siihen, että testi tavoittaa ennen kaikkea yhden päämallin siinä, miten ihmiset säätelevät huomiota ja arkea. Samalla tällä mallilla näyttää olevan kaksi puolta: sisempi puoli, joka liittyy aloittamiseen, keskittymiseen ja ajatusten hallintaan, sekä ulompi puoli, joka liittyy järjestykseen, sovittuihin aikoihin ja käytännön luotettavuuteen. Testiä voi siis ymmärtää mittana siitä, kuinka paljon kitkaa ihminen kokee elämän eri osa-alueilla. Tällaiset vaikeudet voivat näkyä työssä tai opinnoissa, kotona, ihmissuhteissa, ajankäytössä ja käytännön askareissa. Matalammat pisteet viittaavat suurempaan samankaltaisuuteen ADHD:hen liittyvän säätelyvaikeusmallin kanssa, kun taas korkeammat pisteet viittaavat pienempään samankaltaisuuteen. Tarkemman katsauksen löydät englanninkielisestä artikkelista <a href='/docs/en/adhd_psychometric_note.pdf' target='_blank' rel='noopener'>tästä artikkelista</a>.</p><p>Käännökset on tehty koneellisesti ja tarkistettu mahdollisuuksien mukaan. Jos löydät virheitä, kerro ihmeessä.",
+                     uk = "Тест було випробувано більш ніж на трьохстах користувачах, і він показує хороші психометричні властивості. Це не означає, що тест може з упевненістю сказати, що у вас немає ADHD, але він може вказати, що є вагомі підстави вважати, що будь-які труднощі, які ви відчуваєте, ймовірно пов’язані з чимось іншим.</p><p>Результати вказують на те, що тест насамперед вловлює один головний патерн у тому, як люди регулюють увагу й повсякденне життя. Водночас цей патерн має два боки: внутрішній, пов’язаний із тим, щоб почати справу, тримати фокус і керувати думками, та зовнішній, пов’язаний з організацією, домовленостями й практичною надійністю. Тож тест можна розуміти як міру того, скільки тертя людина відчуває в різних сферах життя. Такі труднощі можуть проявлятися на роботі або в навчанні, вдома, у стосунках, у використанні часу та в щоденних практичних завданнях. Нижчі бали вказують на більшу схожість із патерном труднощів саморегуляції, пов’язаним із ADHD, а вищі бали - на меншу схожість. Для докладнішого огляду дивіться англомовну статтю <a href='/docs/en/adhd_psychometric_note.pdf' target='_blank' rel='noopener'>тут</a>.</p><p>Переклади зроблено машинно й по можливості перевірено. Якщо знайдете помилки, дайте знати.",                                        # fallback hvis språk mangler
                      "Mensura fallax est, sed mensurare oportet."
                      )
 

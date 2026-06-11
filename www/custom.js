@@ -8,12 +8,14 @@ function flagMarkup(item, kind) {
     nn:  "norway.svg",
     sv: "sv.svg",
     da: "da.svg",
+    fi: "fi.svg",
     se:  "sami.svg",
     // smh: "smh.svg",
     fkv: "kven.svg",
     fr:  "france.svg",
     es:  "es.svg",
     de:  "germany.svg",
+    uk: "ua.svg",
     en:  "uk.svg"
   };
 
@@ -22,12 +24,14 @@ function flagMarkup(item, kind) {
     nn:  "Nynorsk",
     sv: "Svenska",
     da: "Dansk",
+    fi:  "Suomi",
     se:  "Davvisámegiella",
 //    smh: "Julevsámegiella",
     fkv: "Kainuun kieli",
     fr:  "Français",
     es:  "Español",
     de:  "Deutsch",
+    uk:  "Українська",
     en:  "English"
   };
 
