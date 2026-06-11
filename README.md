@@ -31,15 +31,15 @@ adhd-test/
 │       ├── config.yml         # shiny.i18n-konfig
 │       ├── translation.csv    # Master
 │       ├── translation_*.csv  # Per språk
-│       └── translation.numbers# Redigeringskilde (Numbers)
+│       └── translation.numbers# Redigeringskilde (Numbers, lokal — ikke i git)
+├── docs/                      # Psykometrisk note per språk (no er original)
+│   └── <språk>/adhd_psychometric_note.{tex,bib,pdf}
 ├── models/                    # Modeller / skåringsgrunnlag
 │   └── mod1_grendel_1f_graded.rds
-├── scripts/                   # Analyse- og vedlikeholdsskript + artefakter
-│   ├── analyze.R
-│   ├── make_translations.R
-│   ├── *.png                  # Figurer (IRT, scree, osv.)
-│   ├── *.csv                  # Mellomdata/eksport (data, norm_table, osv.)
-│   └── og.graffle             # Kilde for OG-grafikk (OmniGraffle)
+├── scripts/                   # Analyse-skript + artefakter
+│   ├── adhd-stats.R
+│   ├── fa*_loadings.csv       # Faktorladninger
+│   └── scree_plot.png
 └── www/                       # Statiske filer (må ligge her for Shiny)
     ├── custom.css             # CSS-overstyringer
     ├── custom.js              # JS (UI-triks)
@@ -133,4 +133,6 @@ eller alternativt settes opp med felles gruppe.
 
 Testen sier ingenting om diagnose. En klinisk vurdering krever utviklingshistorie, funksjon, observasjon og faglig skjønn. Skåren må tolkes som et grovt mønster, ikke som en medisinsk konklusjon.
 
-Repository structure is intentionally flat in v1.0. A later refactor will group content and translation resources into dedicated directories.
+Merk: `.gitignore` utelater hele `scripts/`-mappen for nye filer, slik at
+dataeksporter og mellomfiler ikke havner i git ved et uhell. Filene som
+allerede er sjekket inn der, spores som vanlig.
