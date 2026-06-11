@@ -145,13 +145,6 @@ ui <- fluidPage(
           " ",
           as.character(i18n$t("Den er ikke diagnostisk. Den kan verken bekrefte eller avkrefte ADHD."))
         ))
-      ),
-      div(
-        class = "hero-badges",
-        span(class = "hero-badge", i18n$t("Spørsmål")),
-        span(class = "hero-badge", i18n$t("Resultat")),
-        span(class = "hero-badge", i18n$t("Om testen")),
-        span(class = "hero-badge", i18n$t("Støtt arbeidet"))
       )
     ),
     div(
